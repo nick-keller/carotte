@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC } from 'react'
 import useLocalStorage from 'use-local-storage'
 
 export const CredentialsContext = React.createContext<{
@@ -18,12 +18,14 @@ export const CredentialsContext = React.createContext<{
 })
 
 export const CredentialsProvider: FC = ({ children }) => {
-  const [ uri, setUri ] = useLocalStorage('uri', 'http://localhost:8010')
-  const [ username, setUsername ] = useLocalStorage('username', 'guest')
-  const [ password, setPassword ] = useLocalStorage('password', 'guest')
+  const [uri, setUri] = useLocalStorage('uri', 'http://localhost:8010')
+  const [username, setUsername] = useLocalStorage('username', 'guest')
+  const [password, setPassword] = useLocalStorage('password', 'guest')
 
   return (
-    <CredentialsContext.Provider value={{ uri, setUri, username, setUsername, password, setPassword }}>
+    <CredentialsContext.Provider
+      value={{ uri, setUri, username, setUsername, password, setPassword }}
+    >
       {children}
     </CredentialsContext.Provider>
   )

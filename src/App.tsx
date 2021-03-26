@@ -1,7 +1,17 @@
 import React from 'react'
 import { Layout, Menu } from 'antd'
-import { AppstoreOutlined, BuildOutlined, SettingOutlined } from '@ant-design/icons'
-import { BrowserRouter as Router, Link, Redirect, Route, Switch } from 'react-router-dom'
+import {
+  AppstoreOutlined,
+  BuildOutlined,
+  SettingOutlined,
+} from '@ant-design/icons'
+import {
+  BrowserRouter as Router,
+  Link,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom'
 import { CredentialsProvider } from './CredentialsProvider'
 import { HttpProvider } from './HttpProvider'
 import { Settings } from './pages/settings/Settings'
@@ -12,10 +22,10 @@ function App() {
     <Layout style={{ minHeight: '100vh' }}>
       <Layout.Sider>
         <Menu theme="dark">
-          <Menu.Item icon={<AppstoreOutlined/>} key="/">
+          <Menu.Item icon={<AppstoreOutlined />} key="/">
             <Link to="/">Overview</Link>
           </Menu.Item>
-          <Menu.Item icon={<BuildOutlined/>} key="/queues">
+          <Menu.Item icon={<BuildOutlined />} key="/queues">
             <Link to="/queues">Queues</Link>
           </Menu.Item>
           <Menu.Item icon={<SettingOutlined />} key="/settings">
@@ -34,7 +44,7 @@ function App() {
         </Switch>
       </Layout.Content>
     </Layout>
-  );
+  )
 }
 
 function AppWrapper() {
@@ -49,4 +59,4 @@ function AppWrapper() {
   )
 }
 
-export default AppWrapper;
+export default AppWrapper

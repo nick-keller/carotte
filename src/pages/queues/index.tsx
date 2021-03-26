@@ -3,8 +3,7 @@ import { match as Match, Route, Switch } from 'react-router-dom'
 import { Queues } from './Queues'
 import { Queue } from './Queue'
 
-
-export const QueuesIndex = ({ match, }: { match: Match }) => {
+export const QueuesIndex = ({ match }: { match: Match }) => {
   return (
     <Switch>
       <Route path={match.path + '/:vhost/:queueName'} component={Queue} />

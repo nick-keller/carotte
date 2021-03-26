@@ -1,14 +1,24 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { Button, Divider, Form, InputNumber, Radio, Space, Switch } from 'antd'
 import { Box } from '@xstyled/styled-components'
 import { match as Match } from 'react-router-dom'
 import { CachePolicies, useFetch } from 'use-http'
 import { Message } from './Message'
+import { RabbitMessage } from '../../types'
 
-export const Get = ({ match }: { match: Match<{vhost: string, queueName: string}> }) => {
+export const Get: FC<{
+  match: Match<{ vhost: string; queueName: string }>
+}> = ({ match }) => {
   const { vhost, queueName } = match.params
 
-  const { data, loading, post } = useFetch(`/queues/${vhost}/${queueName}/get`, { data: [], cachePolicy: CachePolicies.NO_CACHE, persist: false })
+  const { data, loading, post } = useFetch<RabbitMessage[]>(
+    `/queues/${vhost}/${queueName}/get`,
+    { data: [], cachePolicy: CachePolicies.NO_CACHE, persist: false }
+  )
+
+  if (!data) {
+    return null
+  }
 
   return (
     <Box m={20}>
@@ -17,9 +27,11 @@ export const Get = ({ match }: { match: Match<{vhost: string, queueName: string}
         labelCol={{ span: 4 }}
         onFinish={(values) => {
           post({
-            ackmode: `${values.ack ? 'ack' : 'reject'}_requeue_${values.requeue ? 'true' : 'false'}`,
+            ackmode: `${values.ack ? 'ack' : 'reject'}_requeue_${
+              values.requeue ? 'true' : 'false'
+            }`,
             count: values.count,
-            encoding: "auto",
+            encoding: 'auto',
             name: queueName,
             truncate: 50000,
             vhost,
@@ -39,7 +51,9 @@ export const Get = ({ match }: { match: Match<{vhost: string, queueName: string}
           <InputNumber min={1} precision={0} />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 4 }}>
-          <Button type="primary" htmlType="submit" loading={loading}>Get</Button>
+          <Button type="primary" htmlType="submit" loading={loading}>
+            Get
+          </Button>
         </Form.Item>
       </Form>
 
@@ -48,7 +62,9 @@ export const Get = ({ match }: { match: Match<{vhost: string, queueName: string}
       </Divider>
 
       <Space direction="vertical" style={{ width: '100%' }}>
-        {data.map((message: any) => <Message message={message} />)}
+        {data.map((message) => (
+          <Message message={message} />
+        ))}
       </Space>
     </Box>
   )
