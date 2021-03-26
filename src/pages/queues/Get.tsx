@@ -1,0 +1,55 @@
+import React from 'react'
+import { Button, Divider, Form, InputNumber, Radio, Space, Switch } from 'antd'
+import { Box } from '@xstyled/styled-components'
+import { match as Match } from 'react-router-dom'
+import { CachePolicies, useFetch } from 'use-http'
+import { Message } from './Message'
+
+export const Get = ({ match }: { match: Match<{vhost: string, queueName: string}> }) => {
+  const { vhost, queueName } = match.params
+
+  const { data, loading, post } = useFetch(`/queues/${vhost}/${queueName}/get`, { data: [], cachePolicy: CachePolicies.NO_CACHE, persist: false })
+
+  return (
+    <Box m={20}>
+      <Form
+        initialValues={{ ack: true, requeue: true, count: 1 }}
+        labelCol={{ span: 4 }}
+        onFinish={(values) => {
+          post({
+            ackmode: `${values.ack ? 'ack' : 'reject'}_requeue_${values.requeue ? 'true' : 'false'}`,
+            count: values.count,
+            encoding: "auto",
+            name: queueName,
+            truncate: 50000,
+            vhost,
+          })
+        }}
+      >
+        <Form.Item label="Mode" name="ack">
+          <Radio.Group buttonStyle="solid">
+            <Radio.Button value={true}>Ack</Radio.Button>
+            <Radio.Button value={false}>Reject</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item label="Requeue" name="requeue" valuePropName="checked">
+          <Switch checkedChildren="Yes" unCheckedChildren="No" />
+        </Form.Item>
+        <Form.Item label="Messages" name="count">
+          <InputNumber min={1} precision={0} />
+        </Form.Item>
+        <Form.Item wrapperCol={{ offset: 4 }}>
+          <Button type="primary" htmlType="submit" loading={loading}>Get</Button>
+        </Form.Item>
+      </Form>
+
+      <Divider orientation="left" plain>
+        {data.length} messages
+      </Divider>
+
+      <Space direction="vertical" style={{ width: '100%' }}>
+        {data.map((message: any) => <Message message={message} />)}
+      </Space>
+    </Box>
+  )
+}
