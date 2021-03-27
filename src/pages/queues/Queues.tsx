@@ -1,27 +1,17 @@
 import React, { FC, useEffect, useState } from 'react'
-import {
-  Table,
-  Typography,
-  Row,
-  Col,
-  Button,
-  Input,
-  Space,
-  PageHeader,
-} from 'antd'
-import { Box } from '@xstyled/styled-components'
+import { Button, Input, PageHeader, Space, Table, Typography, Switch } from 'antd'
 import { useFetch } from 'use-http'
 import { Link, match as Match } from 'react-router-dom'
 import {
   DeleteOutlined,
   PlusOutlined,
-  SyncOutlined,
   SearchOutlined,
   StarOutlined,
   StarTwoTone,
+  SyncOutlined,
 } from '@ant-design/icons'
-import { formatNumber } from '../../format'
-import { MoveButton } from '../../MoveButton'
+import { formatNumber } from '../../utils/format'
+import { MoveButton } from '../../actions/MoveButton'
 import { MessageStat, Queue } from '../../types'
 import useLocalStorage from 'use-local-storage'
 
@@ -32,19 +22,20 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
       'consumer_details' | 'message_stats'
     >[]
   >('/queues', { data: [] }, [])
-  const [staredQueues, setStaredQueues] = useLocalStorage<string[]>(
-    'staredQueues',
-    []
-  )
 
   useEffect(() => {
     if (!loading) {
       setTimeout(get, 2000)
     }
-  }, [loading])
+  }, [get, loading])
 
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<any[]>([])
+  const [starredOnly, setStarredOnly] = useLocalStorage('starredOnly', false)
+  const [starredQueues, setStarredQueues] = useLocalStorage<string[]>(
+    'starredQueues',
+    []
+  )
 
   if (!data) {
     return null
@@ -79,6 +70,12 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
               Delete
             </Button>
           ),
+          !selected.length && !!starredQueues.length && (
+            <><Switch
+              checked={starredOnly}
+              onChange={setStarredOnly}
+            /> Starred only</>
+          ),
           !selected.length && (
             <Input
               value={search}
@@ -105,7 +102,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
           onChange: setSelected,
         }}
         dataSource={data.filter(({ name }: { name: string }) =>
-          name.includes(search)
+          name.includes(search) && (!starredOnly || starredQueues.includes(name))
         )}
         columns={[
           {
@@ -116,17 +113,17 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
             showSorterTooltip: false,
             render: (name, { vhost }) => (
               <Space>
-                {staredQueues.includes(name) ? (
+                {starredQueues.includes(name) ? (
                   <StarTwoTone
                     twoToneColor="#ffa940"
                     onClick={() =>
-                      setStaredQueues(staredQueues.filter((n) => n !== name))
+                      setStarredQueues(starredQueues.filter((n) => n !== name))
                     }
                   />
                 ) : (
                   <Typography.Text type="secondary">
                     <StarOutlined
-                      onClick={() => setStaredQueues([...staredQueues, name])}
+                      onClick={() => setStarredQueues([...starredQueues, name])}
                     />
                   </Typography.Text>
                 )}

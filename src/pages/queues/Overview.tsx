@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Col, Radio, Row, Space, Statistic, Badge } from 'antd'
+import { Col, Radio, Row, Space, Statistic, Badge, Switch } from 'antd'
 import { Box } from '@xstyled/styled-components'
 import { match as Match } from 'react-router-dom'
 import { CachePolicies, useFetch } from 'use-http'
 import qs from 'qs'
 import { Queue } from '../../types'
-import { Graph } from '../../Graph'
-import { formatRate } from '../../format'
+import { Graph } from '../../components/Graph'
+import { formatRate } from '../../utils/format'
 import useLocalStorage from 'use-local-storage'
 
 const MINUTE = 60
@@ -76,6 +76,7 @@ export const Overview: FC<{
 }> = ({ match }) => {
   const { vhost, queueName } = match.params
 
+  const [liveQueue, setLiveQueue] = useLocalStorage('liveQueue', true)
   const [graphRange, setGraphRange] = useLocalStorage('graphRange', MINUTE)
   const graphInterval = Math.round(graphRange / GRAPH_RESOLUTION)
 
@@ -92,19 +93,20 @@ export const Overview: FC<{
       cachePolicy: CachePolicies.NETWORK_ONLY,
       persist: false,
     },
-    []
+    [params, liveQueue]
   )
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading && liveQueue) {
       setTimeout(get, 2000)
     }
-  }, [loading])
+  }, [get, liveQueue, loading])
 
   return (
     <Box m={20}>
       <Row gutter={[20, 20]}>
         <Col span={24}>
+          <Space size="large">
           <Radio.Group
             value={graphRange}
             onChange={(e) => setGraphRange(e.target.value)}
@@ -116,6 +118,8 @@ export const Overview: FC<{
             <Radio.Button value={30 * MINUTE}>30m</Radio.Button>
             <Radio.Button value={60 * MINUTE}>1h</Radio.Button>
           </Radio.Group>
+            <Switch checked={liveQueue} onChange={setLiveQueue} checkedChildren="Live" unCheckedChildren="Frozen" />
+          </Space>
         </Col>
 
         <Col span={12}>
@@ -142,7 +146,7 @@ export const Overview: FC<{
             data={[...messagesPublish, ...messagesGet].map(
               ({ key, name, color }) => ({
                 samples:
-                  data?.message_stats[(key + '_details') as 'ack_details']
+                  data?.message_stats?.[(key + '_details') as 'ack_details']
                     ?.samples ?? [],
                 name,
                 stroke: color,

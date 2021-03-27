@@ -3,8 +3,9 @@ import { Button, Menu, PageHeader } from 'antd'
 import { match as Match, Route, Switch, useHistory } from 'react-router-dom'
 import { DeleteOutlined, SyncOutlined } from '@ant-design/icons'
 import { Get } from './Get'
-import { MoveButton } from '../../MoveButton'
+import { MoveButton } from '../../actions/MoveButton'
 import { Overview } from './Overview'
+import { Publish } from './Publish'
 
 export const Queue: FC<{
   match: Match<{ vhost: string; queueName: string }>
@@ -34,6 +35,7 @@ export const Queue: FC<{
         <Menu.Item key={match.url + '/get'}>Consume</Menu.Item>
       </Menu>
       <Switch>
+        <Route path={match.path + '/publish'} component={Publish} />
         <Route path={match.path + '/get'} component={Get} />
         <Route path={match.path} exact component={Overview} />
       </Switch>

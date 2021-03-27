@@ -5,6 +5,7 @@ import { match as Match } from 'react-router-dom'
 import { CachePolicies, useFetch } from 'use-http'
 import { Message } from './Message'
 import { RabbitMessage } from '../../types'
+import { VerticalAlignBottomOutlined } from '@ant-design/icons'
 
 export const Get: FC<{
   match: Match<{ vhost: string; queueName: string }>
@@ -51,7 +52,7 @@ export const Get: FC<{
           <InputNumber min={1} precision={0} />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 4 }}>
-          <Button type="primary" htmlType="submit" loading={loading}>
+          <Button type="primary" htmlType="submit" loading={loading} icon={<VerticalAlignBottomOutlined />}>
             Get
           </Button>
         </Form.Item>

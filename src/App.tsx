@@ -12,8 +12,8 @@ import {
   Route,
   Switch,
 } from 'react-router-dom'
-import { CredentialsProvider } from './CredentialsProvider'
-import { HttpProvider } from './HttpProvider'
+import { CredentialsProvider } from './providers/CredentialsProvider'
+import { HttpProvider } from './providers/HttpProvider'
 import { Settings } from './pages/settings/Settings'
 import { QueuesIndex } from './pages/queues'
 

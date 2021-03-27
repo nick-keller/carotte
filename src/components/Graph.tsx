@@ -8,8 +8,8 @@ import {
   YAxis,
   CartesianGrid,
 } from 'recharts'
-import { Sample } from './types'
-import { formatDate, formatNumber, formatSeconds, formatTime } from './format'
+import { Sample } from '../types'
+import { formatDate, formatNumber, formatSeconds, formatTime } from '../utils/format'
 
 type Props = {
   data: {

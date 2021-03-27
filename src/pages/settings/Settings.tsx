@@ -1,6 +1,6 @@
 import React, { FC, useContext } from 'react'
-import { Card, Form, Input } from 'antd'
-import { CredentialsContext } from '../../CredentialsProvider'
+import { Card, Form, Input, PageHeader } from 'antd'
+import { CredentialsContext } from '../../providers/CredentialsProvider'
 import { Box } from '@xstyled/styled-components'
 
 export const Settings: FC = () => {
@@ -13,8 +13,12 @@ export const Settings: FC = () => {
     setPassword,
   } = useContext(CredentialsContext)
   return (
+    <>
+    <PageHeader
+      title="Settings"
+      />
     <Box mt={20}>
-      <Card style={{ maxWidth: '600px', margin: 'auto' }} title="Settings">
+      <Card style={{ maxWidth: '600px', margin: 'auto' }}>
         <Form layout="horizontal" labelCol={{ span: 4 }}>
           <Form.Item label="URI">
             <Input value={uri} onChange={(e) => setUri(e.target.value)} />
@@ -34,5 +38,6 @@ export const Settings: FC = () => {
         </Form>
       </Card>
     </Box>
+      </>
   )
 }
