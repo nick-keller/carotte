@@ -15,19 +15,29 @@ export const Publish: FC<{
 }> = ({ match }) => {
   const { vhost, queueName } = match.params
 
-  const [ publishMessage, setPublishMessage] = useLocalStorage(`publish_${queueName}`, '')
-  const [ mode, setMode] = useLocalStorage(`publishMode`, 'json')
+  const [publishMessage, setPublishMessage] = useLocalStorage(
+    `publish_${queueName}`,
+    ''
+  )
+  const [mode, setMode] = useLocalStorage(`publishMode`, 'json')
 
-  const { response, post, loading } = useFetch(`/exchanges/${vhost}/amq.default/publish`, { cachePolicy: CachePolicies.NO_CACHE, persist: false })
+  const {
+    response,
+    post,
+    loading,
+  } = useFetch(`/exchanges/${vhost}/amq.default/publish`, {
+    cachePolicy: CachePolicies.NO_CACHE,
+    persist: false,
+  })
 
   const publish = async () => {
     await post({
-      delivery_mode: "1",
+      delivery_mode: '1',
       headers: {},
-      name: "amq.default",
+      name: 'amq.default',
       payload: publishMessage,
-      payload_encoding: "string",
-      properties: {delivery_mode: 1, headers: {}},
+      payload_encoding: 'string',
+      properties: { delivery_mode: 1, headers: {} },
       props: {},
       routing_key: queueName,
       vhost,
@@ -70,8 +80,14 @@ export const Publish: FC<{
             enableSnippets: false,
             showLineNumbers: true,
             tabSize: 2,
-          }}/>
-        <Button type="primary" onClick={publish} loading={loading} icon={<ToTopOutlined />}>
+          }}
+        />
+        <Button
+          type="primary"
+          onClick={publish}
+          loading={loading}
+          icon={<ToTopOutlined />}
+        >
           Publish
         </Button>
       </Space>

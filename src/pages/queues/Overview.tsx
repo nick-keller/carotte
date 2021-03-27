@@ -107,18 +107,23 @@ export const Overview: FC<{
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <Space size="large">
-          <Radio.Group
-            value={graphRange}
-            onChange={(e) => setGraphRange(e.target.value)}
-            size="small"
-          >
-            <Radio.Button value={MINUTE}>1m</Radio.Button>
-            <Radio.Button value={5 * MINUTE}>5m</Radio.Button>
-            <Radio.Button value={10 * MINUTE}>10m</Radio.Button>
-            <Radio.Button value={30 * MINUTE}>30m</Radio.Button>
-            <Radio.Button value={60 * MINUTE}>1h</Radio.Button>
-          </Radio.Group>
-            <Switch checked={liveQueue} onChange={setLiveQueue} checkedChildren="Live" unCheckedChildren="Frozen" />
+            <Radio.Group
+              value={graphRange}
+              onChange={(e) => setGraphRange(e.target.value)}
+              size="small"
+            >
+              <Radio.Button value={MINUTE}>1m</Radio.Button>
+              <Radio.Button value={5 * MINUTE}>5m</Radio.Button>
+              <Radio.Button value={10 * MINUTE}>10m</Radio.Button>
+              <Radio.Button value={30 * MINUTE}>30m</Radio.Button>
+              <Radio.Button value={60 * MINUTE}>1h</Radio.Button>
+            </Radio.Group>
+            <Switch
+              checked={liveQueue}
+              onChange={setLiveQueue}
+              checkedChildren="Live"
+              unCheckedChildren="Frozen"
+            />
           </Space>
         </Col>
 
@@ -132,26 +137,29 @@ export const Overview: FC<{
             }))}
           />
           <Box ml={60} mt={20}>
-          <Space direction="vertical">
-            {messages.map(({ key, name, color }) => (
-              <Statistic title={<Badge color={color} text={name}/>} value={data?.[key as 'messages']} />
-            ))}
-          </Space>
+            <Space direction="vertical">
+              {messages.map(({ key, name, color }) => (
+                <Statistic
+                  title={<Badge color={color} text={name} />}
+                  value={data?.[key as 'messages']}
+                />
+              ))}
+            </Space>
           </Box>
         </Col>
         <Col span={12}>
           <Graph
             derivative
             format={(value) => formatRate(value) + '/s'}
-            data={[...messagesPublish, ...messagesGet].map(
-              ({ key, name, color }) => ({
+            data={[...messagesPublish, ...messagesGet]
+              .map(({ key, name, color }) => ({
                 samples:
                   data?.message_stats?.[(key + '_details') as 'ack_details']
                     ?.samples ?? [],
                 name,
                 stroke: color,
-              })
-            ).filter(({ samples }) => samples.length)}
+              }))
+              .filter(({ samples }) => samples.length)}
           />
 
           <Box ml={60} mt={20}>
@@ -161,7 +169,11 @@ export const Overview: FC<{
                   {messagesPublish.map(({ key, name, color }) => (
                     <Statistic
                       title={<Badge color={color} text={name} />}
-                      value={data?.message_stats?.[key + '_details' as 'ack_details']?.rate}
+                      value={
+                        data?.message_stats?.[
+                          (key + '_details') as 'ack_details'
+                        ]?.rate
+                      }
                       precision={2}
                       suffix="/s"
                     />
@@ -173,7 +185,11 @@ export const Overview: FC<{
                   {messagesGet.map(({ key, name, color }) => (
                     <Statistic
                       title={<Badge color={color} text={name} />}
-                      value={data?.message_stats?.[key + '_details' as 'ack_details']?.rate}
+                      value={
+                        data?.message_stats?.[
+                          (key + '_details') as 'ack_details'
+                        ]?.rate
+                      }
                       precision={2}
                       suffix="/s"
                     />

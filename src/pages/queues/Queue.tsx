@@ -6,6 +6,8 @@ import { Get } from './Get'
 import { MoveButton } from '../../actions/MoveButton'
 import { Overview } from './Overview'
 import { Publish } from './Publish'
+import { PurgeButton } from '../../actions/PurgeButton'
+import { DeleteButton } from '../../actions/DeleteButton'
 
 export const Queue: FC<{
   match: Match<{ vhost: string; queueName: string }>
@@ -20,12 +22,13 @@ export const Queue: FC<{
         onBack={() => history.push('/queues')}
         extra={[
           <MoveButton vhost={vhost} queues={[queueName]} key="move" />,
-          <Button type="primary" danger icon={<SyncOutlined />} key="purge">
-            Purge
-          </Button>,
-          <Button type="primary" danger icon={<DeleteOutlined />} key="delete">
-            Delete
-          </Button>,
+          <PurgeButton vhost={vhost} queues={[queueName]} key="purge" />,
+          <DeleteButton
+            vhost={vhost}
+            queues={[queueName]}
+            key="delete"
+            onDone={() => history.push('/queues')}
+          />,
         ]}
       />
 

@@ -9,7 +9,12 @@ import {
   CartesianGrid,
 } from 'recharts'
 import { Sample } from '../types'
-import { formatDate, formatNumber, formatSeconds, formatTime } from '../utils/format'
+import {
+  formatDate,
+  formatNumber,
+  formatSeconds,
+  formatTime,
+} from '../utils/format'
 
 type Props = {
   data: {
@@ -36,7 +41,9 @@ export const Graph: FC<Props> = ({
         (acc, cur) => {
           if (derivative) {
             acc[cur.name] =
-              (cur.samples[i - 1].sample - cur.samples[i].sample) / (cur.samples[i - 1].timestamp - cur.samples[i].timestamp) * 1000
+              ((cur.samples[i - 1].sample - cur.samples[i].sample) /
+                (cur.samples[i - 1].timestamp - cur.samples[i].timestamp)) *
+              1000
           } else {
             acc[cur.name] = cur.samples[i].sample
           }
@@ -70,42 +77,42 @@ export const Graph: FC<Props> = ({
 
   return (
     <div>
-    <ResponsiveContainer aspect={4}>
-      <LineChart data={graphData} margin={{ top: 5, right: 5 }}>
-        <ChartTooltip
-          labelFormatter={(x) => formatDate(x)}
-          formatter={format}
-        />
-        <YAxis
-          domain={[0, (dataMax: number) => Math.max(1, dataMax)]}
-          tickFormatter={formatNumber}
-          axisLine={false}
-          tickLine={false}
-        />
-        <XAxis
-          type="number"
-          tickFormatter={range <= 120 ? formatSeconds : formatTime}
-          dataKey="timestamp"
-          ticks={ticks}
-          domain={['dataMin', 'dataMax']}
-          axisLine={false}
-          tickLine={false}
-        />
-        <CartesianGrid strokeDasharray="3 3" />
-        {data.map(({ name, stroke }) => (
-          <Line
-            key={name}
-            type="step"
-            dataKey={name}
-            dot={false}
-            name={name}
-            stroke={stroke}
-            strokeWidth={2}
-            animationDuration={0}
+      <ResponsiveContainer aspect={4}>
+        <LineChart data={graphData} margin={{ top: 5, right: 5 }}>
+          <ChartTooltip
+            labelFormatter={(x) => formatDate(x)}
+            formatter={format}
           />
-        ))}
-      </LineChart>
-    </ResponsiveContainer>
+          <YAxis
+            domain={[0, (dataMax: number) => Math.max(1, dataMax)]}
+            tickFormatter={formatNumber}
+            axisLine={false}
+            tickLine={false}
+          />
+          <XAxis
+            type="number"
+            tickFormatter={range <= 120 ? formatSeconds : formatTime}
+            dataKey="timestamp"
+            ticks={ticks}
+            domain={['dataMin', 'dataMax']}
+            axisLine={false}
+            tickLine={false}
+          />
+          <CartesianGrid strokeDasharray="3 3" />
+          {data.map(({ name, stroke }) => (
+            <Line
+              key={name}
+              type="step"
+              dataKey={name}
+              dot={false}
+              name={name}
+              stroke={stroke}
+              strokeWidth={2}
+              animationDuration={0}
+            />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   )
 }

@@ -1,19 +1,27 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Button, Input, PageHeader, Space, Table, Typography, Switch } from 'antd'
+import {
+  Button,
+  Input,
+  PageHeader,
+  Space,
+  Switch,
+  Table,
+  Typography,
+} from 'antd'
 import { useFetch } from 'use-http'
 import { Link, match as Match } from 'react-router-dom'
 import {
-  DeleteOutlined,
   PlusOutlined,
   SearchOutlined,
   StarOutlined,
   StarTwoTone,
-  SyncOutlined,
 } from '@ant-design/icons'
 import { formatNumber } from '../../utils/format'
 import { MoveButton } from '../../actions/MoveButton'
 import { MessageStat, Queue } from '../../types'
 import useLocalStorage from 'use-local-storage'
+import { PurgeButton } from '../../actions/PurgeButton'
+import { DeleteButton } from '../../actions/DeleteButton'
 
 export const Queues: FC<{ match: Match }> = ({ match }) => {
   const { data, loading, get } = useFetch<
@@ -58,23 +66,23 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
         }
         extra={[
           !!selected.length && (
-            <MoveButton vhost={data[0].vhost} queues={selected} />
+            <MoveButton vhost={data[0].vhost} queues={selected} key="move" />
           ),
           !!selected.length && (
-            <Button type="primary" icon={<SyncOutlined />} danger>
-              Purge
-            </Button>
+            <PurgeButton vhost={data[0].vhost} queues={selected} key="purge" />
           ),
           !!selected.length && (
-            <Button type="primary" icon={<DeleteOutlined />} danger>
-              Delete
-            </Button>
+            <DeleteButton
+              vhost={data[0].vhost}
+              queues={selected}
+              key="delete"
+            />
           ),
           !selected.length && !!starredQueues.length && (
-            <><Switch
-              checked={starredOnly}
-              onChange={setStarredOnly}
-            /> Starred only</>
+            <>
+              <Switch checked={starredOnly} onChange={setStarredOnly} /> Starred
+              only
+            </>
           ),
           !selected.length && (
             <Input
@@ -101,8 +109,10 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
           selectedRowKeys: selected,
           onChange: setSelected,
         }}
-        dataSource={data.filter(({ name }: { name: string }) =>
-          name.includes(search) && (!starredOnly || starredQueues.includes(name))
+        dataSource={data.filter(
+          ({ name }: { name: string }) =>
+            name.includes(search) &&
+            (!starredOnly || starredQueues.includes(name))
         )}
         columns={[
           {

@@ -14,30 +14,28 @@ export const Settings: FC = () => {
   } = useContext(CredentialsContext)
   return (
     <>
-    <PageHeader
-      title="Settings"
-      />
-    <Box mt={20}>
-      <Card style={{ maxWidth: '600px', margin: 'auto' }}>
-        <Form layout="horizontal" labelCol={{ span: 4 }}>
-          <Form.Item label="URI">
-            <Input value={uri} onChange={(e) => setUri(e.target.value)} />
-          </Form.Item>
-          <Form.Item label="Username">
-            <Input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </Form.Item>
-          <Form.Item label="Password">
-            <Input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Item>
-        </Form>
-      </Card>
-    </Box>
-      </>
+      <PageHeader title="Settings" />
+      <Box mt={20}>
+        <Card style={{ maxWidth: '600px', margin: 'auto' }}>
+          <Form layout="horizontal" labelCol={{ span: 4 }}>
+            <Form.Item label="URI">
+              <Input value={uri} onChange={(e) => setUri(e.target.value)} />
+            </Form.Item>
+            <Form.Item label="Username">
+              <Input
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item label="Password">
+              <Input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Item>
+          </Form>
+        </Card>
+      </Box>
+    </>
   )
 }
