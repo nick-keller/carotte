@@ -1,27 +1,11 @@
-import React, { FC, useEffect } from 'react'
-import {
-  Badge,
-  Button,
-  Col,
-  Divider,
-  Form,
-  InputNumber,
-  Radio,
-  Row,
-  Space,
-  Statistic,
-  Switch,
-} from 'antd'
+import React, { FC } from 'react'
+import { Col, Radio, Row, Space, Statistic, Switch, } from 'antd'
 import { Box } from '@xstyled/styled-components'
 import { match as Match } from 'react-router-dom'
-import { CachePolicies, useFetch } from 'use-http'
-import { Message } from '../../../components/Message'
-import { RabbitQueue, RabbitMessage } from '../../../types'
-import { VerticalAlignBottomOutlined } from '@ant-design/icons'
 import useLocalStorage from 'use-local-storage'
-import qs from 'qs'
 import { formatDate } from '../../../utils/format'
-import { ForecastGraph } from '../../../components/ForecastGraph'
+import { ForecastGraph } from '../../../components/graph/ForecastGraph'
+import { useFetchQueue } from '../../../hooks/useFetchQueue'
 
 const MINUTE = 60
 
@@ -32,29 +16,15 @@ export const Forecast: FC<{
 
   const [liveQueue, setLiveQueue] = useLocalStorage('liveQueue', true)
   const [forecastRange, setForecastRange] = useLocalStorage('forecastRange', 30)
-  const graphInterval = Math.round(forecastRange / 10)
 
-  const params = qs.stringify({
-    lengths_age: forecastRange,
-    lengths_incr: graphInterval,
+  const { data } = useFetchQueue({
+    vhost,
+    queueName,
+    live: liveQueue,
+    range: forecastRange,
+    resolution: 10,
+    messageSamples: true,
   })
-
-  const { data, loading, get } = useFetch<RabbitQueue>(
-    `queues/${vhost}/${queueName}?${params}`,
-    {
-      cachePolicy: CachePolicies.NETWORK_ONLY,
-      persist: false,
-    },
-    [params, liveQueue]
-  )
-
-  useEffect(() => {
-    if (!loading && liveQueue) {
-      const timeout = setTimeout(get, 2000)
-
-      return () => clearTimeout(timeout)
-    }
-  }, [get, liveQueue, loading])
 
   const samples = data?.messages_details.samples ?? []
   const firstSample = samples[0] ?? { sample: 0, timestamp: 0 }

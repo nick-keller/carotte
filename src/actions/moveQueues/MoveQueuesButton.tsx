@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react'
 import { Button, Form, message, Modal, Select } from 'antd'
 import { CachePolicies, useFetch } from 'use-http'
 import { SwapRightOutlined } from '@ant-design/icons'
-import { useMoveQueues } from '../hooks/useMoveQueues'
+import { useMoveQueues } from './useMoveQueues'
 
 export const MoveQueuesButton: FC<{ vhost: string; queues: string[] }> = ({
   vhost,

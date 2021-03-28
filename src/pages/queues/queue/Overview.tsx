@@ -1,16 +1,13 @@
-import React, { FC, useEffect, useState } from 'react'
-import { Col, Radio, Row, Space, Statistic, Badge, Switch } from 'antd'
+import React, { FC } from 'react'
+import { Badge, Col, Radio, Row, Space, Statistic, Switch } from 'antd'
 import { Box } from '@xstyled/styled-components'
 import { match as Match } from 'react-router-dom'
-import { CachePolicies, useFetch } from 'use-http'
-import qs from 'qs'
-import { RabbitQueue } from '../../../types'
-import { Graph } from '../../../components/Graph'
+import { Graph } from '../../../components/graph/Graph'
 import { formatRate } from '../../../utils/format'
 import useLocalStorage from 'use-local-storage'
+import { useFetchQueue } from '../../../hooks/useFetchQueue'
 
 const MINUTE = 60
-const GRAPH_RESOLUTION = 30
 
 const messages = [
   {
@@ -78,31 +75,16 @@ export const Overview: FC<{
 
   const [liveQueue, setLiveQueue] = useLocalStorage('liveQueue', true)
   const [graphRange, setGraphRange] = useLocalStorage('graphRange', MINUTE)
-  const graphInterval = Math.round(graphRange / GRAPH_RESOLUTION)
 
-  const params = qs.stringify({
-    lengths_age: graphRange,
-    lengths_incr: graphInterval,
-    msg_rates_age: graphRange,
-    msg_rates_incr: graphInterval,
+  const { data } = useFetchQueue({
+    vhost,
+    queueName,
+    live: liveQueue,
+    range: graphRange,
+    resolution: 30,
+    messageSamples: true,
+    rateSamples: true,
   })
-
-  const { data, loading, get } = useFetch<RabbitQueue>(
-    `queues/${vhost}/${queueName}?${params}`,
-    {
-      cachePolicy: CachePolicies.NETWORK_ONLY,
-      persist: false,
-    },
-    [params, liveQueue]
-  )
-
-  useEffect(() => {
-    if (!loading && liveQueue) {
-      const timeout = setTimeout(get, 2000)
-
-      return () => clearTimeout(timeout)
-    }
-  }, [get, liveQueue, loading])
 
   return (
     <Box m={20}>

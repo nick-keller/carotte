@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Button, message, Modal } from 'antd'
 import { ExclamationCircleOutlined, SyncOutlined } from '@ant-design/icons'
-import { usePurgeQueues } from '../hooks/usePurgeQueues'
+import { usePurgeQueues } from './usePurgeQueues'
 
 const { confirm } = Modal
 

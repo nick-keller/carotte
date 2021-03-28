@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Button, message, Modal } from 'antd'
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import { useDeleteQueues } from '../hooks/useDeleteQueues'
+import { useDeleteQueues } from './useDeleteQueues'
 
 const { confirm } = Modal
 

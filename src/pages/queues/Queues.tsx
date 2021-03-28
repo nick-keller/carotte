@@ -1,43 +1,16 @@
 import React, { FC, useEffect, useState } from 'react'
-import {
-  Button,
-  Input,
-  PageHeader,
-  Space,
-  Switch,
-  Table,
-  Typography,
-} from 'antd'
-import { useFetch } from 'use-http'
+import { Button, Input, PageHeader, Space, Switch, Table, Typography, } from 'antd'
 import { Link, match as Match } from 'react-router-dom'
-import {
-  PlusOutlined,
-  SearchOutlined,
-  StarOutlined,
-  StarTwoTone,
-} from '@ant-design/icons'
+import { PlusOutlined, SearchOutlined, StarOutlined, StarTwoTone, } from '@ant-design/icons'
 import { formatNumber } from '../../utils/format'
-import { MoveQueuesButton } from '../../actions/MoveQueuesButton'
-import { RabbitMessageStat, RabbitQueue } from '../../types'
+import { MoveQueuesButton } from '../../actions/moveQueues/MoveQueuesButton'
 import useLocalStorage from 'use-local-storage'
-import { PurgeQueuesButton } from '../../actions/PurgeQueuesButton'
-import { DeleteQueuesButton } from '../../actions/DeleteQueuesButton'
+import { PurgeQueuesButton } from '../../actions/purgeQueues/PurgeQueuesButton'
+import { DeleteQueuesButton } from '../../actions/deleteQueues/DeleteQueuesButton'
+import { useFetchQueues } from '../../hooks/useFetchQueues'
 
 export const Queues: FC<{ match: Match }> = ({ match }) => {
-  const { data, loading, get } = useFetch<
-    Omit<
-      RabbitQueue<Pick<RabbitMessageStat, 'rate'>>,
-      'consumer_details' | 'message_stats'
-    >[]
-  >('/queues', { data: [] }, [])
-
-  useEffect(() => {
-    if (!loading) {
-      const timeout = setTimeout(get, 2000)
-
-      return () => clearTimeout(timeout)
-    }
-  }, [get, loading])
+  const { data, loading } = useFetchQueues({ live: true })
 
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<any[]>([])
@@ -54,7 +27,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
       setStarredQueues([])
       setStarredOnly(false)
     }
-  }, [loading, starredOnly, data, starredQueues])
+  }, [loading, starredOnly, data, starredQueues, setStarredOnly])
 
   if (!data) {
     return null
@@ -98,13 +71,14 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
             />
           ),
           !selected.length && !!starredQueues.length && (
-            <>
+            <span key="starredOnly">
               <Switch checked={starredOnly} onChange={setStarredOnly} /> Starred
               only
-            </>
+            </span>
           ),
           !selected.length && (
             <Input
+              key="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               allowClear
@@ -114,7 +88,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
             />
           ),
           !selected.length && (
-            <Button type="primary" icon={<PlusOutlined />} disabled>
+            <Button type="primary" icon={<PlusOutlined />} disabled key="new">
               New
             </Button>
           ),

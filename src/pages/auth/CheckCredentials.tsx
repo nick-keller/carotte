@@ -1,12 +1,8 @@
-import React, { FC, useContext, useState } from 'react'
+import React, { FC, useContext } from 'react'
 import { CredentialsContext } from '../../providers/CredentialsProvider'
 import { CachePolicies, useFetch } from 'use-http'
-import { Result, Button, Spin, Alert, Input, Form } from 'antd'
-import { Box } from '@xstyled/styled-components'
-import { useLocation } from 'react-router-dom'
-import parseUrl from 'url-parse'
+import { Alert, Button, Form, Input, Result } from 'antd'
 import { FullPageLoader } from '../../components/FullPageLoader'
-import { UserOutlined } from '@ant-design/icons'
 
 export const CheckCredentials: FC = ({ children }) => {
   const { username, setUsername, password, setPassword } = useContext(

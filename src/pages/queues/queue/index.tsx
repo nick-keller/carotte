@@ -1,19 +1,26 @@
 import React, { FC } from 'react'
-import { Menu, PageHeader } from 'antd'
+import { Menu, PageHeader, message } from 'antd'
 import { match as Match, Route, Switch, useHistory } from 'react-router-dom'
 import { Get } from './Get'
-import { MoveQueuesButton } from '../../../actions/MoveQueuesButton'
+import { MoveQueuesButton } from '../../../actions/moveQueues/MoveQueuesButton'
 import { Overview } from './Overview'
 import { Publish } from './Publish'
-import { PurgeQueuesButton } from '../../../actions/PurgeQueuesButton'
-import { DeleteQueuesButton } from '../../../actions/DeleteQueuesButton'
+import { PurgeQueuesButton } from '../../../actions/purgeQueues/PurgeQueuesButton'
+import { DeleteQueuesButton } from '../../../actions/deleteQueues/DeleteQueuesButton'
 import { Forecast } from './Forecast'
+import { useActiveChildRoute } from '../../../hooks/useActiveChildRoute'
+import { useFetchQueue } from '../../../hooks/useFetchQueue'
 
 export const Queue: FC<{
   match: Match<{ vhost: string; queueName: string }>
 }> = ({ match }) => {
   const history = useHistory()
   const { vhost, queueName } = match.params
+  const activeRoute = useActiveChildRoute()
+  useFetchQueue({ vhost, queueName, onNotFound: () => {
+      history.push('/queues')
+      message.error(`Queue ${decodeURIComponent(queueName)} does not exist`)
+    } })
 
   return (
     <>
@@ -32,11 +39,11 @@ export const Queue: FC<{
         ]}
       />
 
-      <Menu mode="horizontal" onClick={(e) => history.push(String(e.key))}>
-        <Menu.Item key={match.url}>Overview</Menu.Item>
-        <Menu.Item key={match.url + '/forecast'}>Forecast</Menu.Item>
-        <Menu.Item key={match.url + '/publish'}>Publish</Menu.Item>
-        <Menu.Item key={match.url + '/get'}>Consume</Menu.Item>
+      <Menu mode="horizontal" onClick={(e) => history.push(match.url + String(e.key))} selectedKeys={[activeRoute]}>
+        <Menu.Item key="/">Overview</Menu.Item>
+        <Menu.Item key="/forecast">Forecast</Menu.Item>
+        <Menu.Item key="/publish">Publish</Menu.Item>
+        <Menu.Item key="/get">Consume</Menu.Item>
       </Menu>
       <Switch>
         <Route path={match.path + '/forecast'} component={Forecast} />

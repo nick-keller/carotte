@@ -1,44 +1,22 @@
 import React, { useContext } from 'react'
-import { Layout, Menu, Dropdown, Avatar, Space } from 'antd'
-import {
-  AppstoreOutlined,
-  BuildOutlined,
-  DownOutlined,
-  UserOutlined,
-  LogoutOutlined
-} from '@ant-design/icons'
-import {
-  BrowserRouter as Router,
-  Link,
-  Redirect,
-  Route,
-  Switch,
-} from 'react-router-dom'
-import {
-  CredentialsContext,
-  CredentialsProvider,
-} from './providers/CredentialsProvider'
+import { Layout, Menu } from 'antd'
+import { AppstoreOutlined, BuildOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
+import { BrowserRouter as Router, Link, Redirect, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom'
+import { CredentialsContext, CredentialsProvider, } from './providers/CredentialsProvider'
 import { HttpProvider } from './providers/HttpProvider'
 import { QueuesIndex } from './pages/queues'
 import { CheckBaseUrl } from './pages/auth/CheckBaseUrl'
 import { CheckCredentials } from './pages/auth/CheckCredentials'
-import { Box } from '@xstyled/styled-components'
+import { useActiveChildRoute } from './hooks/useActiveChildRoute'
 
 function App() {
   const { username, logout } = useContext(CredentialsContext)
-
-  const userMenu = (
-    <Menu>
-      <Menu.Item icon={<AppstoreOutlined />} key="logout">
-        Logout
-      </Menu.Item>
-    </Menu>
-  )
+  const activeRoute = useActiveChildRoute()
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Layout.Sider>
-        <Menu theme="dark">
+        <Menu theme="dark" selectedKeys={[activeRoute]}>
           <Menu.Item icon={<AppstoreOutlined />} key="/" disabled>
             <Link to="/">Overview</Link>
           </Menu.Item>
