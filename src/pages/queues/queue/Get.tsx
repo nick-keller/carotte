@@ -3,8 +3,8 @@ import { Button, Divider, Form, InputNumber, Radio, Space, Switch } from 'antd'
 import { Box } from '@xstyled/styled-components'
 import { match as Match } from 'react-router-dom'
 import { CachePolicies, useFetch } from 'use-http'
-import { Message } from './Message'
-import { RabbitMessage } from '../../types'
+import { Message } from '../../../components/Message'
+import { RabbitMessage } from '../../../types'
 import { VerticalAlignBottomOutlined } from '@ant-design/icons'
 
 export const Get: FC<{

@@ -1,23 +1,10 @@
-import React, { FC, useEffect, useState } from 'react'
-import {
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip as ChartTooltip,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-} from 'recharts'
-import { Sample } from '../types'
-import {
-  formatDate,
-  formatNumber,
-  formatSeconds,
-  formatTime,
-} from '../utils/format'
+import React, { FC } from 'react'
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip as ChartTooltip, XAxis, YAxis, } from 'recharts'
+import { RabbitSample } from '../types'
+import { formatDate, formatNumber, formatSeconds, formatTime, } from '../utils/format'
 
 type Props = {
-  samples: Sample[]
+  samples: RabbitSample[]
   rate: number
 }
 

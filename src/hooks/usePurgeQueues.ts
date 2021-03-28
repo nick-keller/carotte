@@ -1,6 +1,6 @@
 import { CachePolicies, useFetch } from 'use-http'
 
-export const usePurge = ({
+export const usePurgeQueues = ({
   vhost,
   queues,
 }: {

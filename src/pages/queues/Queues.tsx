@@ -17,16 +17,16 @@ import {
   StarTwoTone,
 } from '@ant-design/icons'
 import { formatNumber } from '../../utils/format'
-import { MoveButton } from '../../actions/MoveButton'
-import { MessageStat, Queue } from '../../types'
+import { MoveQueuesButton } from '../../actions/MoveQueuesButton'
+import { RabbitMessageStat, RabbitQueue } from '../../types'
 import useLocalStorage from 'use-local-storage'
-import { PurgeButton } from '../../actions/PurgeButton'
-import { DeleteButton } from '../../actions/DeleteButton'
+import { PurgeQueuesButton } from '../../actions/PurgeQueuesButton'
+import { DeleteQueuesButton } from '../../actions/DeleteQueuesButton'
 
 export const Queues: FC<{ match: Match }> = ({ match }) => {
   const { data, loading, get } = useFetch<
     Omit<
-      Queue<Pick<MessageStat, 'rate'>>,
+      RabbitQueue<Pick<RabbitMessageStat, 'rate'>>,
       'consumer_details' | 'message_stats'
     >[]
   >('/queues', { data: [] }, [])
@@ -68,13 +68,13 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
         }
         extra={[
           !!selected.length && (
-            <MoveButton vhost={data[0].vhost} queues={selected} key="move" />
+            <MoveQueuesButton vhost={data[0].vhost} queues={selected} key="move" />
           ),
           !!selected.length && (
-            <PurgeButton vhost={data[0].vhost} queues={selected} key="purge" />
+            <PurgeQueuesButton vhost={data[0].vhost} queues={selected} key="purge" />
           ),
           !!selected.length && (
-            <DeleteButton
+            <DeleteQueuesButton
               vhost={data[0].vhost}
               queues={selected}
               key="delete"

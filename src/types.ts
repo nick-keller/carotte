@@ -1,16 +1,16 @@
-export type Sample = {
+export type RabbitSample = {
   sample: number
   timestamp: number
 }
 
-export type MessageStat = {
+export type RabbitMessageStat = {
   avg: number
   avg_rate: number
   rate: number
-  samples: Sample[]
+  samples: RabbitSample[]
 }
 
-export type Consumer = {
+export type RabbitConsumer = {
   arguments: Record<string, any>
   channel_details: {
     connection_name: string
@@ -30,16 +30,16 @@ export type Consumer = {
   queue: { name: string; vhost: string }
 }
 
-export type QueueArguments = {
+export type RabbitQueueArguments = {
   'x-dead-letter-exchange'?: string
   'x-single-active-consumer'?: boolean
   'x-dead-letter-routing-key'?: string
   'x-message-ttl'?: number
 }
 
-export type Queue<Stat = MessageStat> = {
-  consumer_details: Consumer[]
-  arguments: QueueArguments
+export type RabbitQueue<Stat = RabbitMessageStat> = {
+  consumer_details: RabbitConsumer[]
+  arguments: RabbitQueueArguments
   auto_delete: boolean
   consumers: number
   durable: boolean

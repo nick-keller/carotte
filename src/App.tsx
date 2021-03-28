@@ -14,7 +14,7 @@ import {
 } from 'react-router-dom'
 import { CredentialsProvider } from './providers/CredentialsProvider'
 import { HttpProvider } from './providers/HttpProvider'
-import { Settings } from './pages/settings/Settings'
+import { Settings } from './pages/settings'
 import { QueuesIndex } from './pages/queues'
 
 function App() {

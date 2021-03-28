@@ -1,30 +1,18 @@
-import React, { FC, useEffect, useState } from 'react'
-import {
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip as ChartTooltip,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-} from 'recharts'
-import { Sample } from '../types'
-import {
-  formatDate,
-  formatNumber,
-  formatSeconds,
-  formatTime,
-} from '../utils/format'
+import React, { FC } from 'react'
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip as ChartTooltip, XAxis, YAxis, } from 'recharts'
+import { RabbitSample } from '../types'
+import { formatDate, formatNumber, formatSeconds, formatTime, } from '../utils/format'
+import { CurveType } from 'recharts/types/shape/Curve'
 
 type Props = {
   data: {
-    samples: Sample[]
+    samples: RabbitSample[]
     name: string
     stroke: string
   }[]
   derivative?: boolean
   format?: (value: number) => string
-  type?: 'step' | 'linear'
+  type?: CurveType
 }
 
 export const Graph: FC<Props> = ({
@@ -79,7 +67,7 @@ export const Graph: FC<Props> = ({
 
   return (
     <div>
-      <ResponsiveContainer aspect={4}>
+      <ResponsiveContainer aspect={4} minHeight={100}>
         <LineChart data={graphData} margin={{ top: 5, right: 5 }}>
           <ChartTooltip
             labelFormatter={(x) => formatDate(x)}

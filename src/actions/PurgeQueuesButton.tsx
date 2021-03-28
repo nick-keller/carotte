@@ -1,15 +1,15 @@
 import React, { FC } from 'react'
 import { Button, message, Modal } from 'antd'
 import { ExclamationCircleOutlined, SyncOutlined } from '@ant-design/icons'
-import { usePurge } from '../hooks/usePurge'
+import { usePurgeQueues } from '../hooks/usePurgeQueues'
 
 const { confirm } = Modal
 
-export const PurgeButton: FC<{ vhost: string; queues: string[] }> = ({
+export const PurgeQueuesButton: FC<{ vhost: string; queues: string[] }> = ({
   vhost,
   queues,
 }) => {
-  const { purge } = usePurge({ vhost, queues })
+  const { purge } = usePurgeQueues({ vhost, queues })
 
   return (
     <Button

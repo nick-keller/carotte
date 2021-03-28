@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Card } from 'antd'
 import ReactJson from 'react-json-view'
-import { RabbitMessage } from '../../types'
+import { RabbitMessage } from '../types'
 
 export const Message: FC<{ message: RabbitMessage }> = ({ message }) => {
   let json: any = undefined

@@ -4,9 +4,9 @@ import { Box } from '@xstyled/styled-components'
 import { match as Match } from 'react-router-dom'
 import { CachePolicies, useFetch } from 'use-http'
 import qs from 'qs'
-import { Queue } from '../../types'
-import { Graph } from '../../components/Graph'
-import { formatRate } from '../../utils/format'
+import { RabbitQueue } from '../../../types'
+import { Graph } from '../../../components/Graph'
+import { formatRate } from '../../../utils/format'
 import useLocalStorage from 'use-local-storage'
 
 const MINUTE = 60
@@ -87,7 +87,7 @@ export const Overview: FC<{
     msg_rates_incr: graphInterval,
   })
 
-  const { data, loading, get } = useFetch<Queue>(
+  const { data, loading, get } = useFetch<RabbitQueue>(
     `queues/${vhost}/${queueName}?${params}`,
     {
       cachePolicy: CachePolicies.NETWORK_ONLY,

@@ -2,9 +2,9 @@ import React, { FC, useState } from 'react'
 import { Button, Form, message, Modal, Select } from 'antd'
 import { CachePolicies, useFetch } from 'use-http'
 import { SwapRightOutlined } from '@ant-design/icons'
-import { useMove } from '../hooks/useMove'
+import { useMoveQueues } from '../hooks/useMoveQueues'
 
-export const MoveButton: FC<{ vhost: string; queues: string[] }> = ({
+export const MoveQueuesButton: FC<{ vhost: string; queues: string[] }> = ({
   vhost,
   queues,
 }) => {
@@ -14,7 +14,7 @@ export const MoveButton: FC<{ vhost: string; queues: string[] }> = ({
     data: [],
     cachePolicy: CachePolicies.CACHE_FIRST,
   })
-  const { move, moving } = useMove({ vhost, queues })
+  const { move, moving } = useMoveQueues({ vhost, queues })
 
   return (
     <>

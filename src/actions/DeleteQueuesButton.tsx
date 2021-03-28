@@ -1,16 +1,16 @@
 import React, { FC } from 'react'
 import { Button, message, Modal } from 'antd'
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import { useDeleteQueue } from '../hooks/useDeleteQueue'
+import { useDeleteQueues } from '../hooks/useDeleteQueues'
 
 const { confirm } = Modal
 
-export const DeleteButton: FC<{
+export const DeleteQueuesButton: FC<{
   vhost: string
   queues: string[]
   onDone?: () => void
 }> = ({ vhost, queues, onDone = () => null }) => {
-  const { del } = useDeleteQueue({ vhost, queues })
+  const { del } = useDeleteQueues({ vhost, queues })
 
   return (
     <Button
@@ -26,11 +26,10 @@ export const DeleteButton: FC<{
             try {
               await del()
               message.success('Deleted queues')
+              onDone()
             } catch (error) {
               message.error('Could not delete queues. ' + error.message)
             }
-
-            onDone()
           },
           okText: 'Delete',
           okType: 'danger',

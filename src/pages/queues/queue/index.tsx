@@ -1,13 +1,12 @@
 import React, { FC } from 'react'
-import { Button, Menu, PageHeader } from 'antd'
+import { Menu, PageHeader } from 'antd'
 import { match as Match, Route, Switch, useHistory } from 'react-router-dom'
-import { DeleteOutlined, SyncOutlined } from '@ant-design/icons'
 import { Get } from './Get'
-import { MoveButton } from '../../actions/MoveButton'
+import { MoveQueuesButton } from '../../../actions/MoveQueuesButton'
 import { Overview } from './Overview'
 import { Publish } from './Publish'
-import { PurgeButton } from '../../actions/PurgeButton'
-import { DeleteButton } from '../../actions/DeleteButton'
+import { PurgeQueuesButton } from '../../../actions/PurgeQueuesButton'
+import { DeleteQueuesButton } from '../../../actions/DeleteQueuesButton'
 import { Forecast } from './Forecast'
 
 export const Queue: FC<{
@@ -22,9 +21,9 @@ export const Queue: FC<{
         title={queueName}
         onBack={() => history.push('/queues')}
         extra={[
-          <MoveButton vhost={vhost} queues={[queueName]} key="move" />,
-          <PurgeButton vhost={vhost} queues={[queueName]} key="purge" />,
-          <DeleteButton
+          <MoveQueuesButton vhost={vhost} queues={[queueName]} key="move" />,
+          <PurgeQueuesButton vhost={vhost} queues={[queueName]} key="purge" />,
+          <DeleteQueuesButton
             vhost={vhost}
             queues={[queueName]}
             key="delete"

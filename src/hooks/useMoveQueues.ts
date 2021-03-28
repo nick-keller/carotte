@@ -1,6 +1,6 @@
 import { CachePolicies, useFetch } from 'use-http'
 
-export const useMove = ({
+export const useMoveQueues = ({
   vhost,
   queues,
 }: {

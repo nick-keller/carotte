@@ -1,6 +1,6 @@
 import { CachePolicies, useFetch } from 'use-http'
 
-export const useDeleteQueue = ({
+export const useDeleteQueues = ({
   vhost,
   queues,
 }: {

@@ -3,13 +3,13 @@ import { Badge, Button, Col, Divider, Form, InputNumber, Radio, Row, Space, Stat
 import { Box } from '@xstyled/styled-components'
 import { match as Match } from 'react-router-dom'
 import { CachePolicies, useFetch } from 'use-http'
-import { Message } from './Message'
-import { Queue, RabbitMessage } from '../../types'
+import { Message } from '../../../components/Message'
+import { RabbitQueue, RabbitMessage } from '../../../types'
 import { VerticalAlignBottomOutlined } from '@ant-design/icons'
 import useLocalStorage from 'use-local-storage'
 import qs from 'qs'
-import { formatDate } from '../../utils/format'
-import { ForecastGraph } from '../../components/ForecastGraph'
+import { formatDate } from '../../../utils/format'
+import { ForecastGraph } from '../../../components/ForecastGraph'
 
 const MINUTE = 60
 
@@ -27,7 +27,7 @@ export const Forecast: FC<{
     lengths_incr: graphInterval,
   })
 
-  const { data, loading, get } = useFetch<Queue>(
+  const { data, loading, get } = useFetch<RabbitQueue>(
     `queues/${vhost}/${queueName}?${params}`,
     {
       cachePolicy: CachePolicies.NETWORK_ONLY,
@@ -49,7 +49,7 @@ export const Forecast: FC<{
   const lastSample = samples[samples.length - 1] ?? { sample: 0, timestamp: 0 }
   const delta = firstSample.sample - lastSample.sample
   const range = firstSample.timestamp - lastSample.timestamp
-  const rate = delta / range * 1000
+  const rate = range ? delta / range * 1000 : 0
   const currentMessages = data?.messages ?? 0
   const timeToZero = currentMessages === 0 ? 0 : (rate >= 0 ? null : currentMessages / -rate)
   const eta = timeToZero !== null ? Date.now() + timeToZero * 1000 : null
