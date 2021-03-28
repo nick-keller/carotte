@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Line, } from 'recharts'
+import { Line } from 'recharts'
 import { RabbitSample } from '../../types'
 import { BaseGraph } from './BaseGraph'
 
@@ -37,26 +37,26 @@ export const ForecastGraph: FC<Props> = ({ samples, rate }) => {
 
   return (
     <BaseGraph data={graphData}>
-          <Line
-            key="sample"
-            type="linear"
-            dataKey="sample"
-            dot={false}
-            name="Actual"
-            stroke="#ff4d4f"
-            strokeWidth={2}
-            animationDuration={0}
-          />
-          <Line
-            key="forecast"
-            dataKey="forecast"
-            dot={false}
-            name="Forecast"
-            stroke="#7c7c7c"
-            strokeWidth={2}
-            strokeDasharray="6 3"
-            animationDuration={0}
-          />
+      <Line
+        key="sample"
+        type="linear"
+        dataKey="sample"
+        dot={false}
+        name="Actual"
+        stroke="#ff4d4f"
+        strokeWidth={2}
+        animationDuration={0}
+      />
+      <Line
+        key="forecast"
+        dataKey="forecast"
+        dot={false}
+        name="Forecast"
+        stroke="#7c7c7c"
+        strokeWidth={2}
+        strokeDasharray="6 3"
+        animationDuration={0}
+      />
     </BaseGraph>
   )
 }

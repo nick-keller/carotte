@@ -1,8 +1,24 @@
 import React, { useContext } from 'react'
 import { Layout, Menu } from 'antd'
-import { AppstoreOutlined, BuildOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { BrowserRouter as Router, Link, Redirect, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom'
-import { CredentialsContext, CredentialsProvider, } from './providers/CredentialsProvider'
+import {
+  AppstoreOutlined,
+  BuildOutlined,
+  LogoutOutlined,
+  UserOutlined,
+} from '@ant-design/icons'
+import {
+  BrowserRouter as Router,
+  Link,
+  Redirect,
+  Route,
+  Switch,
+  useLocation,
+  useRouteMatch,
+} from 'react-router-dom'
+import {
+  CredentialsContext,
+  CredentialsProvider,
+} from './providers/CredentialsProvider'
 import { HttpProvider } from './providers/HttpProvider'
 import { QueuesIndex } from './pages/queues'
 import { CheckBaseUrl } from './pages/auth/CheckBaseUrl'

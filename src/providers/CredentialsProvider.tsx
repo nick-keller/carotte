@@ -39,7 +39,7 @@ export const CredentialsProvider: FC = ({ children }) => {
         logout: () => {
           setUsername('')
           setPassword('')
-        }
+        },
       }}
     >
       {children}

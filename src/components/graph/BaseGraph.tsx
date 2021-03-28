@@ -1,6 +1,18 @@
 import React, { FC } from 'react'
-import { CartesianGrid, LineChart, ResponsiveContainer, Tooltip as ChartTooltip, XAxis, YAxis, } from 'recharts'
-import { formatDate, formatNumber, formatSeconds, formatTime, } from '../../utils/format'
+import {
+  CartesianGrid,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip as ChartTooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
+import {
+  formatDate,
+  formatNumber,
+  formatSeconds,
+  formatTime,
+} from '../../utils/format'
 
 type Props = {
   data: { timestamp: number }[]

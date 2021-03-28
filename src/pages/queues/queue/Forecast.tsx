@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Col, Radio, Row, Space, Statistic, Switch, } from 'antd'
+import { Col, Radio, Row, Space, Statistic, Switch } from 'antd'
 import { Box } from '@xstyled/styled-components'
 import { match as Match } from 'react-router-dom'
 import useLocalStorage from 'use-local-storage'

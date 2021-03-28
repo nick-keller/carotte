@@ -17,10 +17,14 @@ export const Queue: FC<{
   const history = useHistory()
   const { vhost, queueName } = match.params
   const activeRoute = useActiveChildRoute()
-  useFetchQueue({ vhost, queueName, onNotFound: () => {
+  useFetchQueue({
+    vhost,
+    queueName,
+    onNotFound: () => {
       history.push('/queues')
       message.error(`Queue ${decodeURIComponent(queueName)} does not exist`)
-    } })
+    },
+  })
 
   return (
     <>
@@ -28,8 +32,16 @@ export const Queue: FC<{
         title={decodeURIComponent(queueName)}
         onBack={() => history.push('/queues')}
         extra={[
-          <MoveQueuesButton vhost={decodeURIComponent(vhost)} queues={[decodeURIComponent(queueName)]} key="move" />,
-          <PurgeQueuesButton vhost={decodeURIComponent(vhost)} queues={[decodeURIComponent(queueName)]} key="purge" />,
+          <MoveQueuesButton
+            vhost={decodeURIComponent(vhost)}
+            queues={[decodeURIComponent(queueName)]}
+            key="move"
+          />,
+          <PurgeQueuesButton
+            vhost={decodeURIComponent(vhost)}
+            queues={[decodeURIComponent(queueName)]}
+            key="purge"
+          />,
           <DeleteQueuesButton
             vhost={decodeURIComponent(vhost)}
             queues={[decodeURIComponent(queueName)]}
@@ -39,7 +51,11 @@ export const Queue: FC<{
         ]}
       />
 
-      <Menu mode="horizontal" onClick={(e) => history.push(match.url + String(e.key))} selectedKeys={[activeRoute]}>
+      <Menu
+        mode="horizontal"
+        onClick={(e) => history.push(match.url + String(e.key))}
+        selectedKeys={[activeRoute]}
+      >
         <Menu.Item key="/">Overview</Menu.Item>
         <Menu.Item key="/forecast">Forecast</Menu.Item>
         <Menu.Item key="/publish">Publish</Menu.Item>

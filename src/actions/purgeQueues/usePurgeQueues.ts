@@ -17,7 +17,9 @@ export const usePurgeQueues = ({
     purge: async () => {
       for (const queue of queues) {
         const data = await del(
-          `/queues/${encodeURIComponent(vhost)}/${encodeURIComponent(queue)}/contents`,
+          `/queues/${encodeURIComponent(vhost)}/${encodeURIComponent(
+            queue
+          )}/contents`,
           {
             mode: 'purge',
             name: queue,

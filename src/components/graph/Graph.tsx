@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
-import { Line, } from 'recharts'
+import { Line } from 'recharts'
 import { RabbitSample } from '../../types'
-import { formatNumber, } from '../../utils/format'
+import { formatNumber } from '../../utils/format'
 import { CurveType } from 'recharts/types/shape/Curve'
 import { BaseGraph } from './BaseGraph'
 
@@ -48,18 +48,18 @@ export const Graph: FC<Props> = ({
 
   return (
     <BaseGraph data={graphData} format={format}>
-          {data.map(({ name, stroke }) => (
-            <Line
-              key={name}
-              type={type}
-              dataKey={name}
-              dot={false}
-              name={name}
-              stroke={stroke}
-              strokeWidth={2}
-              animationDuration={0}
-            />
-          ))}
+      {data.map(({ name, stroke }) => (
+        <Line
+          key={name}
+          type={type}
+          dataKey={name}
+          dot={false}
+          name={name}
+          stroke={stroke}
+          strokeWidth={2}
+          animationDuration={0}
+        />
+      ))}
     </BaseGraph>
   )
 }

@@ -33,8 +33,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "proxy2": "lcp --proxyUrl https://crow.rmq.cloudamqp.com --proxyPartial \"\"",
-    "proxy": "lcp --proxyUrl http://localhost:15672 --proxyPartial \"\"",
     "format": "npx prettier --write ."
   },
   "eslintConfig": {
@@ -59,7 +57,6 @@
     "@types/qs": "^6.9.6",
     "@types/react-router-dom": "^5.1.7",
     "@types/url-parse": "^1.4.3",
-    "local-cors-proxy": "^1.1.0",
     "prettier": "2.2.1"
   }
 }

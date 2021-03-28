@@ -40,7 +40,7 @@ export const useFetchQueue = ({
         if (error.name === '404') {
           onNotFound()
         }
-      }
+      },
     },
     [params, live]
   )

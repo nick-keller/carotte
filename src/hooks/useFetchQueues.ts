@@ -3,7 +3,11 @@ import { RabbitQueue } from '../types'
 import { useEffect } from 'react'
 
 export const useFetchQueues = ({ live }: { live: boolean }) => {
-  const { data, loading, get } = useFetch<RabbitQueue[]>('/queues', { data: [] }, [])
+  const { data, loading, get } = useFetch<RabbitQueue[]>(
+    '/queues',
+    { data: [] },
+    []
+  )
 
   useEffect(() => {
     if (!loading && live) {
