@@ -33,9 +33,9 @@ export const Get: FC<{
             }`,
             count: values.count,
             encoding: 'auto',
-            name: queueName,
+            name: decodeURIComponent(queueName),
             truncate: 50000,
-            vhost,
+            vhost: decodeURIComponent(vhost),
           })
         }}
       >

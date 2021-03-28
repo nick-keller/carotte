@@ -1,21 +1,43 @@
 import React, { FC } from 'react'
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip as ChartTooltip, XAxis, YAxis, } from 'recharts'
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip as ChartTooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
 import { RabbitSample } from '../types'
-import { formatDate, formatNumber, formatSeconds, formatTime, } from '../utils/format'
+import {
+  formatDate,
+  formatNumber,
+  formatSeconds,
+  formatTime,
+} from '../utils/format'
 
 type Props = {
   samples: RabbitSample[]
   rate: number
 }
 
-export const ForecastGraph: FC<Props> = ({
-  samples,
-  rate,
-}) => {
-  const graphData = samples.map(sample => ({ ...sample })) as  { timestamp: number; sample?: number; forecast?: number }[]
+export const ForecastGraph: FC<Props> = ({ samples, rate }) => {
+  const graphData = samples.map((sample) => ({ ...sample })) as {
+    timestamp: number
+    sample?: number
+    forecast?: number
+  }[]
 
-  const samplesRange = samples.length ? (samples[0].timestamp - samples[samples.length - 1].timestamp) / 1000 : 0
-  const forecastRange = Math.max(samplesRange * 3, Math.min(samplesRange * 30, samples.length && rate ? samples[0].sample / rate : 0))
+  const samplesRange = samples.length
+    ? (samples[0].timestamp - samples[samples.length - 1].timestamp) / 1000
+    : 0
+  const forecastRange = Math.max(
+    samplesRange * 3,
+    Math.min(
+      samplesRange * 30,
+      samples.length && rate ? samples[0].sample / rate : 0
+    )
+  )
 
   if (graphData.length) {
     graphData[0].forecast = graphData[0].sample

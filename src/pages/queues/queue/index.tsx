@@ -18,14 +18,14 @@ export const Queue: FC<{
   return (
     <>
       <PageHeader
-        title={queueName}
+        title={decodeURIComponent(queueName)}
         onBack={() => history.push('/queues')}
         extra={[
-          <MoveQueuesButton vhost={vhost} queues={[queueName]} key="move" />,
-          <PurgeQueuesButton vhost={vhost} queues={[queueName]} key="purge" />,
+          <MoveQueuesButton vhost={decodeURIComponent(vhost)} queues={[decodeURIComponent(queueName)]} key="move" />,
+          <PurgeQueuesButton vhost={decodeURIComponent(vhost)} queues={[decodeURIComponent(queueName)]} key="purge" />,
           <DeleteQueuesButton
-            vhost={vhost}
-            queues={[queueName]}
+            vhost={decodeURIComponent(vhost)}
+            queues={[decodeURIComponent(queueName)]}
             key="delete"
             onDone={() => history.push('/queues')}
           />,

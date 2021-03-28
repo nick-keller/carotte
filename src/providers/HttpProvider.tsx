@@ -3,11 +3,11 @@ import { CachePolicies, Provider } from 'use-http'
 import { CredentialsContext } from './CredentialsProvider'
 
 export const HttpProvider: FC = ({ children }) => {
-  const { uri, username, password } = useContext(CredentialsContext)
+  const { baseUrl, username, password } = useContext(CredentialsContext)
 
   return (
     <Provider
-      url={uri + '/api'}
+      url={baseUrl + '/api'}
       options={{
         cachePolicy: CachePolicies.CACHE_AND_NETWORK,
         cacheLife: 3600000,

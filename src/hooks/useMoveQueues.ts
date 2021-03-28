@@ -8,7 +8,7 @@ export const useMoveQueues = ({
   queues: string[]
 }) => {
   const { loading, put, response } = useFetch({
-    cachePolicy: CachePolicies.NETWORK_ONLY,
+    cachePolicy: CachePolicies.NO_CACHE,
     persist: false,
   })
 
@@ -17,7 +17,7 @@ export const useMoveQueues = ({
     move: async (destinationQueue: string) => {
       for (const queue of queues) {
         const data = await put(
-          `/parameters/shovel/${encodeURI(vhost)}/${encodeURI(
+          `/parameters/shovel/${encodeURIComponent(vhost)}/${encodeURIComponent(
             `Move from ${queue}`
           )}`,
           {

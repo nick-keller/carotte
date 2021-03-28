@@ -144,6 +144,7 @@ export const Overview: FC<{
                 <Statistic
                   title={<Badge color={color} text={name} />}
                   value={data?.[key as 'messages']}
+                  key={key}
                 />
               ))}
             </Space>
@@ -179,6 +180,7 @@ export const Overview: FC<{
                       }
                       precision={2}
                       suffix="/s"
+                      key={key}
                     />
                   ))}
                 </Space>
@@ -195,6 +197,7 @@ export const Overview: FC<{
                       }
                       precision={2}
                       suffix="/s"
+                      key={key}
                     />
                   ))}
                 </Space>

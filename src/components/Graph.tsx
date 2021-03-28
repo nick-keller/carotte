@@ -1,7 +1,20 @@
 import React, { FC } from 'react'
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip as ChartTooltip, XAxis, YAxis, } from 'recharts'
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip as ChartTooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
 import { RabbitSample } from '../types'
-import { formatDate, formatNumber, formatSeconds, formatTime, } from '../utils/format'
+import {
+  formatDate,
+  formatNumber,
+  formatSeconds,
+  formatTime,
+} from '../utils/format'
 import { CurveType } from 'recharts/types/shape/Curve'
 
 type Props = {
@@ -19,7 +32,7 @@ export const Graph: FC<Props> = ({
   data,
   derivative,
   format = formatNumber,
-  type = 'linear'
+  type = 'linear',
 }) => {
   const graphData = (data[0]?.samples ?? [])
     .map(({ timestamp }, i) => {

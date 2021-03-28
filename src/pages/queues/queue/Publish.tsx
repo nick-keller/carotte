@@ -21,14 +21,13 @@ export const Publish: FC<{
   )
   const [mode, setMode] = useLocalStorage(`publishMode`, 'json')
 
-  const {
-    response,
-    post,
-    loading,
-  } = useFetch(`/exchanges/${vhost}/amq.default/publish`, {
-    cachePolicy: CachePolicies.NO_CACHE,
-    persist: false,
-  })
+  const { response, post, loading } = useFetch(
+    `/exchanges/${vhost}/amq.default/publish`,
+    {
+      cachePolicy: CachePolicies.NO_CACHE,
+      persist: false,
+    }
+  )
 
   const publish = async () => {
     await post({
@@ -39,8 +38,8 @@ export const Publish: FC<{
       payload_encoding: 'string',
       properties: { delivery_mode: 1, headers: {} },
       props: {},
-      routing_key: queueName,
-      vhost,
+      routing_key: decodeURIComponent(queueName),
+      vhost: decodeURIComponent(vhost),
     })
 
     if (response.ok) {

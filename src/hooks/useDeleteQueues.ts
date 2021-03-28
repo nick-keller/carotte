@@ -8,7 +8,7 @@ export const useDeleteQueues = ({
   queues: string[]
 }) => {
   const { loading, del, response } = useFetch({
-    cachePolicy: CachePolicies.NETWORK_ONLY,
+    cachePolicy: CachePolicies.NO_CACHE,
     persist: false,
   })
 
@@ -17,7 +17,7 @@ export const useDeleteQueues = ({
     del: async () => {
       for (const queue of queues) {
         const data = await del(
-          `/queues/${encodeURI(vhost)}/${encodeURI(queue)}`,
+          `/queues/${encodeURIComponent(vhost)}/${encodeURIComponent(queue)}`,
           {
             mode: 'delete',
             name: queue,

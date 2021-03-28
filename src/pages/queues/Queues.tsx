@@ -47,6 +47,15 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
     []
   )
 
+  useEffect(() => {
+    if (!loading && starredOnly && data?.every(
+      ({ name }) => !starredQueues.includes(name)
+    )) {
+      setStarredQueues([])
+      setStarredOnly(false)
+    }
+  }, [loading, starredOnly, data, starredQueues])
+
   if (!data) {
     return null
   }
@@ -68,10 +77,18 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
         }
         extra={[
           !!selected.length && (
-            <MoveQueuesButton vhost={data[0].vhost} queues={selected} key="move" />
+            <MoveQueuesButton
+              vhost={data[0].vhost}
+              queues={selected}
+              key="move"
+            />
           ),
           !!selected.length && (
-            <PurgeQueuesButton vhost={data[0].vhost} queues={selected} key="purge" />
+            <PurgeQueuesButton
+              vhost={data[0].vhost}
+              queues={selected}
+              key="purge"
+            />
           ),
           !!selected.length && (
             <DeleteQueuesButton
@@ -97,7 +114,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
             />
           ),
           !selected.length && (
-            <Button type="primary" icon={<PlusOutlined />}>
+            <Button type="primary" icon={<PlusOutlined />} disabled>
               New
             </Button>
           ),
@@ -112,7 +129,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
           onChange: setSelected,
         }}
         dataSource={data.filter(
-          ({ name }: { name: string }) =>
+          ({ name }) =>
             name.includes(search) &&
             (!starredOnly || starredQueues.includes(name))
         )}

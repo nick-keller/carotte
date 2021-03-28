@@ -1,5 +1,17 @@
 import React, { FC, useEffect } from 'react'
-import { Badge, Button, Col, Divider, Form, InputNumber, Radio, Row, Space, Statistic, Switch } from 'antd'
+import {
+  Badge,
+  Button,
+  Col,
+  Divider,
+  Form,
+  InputNumber,
+  Radio,
+  Row,
+  Space,
+  Statistic,
+  Switch,
+} from 'antd'
 import { Box } from '@xstyled/styled-components'
 import { match as Match } from 'react-router-dom'
 import { CachePolicies, useFetch } from 'use-http'
@@ -49,9 +61,10 @@ export const Forecast: FC<{
   const lastSample = samples[samples.length - 1] ?? { sample: 0, timestamp: 0 }
   const delta = firstSample.sample - lastSample.sample
   const range = firstSample.timestamp - lastSample.timestamp
-  const rate = range ? delta / range * 1000 : 0
+  const rate = range ? (delta / range) * 1000 : 0
   const currentMessages = data?.messages ?? 0
-  const timeToZero = currentMessages === 0 ? 0 : (rate >= 0 ? null : currentMessages / -rate)
+  const timeToZero =
+    currentMessages === 0 ? 0 : rate >= 0 ? null : currentMessages / -rate
   const eta = timeToZero !== null ? Date.now() + timeToZero * 1000 : null
 
   return (
@@ -95,14 +108,8 @@ export const Forecast: FC<{
               prefix={rate > 0 ? '+' : null}
               suffix={rate < 0.1 && rate > -0.1 ? '/min' : '/s'}
             />
-            {eta && <Statistic.Countdown
-              title="Time to zero"
-              value={eta}
-            />}
-            {!eta && <Statistic
-              title="Time to zero"
-              value="∞"
-            />}
+            {eta && <Statistic.Countdown title="Time to zero" value={eta} />}
+            {!eta && <Statistic title="Time to zero" value="∞" />}
             <Statistic
               title="ETA to zero"
               value={eta ? formatDate(eta) : '∞'}

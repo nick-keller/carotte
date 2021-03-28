@@ -8,7 +8,7 @@ export const usePurgeQueues = ({
   queues: string[]
 }) => {
   const { loading, del, response } = useFetch({
-    cachePolicy: CachePolicies.NETWORK_ONLY,
+    cachePolicy: CachePolicies.NO_CACHE,
     persist: false,
   })
 
@@ -17,7 +17,7 @@ export const usePurgeQueues = ({
     purge: async () => {
       for (const queue of queues) {
         const data = await del(
-          `/queues/${encodeURI(vhost)}/${encodeURI(queue)}/contents`,
+          `/queues/${encodeURIComponent(vhost)}/${encodeURIComponent(queue)}/contents`,
           {
             mode: 'purge',
             name: queue,
