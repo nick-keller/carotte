@@ -98,7 +98,9 @@ export const Overview: FC<{
 
   useEffect(() => {
     if (!loading && liveQueue) {
-      setTimeout(get, 2000)
+      const timeout = setTimeout(get, 2000)
+
+      return () => clearTimeout(timeout)
     }
   }, [get, liveQueue, loading])
 
@@ -151,6 +153,7 @@ export const Overview: FC<{
           <Graph
             derivative
             format={(value) => formatRate(value) + '/s'}
+            type="step"
             data={[...messagesPublish, ...messagesGet]
               .map(({ key, name, color }) => ({
                 samples:

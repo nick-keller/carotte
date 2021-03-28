@@ -33,7 +33,9 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
 
   useEffect(() => {
     if (!loading) {
-      setTimeout(get, 2000)
+      const timeout = setTimeout(get, 2000)
+
+      return () => clearTimeout(timeout)
     }
   }, [get, loading])
 

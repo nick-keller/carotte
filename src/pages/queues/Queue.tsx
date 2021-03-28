@@ -8,6 +8,7 @@ import { Overview } from './Overview'
 import { Publish } from './Publish'
 import { PurgeButton } from '../../actions/PurgeButton'
 import { DeleteButton } from '../../actions/DeleteButton'
+import { Forecast } from './Forecast'
 
 export const Queue: FC<{
   match: Match<{ vhost: string; queueName: string }>
@@ -34,10 +35,12 @@ export const Queue: FC<{
 
       <Menu mode="horizontal" onClick={(e) => history.push(String(e.key))}>
         <Menu.Item key={match.url}>Overview</Menu.Item>
+        <Menu.Item key={match.url + '/forecast'}>Forecast</Menu.Item>
         <Menu.Item key={match.url + '/publish'}>Publish</Menu.Item>
         <Menu.Item key={match.url + '/get'}>Consume</Menu.Item>
       </Menu>
       <Switch>
+        <Route path={match.path + '/forecast'} component={Forecast} />
         <Route path={match.path + '/publish'} component={Publish} />
         <Route path={match.path + '/get'} component={Get} />
         <Route path={match.path} exact component={Overview} />

@@ -17,45 +17,26 @@ import {
 } from '../utils/format'
 
 type Props = {
-  data: {
-    samples: Sample[]
-    name: string
-    stroke: string
-  }[]
-  derivative?: boolean
-  format?: (value: number) => string
-  type?: 'step' | 'linear'
+  samples: Sample[]
+  rate: number
 }
 
-export const Graph: FC<Props> = ({
-  data,
-  derivative,
-  format = formatNumber,
-  type = 'linear'
+export const ForecastGraph: FC<Props> = ({
+  samples,
+  rate,
 }) => {
-  const graphData = (data[0]?.samples ?? [])
-    .map(({ timestamp }, i) => {
-      if (derivative && i === 0) {
-        return null
-      }
+  const graphData = samples.map(sample => ({ ...sample })) as  { timestamp: number; sample?: number; forecast?: number }[]
 
-      return data.reduce(
-        (acc, cur) => {
-          if (derivative) {
-            acc[cur.name] =
-              ((cur.samples[i - 1].sample - cur.samples[i].sample) /
-                (cur.samples[i - 1].timestamp - cur.samples[i].timestamp)) *
-              1000
-          } else {
-            acc[cur.name] = cur.samples[i].sample
-          }
+  const samplesRange = samples.length ? (samples[0].timestamp - samples[samples.length - 1].timestamp) / 1000 : 0
+  const forecastRange = Math.max(samplesRange * 3, Math.min(samplesRange * 30, samples.length && rate ? samples[0].sample / rate : 0))
 
-          return acc
-        },
-        { timestamp } as Record<string, number>
-      )
+  if (graphData.length) {
+    graphData[0].forecast = graphData[0].sample
+    graphData.unshift({
+      timestamp: graphData[0].timestamp + forecastRange * 1000,
+      forecast: Math.max(0, (graphData[0].sample ?? 0) + rate * forecastRange),
     })
-    .filter((Boolean as any) as (value: any) => value is Record<string, number>)
+  }
 
   const firstTimestamp = graphData[0]?.timestamp ?? 0
   const lastTimestamp = graphData[graphData.length - 1]?.timestamp ?? 0
@@ -83,7 +64,7 @@ export const Graph: FC<Props> = ({
         <LineChart data={graphData} margin={{ top: 5, right: 5 }}>
           <ChartTooltip
             labelFormatter={(x) => formatDate(x)}
-            formatter={format}
+            formatter={formatNumber}
           />
           <YAxis
             domain={[0, (dataMax: number) => Math.max(1, dataMax)]}
@@ -101,18 +82,26 @@ export const Graph: FC<Props> = ({
             tickLine={false}
           />
           <CartesianGrid strokeDasharray="3 3" />
-          {data.map(({ name, stroke }) => (
-            <Line
-              key={name}
-              type={type}
-              dataKey={name}
-              dot={false}
-              name={name}
-              stroke={stroke}
-              strokeWidth={2}
-              animationDuration={0}
-            />
-          ))}
+          <Line
+            key="sample"
+            type="linear"
+            dataKey="sample"
+            dot={false}
+            name="Actual"
+            stroke="#ff4d4f"
+            strokeWidth={2}
+            animationDuration={0}
+          />
+          <Line
+            key="forecast"
+            dataKey="forecast"
+            dot={false}
+            name="Forecast"
+            stroke="#7c7c7c"
+            strokeWidth={2}
+            strokeDasharray="6 3"
+            animationDuration={0}
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>
