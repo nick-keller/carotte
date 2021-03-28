@@ -42,7 +42,14 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
       setStarredQueues([])
       setStarredOnly(false)
     }
-  }, [loading, starredOnly, data, starredQueues, setStarredOnly])
+  }, [
+    loading,
+    starredOnly,
+    data,
+    starredQueues,
+    setStarredOnly,
+    setStarredQueues,
+  ])
 
   if (!data) {
     return null

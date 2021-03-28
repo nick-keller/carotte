@@ -15,7 +15,7 @@ export const useFetchQueues = ({ live }: { live: boolean }) => {
 
       return () => clearTimeout(timeout)
     }
-  }, [get, loading])
+  }, [get, loading, live])
 
   return { data: data as RabbitQueue[], loading }
 }

@@ -12,8 +12,6 @@ import {
   Redirect,
   Route,
   Switch,
-  useLocation,
-  useRouteMatch,
 } from 'react-router-dom'
 import {
   CredentialsContext,
