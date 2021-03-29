@@ -20,10 +20,7 @@ export const CredentialsContext = React.createContext<{
 })
 
 export const CredentialsProvider: FC = ({ children }) => {
-  const [baseUrl, setBaseUrl] = useLocalStorage(
-    'baseUrl',
-    'http://localhost:8010'
-  )
+  const [baseUrl, setBaseUrl] = useLocalStorage('baseUrl', '')
   const [username, setUsername] = useLocalStorage('username', 'guest')
   const [password, setPassword] = useLocalStorage('password', 'guest')
 

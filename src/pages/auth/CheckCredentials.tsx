@@ -40,7 +40,7 @@ export const CheckCredentials: FC = ({ children }) => {
                 setUsername(values.username)
                 setPassword(values.password)
               } else {
-                get()
+                setTimeout(() => get(), 100)
               }
             }}
           >

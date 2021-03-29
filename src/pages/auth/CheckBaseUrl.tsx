@@ -23,11 +23,26 @@ export const CheckBaseUrl: FC = ({ children }) => {
   if (error) {
     return (
       <Result
-        status="info"
-        title="Could not reach host"
-        subTitle={`Either the host is not reachable, or it does not accept requests from ${
-          parseUrl(pathname).host
-        } (CORS). You can use a proxy to bypass this restriction.`}
+        status={baseUrl ? 'info' : 'success'}
+        title={baseUrl ? 'Could not reach host' : 'Setup host'}
+        subTitle={
+          baseUrl ? (
+            <>
+              Either the host is not reachable, or it does not accept requests
+              from <b>{parseUrl(pathname).host}</b> (CORS).{' '}
+              <a href="https://github.com/nick-keller/carotte#cors-issues">
+                How to fix?
+              </a>
+            </>
+          ) : (
+            <>
+              To start using Carotte, setup the host and make sure{' '}
+              <a href="https://github.com/nick-keller/carotte#cors-issues">
+                CORS is enabled
+              </a>
+            </>
+          )
+        }
         extra={
           <Space>
             <Input
@@ -35,10 +50,12 @@ export const CheckBaseUrl: FC = ({ children }) => {
               onChange={(e) => setNewBaseUrl(e.target.value)}
               style={{ width: '400px' }}
               size="large"
+              placeholder="http://localhost:15672"
             />
             <Button
               type="primary"
               key="retry"
+              disabled={!newBaseUrl}
               onClick={() => {
                 const origin = parseUrl(newBaseUrl).origin
 
@@ -50,7 +67,7 @@ export const CheckBaseUrl: FC = ({ children }) => {
               }}
               size="large"
             >
-              Retry
+              {baseUrl ? 'Retry' : 'Go'}
             </Button>
           </Space>
         }

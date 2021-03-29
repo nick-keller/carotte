@@ -51,24 +51,26 @@ function App() {
           <Redirect to="/queues" />
         </Switch>
       </Layout.Content>
-      <GithubCorner href="https://github.com/nick-keller/carotte" size={50} />
     </Layout>
   )
 }
 
 function AppWrapper() {
   return (
-    <Router>
-      <CredentialsProvider>
-        <HttpProvider>
-          <CheckBaseUrl>
-            <CheckCredentials>
-              <App />
-            </CheckCredentials>
-          </CheckBaseUrl>
-        </HttpProvider>
-      </CredentialsProvider>
-    </Router>
+    <>
+      <GithubCorner href="https://github.com/nick-keller/carotte" size={50} />
+      <Router>
+        <CredentialsProvider>
+          <HttpProvider>
+            <CheckBaseUrl>
+              <CheckCredentials>
+                <App />
+              </CheckCredentials>
+            </CheckBaseUrl>
+          </HttpProvider>
+        </CredentialsProvider>
+      </Router>
+    </>
   )
 }
 
