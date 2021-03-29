@@ -17,5 +17,5 @@ export const useFetchQueues = ({ live }: { live: boolean }) => {
     }
   }, [get, loading, live])
 
-  return { data: data as RabbitQueue[], loading }
+  return { data: data ?? [] as RabbitQueue[], loading }
 }
