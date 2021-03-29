@@ -22,6 +22,7 @@ import { QueuesIndex } from './pages/queues'
 import { CheckBaseUrl } from './pages/auth/CheckBaseUrl'
 import { CheckCredentials } from './pages/auth/CheckCredentials'
 import { useActiveChildRoute } from './hooks/useActiveChildRoute'
+import GithubCorner from 'react-github-corner'
 
 function App() {
   const { username, logout } = useContext(CredentialsContext)
@@ -50,6 +51,7 @@ function App() {
           <Redirect to="/queues" />
         </Switch>
       </Layout.Content>
+      <GithubCorner href="https://github.com/nick-keller/carotte" size={50} />
     </Layout>
   )
 }

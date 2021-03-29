@@ -31,6 +31,7 @@ export const Queue: FC<{
       <PageHeader
         title={decodeURIComponent(queueName)}
         onBack={() => history.push('/queues')}
+        style={{ marginRight: '30px' }}
         extra={[
           <MoveQueuesButton
             vhost={decodeURIComponent(vhost)}

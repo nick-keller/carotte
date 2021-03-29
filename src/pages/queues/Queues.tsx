@@ -59,6 +59,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
     <>
       <PageHeader
         title="Queues"
+        style={{ marginRight: '30px' }}
         subTitle={
           selected.length ? (
             <>
