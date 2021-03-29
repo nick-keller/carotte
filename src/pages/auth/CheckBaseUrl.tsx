@@ -20,7 +20,7 @@ export const CheckBaseUrl: FC = ({ children }) => {
     return <FullPageLoader />
   }
 
-  if (error) {
+  if (error || !baseUrl) {
     return (
       <Result
         status={baseUrl ? 'info' : 'success'}
