@@ -58,7 +58,6 @@ function App() {
 function AppWrapper() {
   return (
     <>
-      <GithubCorner href="https://github.com/nick-keller/carotte" size={50} />
       <Router>
         <CredentialsProvider>
           <HttpProvider>
@@ -70,6 +69,7 @@ function AppWrapper() {
           </HttpProvider>
         </CredentialsProvider>
       </Router>
+      <GithubCorner href="https://github.com/nick-keller/carotte" size={50} />
     </>
   )
 }
