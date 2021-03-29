@@ -115,7 +115,7 @@ export const Overview: FC<{
           <Graph
             data={messages.map(({ key, name, color }) => ({
               samples:
-                data?.[(key + '_details') as 'messages_details'].samples ?? [],
+                data?.[(key + '_details') as 'messages_details']?.samples ?? [],
               name,
               stroke: color,
             }))}
