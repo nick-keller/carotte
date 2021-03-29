@@ -54,7 +54,7 @@ export const Queue: FC<{
 
       <Menu
         mode="horizontal"
-        onClick={(e) => history.push(match.url + String(e.key))}
+        onClick={(e) => history.push(e.key === '/' ? match.url : match.url + String(e.key))}
         selectedKeys={[activeRoute]}
       >
         <Menu.Item key="/">Overview</Menu.Item>
