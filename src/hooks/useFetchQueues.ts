@@ -1,11 +1,17 @@
 import { useFetch } from 'use-http'
 import { RabbitQueue } from '../types'
 import { useEffect } from 'react'
+import { message } from 'antd'
 
 export const useFetchQueues = ({ live }: { live: boolean }) => {
-  const { data, loading, get } = useFetch<RabbitQueue[]>(
+  const { data, loading, get, response } = useFetch<RabbitQueue[]>(
     '/queues',
-    { data: [] },
+    {
+      data: [],
+      onError: () => {
+        message.error('Could not fetch queues')
+      },
+    },
     []
   )
 
@@ -17,5 +23,5 @@ export const useFetchQueues = ({ live }: { live: boolean }) => {
     }
   }, [get, loading, live])
 
-  return { data: data ?? [] as RabbitQueue[], loading }
+  return { data: (response.ok ? data ?? [] : []) as RabbitQueue[], loading }
 }
