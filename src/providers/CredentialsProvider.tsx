@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react'
 import useLocalStorage from 'use-local-storage'
 
-export type Connexion = {
+export type Connection = {
   name: string
   baseUrl: string
   username: string
@@ -9,12 +9,12 @@ export type Connexion = {
 }
 
 export const CredentialsContext = React.createContext<{
-  connexions: Connexion[]
-  setConnexions: (
-    hosts: Connexion[] | ((prev: Connexion[]) => Connexion[])
+  connections: Connection[]
+  setConnections: (
+    hosts: Connection[] | ((prev: Connection[]) => Connection[])
   ) => void
-  selectConnexion: boolean
-  setSelectConnexion: (selectConnexion: boolean) => void
+  selectConnection: boolean
+  setSelectConnection: (selectConnection: boolean) => void
   baseUrl: string
   setBaseUrl: (uri: string) => void
   username: string
@@ -23,10 +23,10 @@ export const CredentialsContext = React.createContext<{
   setPassword: (password: string) => void
   logout: () => void
 }>({
-  connexions: [],
-  setConnexions: () => null,
-  selectConnexion: false,
-  setSelectConnexion: () => null,
+  connections: [],
+  setConnections: () => null,
+  selectConnection: false,
+  setSelectConnection: () => null,
   baseUrl: '',
   setBaseUrl: () => null,
   username: '',
@@ -37,10 +37,10 @@ export const CredentialsContext = React.createContext<{
 })
 
 export const CredentialsProvider: FC = ({ children }) => {
-  const [selectConnexion, setSelectConnexion] = useState(false)
-  const [connexions, setConnexions] = useLocalStorage(
-    'connexions',
-    [] as Connexion[]
+  const [selectConnection, setSelectConnection] = useState(false)
+  const [connections, setConnections] = useLocalStorage(
+    'connections',
+    [] as Connection[]
   )
   const [baseUrl, setBaseUrl] = useLocalStorage('baseUrl', '')
   const [username, setUsername] = useLocalStorage('username', '')
@@ -49,10 +49,10 @@ export const CredentialsProvider: FC = ({ children }) => {
   return (
     <CredentialsContext.Provider
       value={{
-        connexions,
-        setConnexions,
-        selectConnexion,
-        setSelectConnexion,
+        connections,
+        setConnections,
+        selectConnection,
+        setSelectConnection,
         baseUrl,
         setBaseUrl,
         username,
@@ -63,7 +63,7 @@ export const CredentialsProvider: FC = ({ children }) => {
           setBaseUrl('')
           setUsername('')
           setPassword('')
-          setSelectConnexion(true)
+          setSelectConnection(true)
         },
       }}
     >

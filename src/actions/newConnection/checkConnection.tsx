@@ -1,7 +1,7 @@
 import React from 'react'
 import parseUrl from 'url-parse'
 
-export enum ConnexionStatus {
+export enum ConnectionStatus {
   LOADING,
   NO_BASE_URL,
   NETWORK_ERROR,
@@ -11,7 +11,7 @@ export enum ConnexionStatus {
   OK,
 }
 
-export const checkConnexion = async ({
+export const checkConnection = async ({
   baseUrl,
   username,
   password,
@@ -19,9 +19,9 @@ export const checkConnexion = async ({
   baseUrl: string
   username: string
   password: string
-}): Promise<ConnexionStatus> => {
+}): Promise<ConnectionStatus> => {
   if (!baseUrl) {
-    return ConnexionStatus.NO_BASE_URL
+    return ConnectionStatus.NO_BASE_URL
   }
 
   try {
@@ -39,27 +39,27 @@ export const checkConnexion = async ({
     ])
 
     if (!auth.ok) {
-      return ConnexionStatus.RESPONSE_ERROR
+      return ConnectionStatus.RESPONSE_ERROR
     }
 
     try {
       await auth.json()
     } catch (error) {
-      return ConnexionStatus.UNEXPECTED_RESPONSE
+      return ConnectionStatus.UNEXPECTED_RESPONSE
     }
 
     if (!whoami.ok) {
-      return ConnexionStatus.BAD_CREDENTIALS
+      return ConnectionStatus.BAD_CREDENTIALS
     }
 
-    return ConnexionStatus.OK
+    return ConnectionStatus.OK
   } catch (error) {
-    return ConnexionStatus.NETWORK_ERROR
+    return ConnectionStatus.NETWORK_ERROR
   }
 }
 
-export const connexionStatusText = (status: ConnexionStatus) => {
-  if (status === ConnexionStatus.NETWORK_ERROR) {
+export const connectionStatusText = (status: ConnectionStatus) => {
+  if (status === ConnectionStatus.NETWORK_ERROR) {
     return (
       <>
         Either the host is not reachable, or it does not accept requests from{' '}
@@ -71,15 +71,15 @@ export const connexionStatusText = (status: ConnexionStatus) => {
     )
   }
 
-  if (status === ConnexionStatus.RESPONSE_ERROR) {
+  if (status === ConnectionStatus.RESPONSE_ERROR) {
     return 'The host responded with an error, this is not a credential error.'
   }
 
-  if (status === ConnexionStatus.UNEXPECTED_RESPONSE) {
+  if (status === ConnectionStatus.UNEXPECTED_RESPONSE) {
     return 'The host responded in an unexpected format.'
   }
 
-  if (status === ConnexionStatus.BAD_CREDENTIALS) {
+  if (status === ConnectionStatus.BAD_CREDENTIALS) {
     return 'Incorrect username or password.'
   }
 

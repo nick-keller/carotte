@@ -2,15 +2,19 @@ import React, { FC, useContext, useEffect, useState } from 'react'
 import { CredentialsContext } from '../../providers/CredentialsProvider'
 import { Button, List, Result, Space } from 'antd'
 import { FullPageLoader } from '../../components/FullPageLoader'
-import { checkConnexion, ConnexionStatus, connexionStatusText, } from '../../actions/newConnexion/checkConnexion'
-import { NewConnexionButton } from '../../actions/newConnexion/NewConnexionButton'
+import {
+  checkConnection,
+  ConnectionStatus,
+  connectionStatusText,
+} from '../../actions/newConnection/checkConnection'
+import { NewConnectionButton } from '../../actions/newConnection/NewConnectionButton'
 import { ArrowRightOutlined } from '@ant-design/icons'
 
-export const CheckConnexion: FC = ({ children }) => {
+export const CheckConnection: FC = ({ children }) => {
   const {
-    selectConnexion,
-    setSelectConnexion,
-    connexions,
+    selectConnection,
+    setSelectConnection,
+    connections,
     baseUrl,
     setBaseUrl,
     username,
@@ -18,34 +22,36 @@ export const CheckConnexion: FC = ({ children }) => {
     password,
     setPassword,
   } = useContext(CredentialsContext)
-  const [status, setStatus] = useState(ConnexionStatus.LOADING)
+  const [status, setStatus] = useState(ConnectionStatus.LOADING)
   const [retryCounter, setRetryCounter] = useState(0)
 
   useEffect(() => {
-    setStatus(ConnexionStatus.LOADING)
-    checkConnexion({ baseUrl, username, password }).then((s) => {
+    setStatus(ConnectionStatus.LOADING)
+    checkConnection({ baseUrl, username, password }).then((s) => {
       setStatus(s)
     })
   }, [baseUrl, username, password, retryCounter])
 
-  if (status === ConnexionStatus.LOADING) {
+  if (status === ConnectionStatus.LOADING) {
     return <FullPageLoader />
   }
 
-  if (status !== ConnexionStatus.OK || selectConnexion) {
-    const error = status !== ConnexionStatus.NO_BASE_URL
+  if (status !== ConnectionStatus.OK || selectConnection) {
+    const error = status !== ConnectionStatus.NO_BASE_URL
 
     return (
       <>
         <Result
           status={error ? 'warning' : 'success'}
-          title={error ? 'Connexion error' : 'Select connexion'}
+          title={error ? 'Connection error' : 'Select connection'}
           subTitle={
             error ? (
-              connexionStatusText(status)
+              connectionStatusText(status)
             ) : (
               <>
-                To start using Carotte, {connexions.length ? 'select' : 'create'} a connexion and make sure{' '}
+                To start using Carotte,{' '}
+                {connections.length ? 'select' : 'create'} a connection and make
+                sure{' '}
                 <a href="https://github.com/nick-keller/carotte#cors-issues">
                   CORS is enabled
                 </a>
@@ -60,17 +66,17 @@ export const CheckConnexion: FC = ({ children }) => {
           size="large"
         >
           <List
-            dataSource={connexions}
+            dataSource={connections}
             size="large"
             style={{ width: '400px' }}
-            renderItem={(connexion) => (
+            renderItem={(connection) => (
               <List.Item
                 actions={[
-                  error && connexion.baseUrl === baseUrl ? (
+                  error && connection.baseUrl === baseUrl ? (
                     <Button
                       shape="round"
                       onClick={() => {
-                        setSelectConnexion(false)
+                        setSelectConnection(false)
                         setRetryCounter((c) => c + 1)
                       }}
                     >
@@ -81,23 +87,23 @@ export const CheckConnexion: FC = ({ children }) => {
                       shape={'circle'}
                       icon={<ArrowRightOutlined />}
                       onClick={() => {
-                        setBaseUrl(connexion.baseUrl)
-                        setUsername(connexion.username)
-                        setPassword(connexion.password)
-                        setSelectConnexion(false)
+                        setBaseUrl(connection.baseUrl)
+                        setUsername(connection.username)
+                        setPassword(connection.password)
+                        setSelectConnection(false)
                       }}
                     />
                   ),
                 ]}
               >
                 <List.Item.Meta
-                  title={connexion.name}
-                  description={`${connexion.baseUrl} • ${connexion.username}`}
+                  title={connection.name}
+                  description={`${connection.baseUrl} • ${connection.username}`}
                 />
               </List.Item>
             )}
           />
-          <NewConnexionButton />
+          <NewConnectionButton />
         </Space>
       </>
     )

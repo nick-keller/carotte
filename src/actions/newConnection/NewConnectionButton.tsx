@@ -1,24 +1,22 @@
 import React, { FC, useContext, useState } from 'react'
 import { Alert, Button, Form, Input, Modal } from 'antd'
 import {
-  Connexion,
+  Connection,
   CredentialsContext,
 } from '../../providers/CredentialsProvider'
 import {
-  checkConnexion,
-  ConnexionStatus,
-  connexionStatusText,
-} from './checkConnexion'
+  checkConnection,
+  ConnectionStatus,
+  connectionStatusText,
+} from './checkConnection'
 import parseUrl from 'url-parse'
 
-export const NewConnexionButton: FC = () => {
-  const {
-    setConnexions,
-  } = useContext(CredentialsContext)
-  const [form] = Form.useForm<Connexion>()
+export const NewConnectionButton: FC = () => {
+  const { setConnections } = useContext(CredentialsContext)
+  const [form] = Form.useForm<Connection>()
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [status, setStatus] = useState<ConnexionStatus | null>(null)
+  const [status, setStatus] = useState<ConnectionStatus | null>(null)
 
   const close = () => {
     form.resetFields()
@@ -30,27 +28,27 @@ export const NewConnexionButton: FC = () => {
   return (
     <>
       <Button type="primary" onClick={() => setVisible(true)}>
-        New connexion
+        New connection
       </Button>
       <Modal
         visible={visible}
-        title="New connexion"
+        title="New connection"
         okText="Create"
         confirmLoading={loading}
         onOk={() => {
           form.validateFields().then(async (values) => {
-            const connexion: Connexion = {
+            const connection: Connection = {
               ...values,
               baseUrl: parseUrl(values.baseUrl).origin,
             }
 
             setStatus(null)
             setLoading(true)
-            const s = await checkConnexion(connexion)
+            const s = await checkConnection(connection)
             setLoading(false)
 
-            if (s === ConnexionStatus.OK) {
-              setConnexions((c) => [...c, connexion])
+            if (s === ConnectionStatus.OK) {
+              setConnections((c) => [...c, connection])
               close()
             } else {
               setStatus(s)
@@ -70,7 +68,7 @@ export const NewConnexionButton: FC = () => {
               <Alert
                 showIcon
                 type="error"
-                message={connexionStatusText(status)}
+                message={connectionStatusText(status)}
               />
             </Form.Item>
           )}
