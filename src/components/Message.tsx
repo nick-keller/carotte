@@ -8,13 +8,17 @@ export const Message: FC<{ message: RabbitMessage }> = ({ message }) => {
 
   try {
     json = JSON.parse(message.payload)
+
+    if (typeof json !== 'object' || json === null) {
+      json = undefined
+    }
   } catch (error) {
     // Do nothing
   }
 
   return (
     <Card>
-      {json === undefined && <pre>{message.payload}</pre>}
+      {json === undefined && <pre style={{ margin: 0 }}>{message.payload}</pre>}
       {json !== undefined && <ReactJson src={json} name={false} />}
     </Card>
   )

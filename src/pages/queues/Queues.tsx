@@ -74,21 +74,21 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
         extra={[
           !!selected.length && (
             <MoveQueuesButton
-              vhost={data[0].vhost}
+              vhost={data[0]?.vhost}
               queues={selected}
               key="move"
             />
           ),
           !!selected.length && (
             <PurgeQueuesButton
-              vhost={data[0].vhost}
+              vhost={data[0]?.vhost}
               queues={selected}
               key="purge"
             />
           ),
           !!selected.length && (
             <DeleteQueuesButton
-              vhost={data[0].vhost}
+              vhost={data[0]?.vhost}
               queues={selected}
               key="delete"
             />
@@ -170,6 +170,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
             dataIndex: 'messages',
             sorter: (a, b) => (a.messages > b.messages ? 1 : -1),
             showSorterTooltip: false,
+            sortDirections: ['descend', 'ascend'],
             render: (value) => (
               <Typography.Text type={!value ? 'secondary' : undefined}>
                 {formatNumber(value)}
@@ -181,6 +182,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
             dataIndex: 'consumers',
             sorter: (a, b) => (a.consumers > b.consumers ? 1 : -1),
             showSorterTooltip: false,
+            sortDirections: ['descend', 'ascend'],
             render: (value) => (
               <Typography.Text type={!value ? 'secondary' : undefined}>
                 {formatNumber(value)}
