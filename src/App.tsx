@@ -19,8 +19,7 @@ import {
 } from './providers/CredentialsProvider'
 import { HttpProvider } from './providers/HttpProvider'
 import { QueuesIndex } from './pages/queues'
-import { CheckBaseUrl } from './pages/auth/CheckBaseUrl'
-import { CheckCredentials } from './pages/auth/CheckCredentials'
+import { CheckConnexion } from './pages/auth/CheckConnexion'
 import { useActiveChildRoute } from './hooks/useActiveChildRoute'
 import GithubCorner from 'react-github-corner'
 
@@ -61,11 +60,9 @@ function AppWrapper() {
       <Router>
         <CredentialsProvider>
           <HttpProvider>
-            <CheckBaseUrl>
-              <CheckCredentials>
-                <App />
-              </CheckCredentials>
-            </CheckBaseUrl>
+            <CheckConnexion>
+              <App />
+            </CheckConnexion>
           </HttpProvider>
         </CredentialsProvider>
       </Router>

@@ -1,7 +1,20 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import useLocalStorage from 'use-local-storage'
 
+export type Connexion = {
+  name: string
+  baseUrl: string
+  username: string
+  password: string
+}
+
 export const CredentialsContext = React.createContext<{
+  connexions: Connexion[]
+  setConnexions: (
+    hosts: Connexion[] | ((prev: Connexion[]) => Connexion[])
+  ) => void
+  selectConnexion: boolean
+  setSelectConnexion: (selectConnexion: boolean) => void
   baseUrl: string
   setBaseUrl: (uri: string) => void
   username: string
@@ -10,6 +23,10 @@ export const CredentialsContext = React.createContext<{
   setPassword: (password: string) => void
   logout: () => void
 }>({
+  connexions: [],
+  setConnexions: () => null,
+  selectConnexion: false,
+  setSelectConnexion: () => null,
   baseUrl: '',
   setBaseUrl: () => null,
   username: '',
@@ -20,13 +37,22 @@ export const CredentialsContext = React.createContext<{
 })
 
 export const CredentialsProvider: FC = ({ children }) => {
+  const [selectConnexion, setSelectConnexion] = useState(false)
+  const [connexions, setConnexions] = useLocalStorage(
+    'connexions',
+    [] as Connexion[]
+  )
   const [baseUrl, setBaseUrl] = useLocalStorage('baseUrl', '')
-  const [username, setUsername] = useLocalStorage('username', 'guest')
-  const [password, setPassword] = useLocalStorage('password', 'guest')
+  const [username, setUsername] = useLocalStorage('username', '')
+  const [password, setPassword] = useLocalStorage('password', '')
 
   return (
     <CredentialsContext.Provider
       value={{
+        connexions,
+        setConnexions,
+        selectConnexion,
+        setSelectConnexion,
         baseUrl,
         setBaseUrl,
         username,
@@ -34,8 +60,10 @@ export const CredentialsProvider: FC = ({ children }) => {
         password,
         setPassword,
         logout: () => {
+          setBaseUrl('')
           setUsername('')
           setPassword('')
+          setSelectConnexion(true)
         },
       }}
     >

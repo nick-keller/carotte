@@ -35,6 +35,12 @@ export type RabbitQueueArguments = {
   'x-single-active-consumer'?: boolean
   'x-dead-letter-routing-key'?: string
   'x-message-ttl'?: number
+  'x-max-length'?: number
+  'x-max-length-bytes'?: number
+  'x-max-priority'?: number
+  'x-overflow'?: 'drop-head' | 'reject-publish' | 'reject-publish-dlx'
+  'x-queue-mode'?: 'lazy'
+  'x-queue-type'?: 'classic' | 'quorum'
 }
 
 export type RabbitQueue<Stat = RabbitMessageStat> = {
