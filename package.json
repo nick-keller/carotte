@@ -34,7 +34,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "npx prettier --write ."
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -58,6 +59,11 @@
     "@types/qs": "^6.9.6",
     "@types/react-router-dom": "^5.1.7",
     "@types/url-parse": "^1.4.3",
+    "husky": "^6.0.0",
+    "lint-staged": "^10.5.4",
     "prettier": "2.2.1"
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
   }
 }

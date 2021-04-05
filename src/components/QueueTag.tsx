@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Tag, Tooltip, Typography } from 'antd'
+import { Tag, Tooltip } from 'antd'
 
 export const QueueTag: FC<{
   name: string
