@@ -19,18 +19,22 @@ export const ForecastGraph: FC<Props> = ({ samples, rate }) => {
     ? (samples[0].timestamp - samples[samples.length - 1].timestamp) / 1000
     : 0
 
-  const forecastRange = Math.max(
-    samplesRange * 3,
-    Math.min(
-      samplesRange * 30,
-      samples.length && rate ? samples[0].sample / rate : 0
-    )
-  )
+  const forecastRange = Math.max(samplesRange * 2, samples.length && rate < 0 ? Math.min(
+    samplesRange * 20,samples[0].sample / -rate) : 0)
 
   if (graphData.length) {
+    const fromTimestamp = graphData[0].timestamp
     graphData[0].forecast = graphData[0].sample
+
+    if ((graphData[0].sample ?? 0) + rate * forecastRange < 0) {
+      graphData.unshift({
+        timestamp: fromTimestamp - (graphData[0].sample ?? 0) / rate * 1000,
+        forecast: 0,
+      })
+    }
+
     graphData.unshift({
-      timestamp: graphData[0].timestamp + forecastRange * 1000,
+      timestamp: fromTimestamp + forecastRange * 1000,
       forecast: Math.max(0, (graphData[0].sample ?? 0) + rate * forecastRange),
     })
   }
