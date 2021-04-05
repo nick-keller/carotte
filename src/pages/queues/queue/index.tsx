@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Menu, PageHeader, message } from 'antd'
+import { Menu, message, PageHeader } from 'antd'
 import { match as Match, Route, Switch, useHistory } from 'react-router-dom'
 import { Get } from './Get'
 import { MoveQueuesButton } from '../../../actions/moveQueues/MoveQueuesButton'
@@ -10,6 +10,7 @@ import { DeleteQueuesButton } from '../../../actions/deleteQueues/DeleteQueuesBu
 import { Forecast } from './Forecast'
 import { useActiveChildRoute } from '../../../hooks/useActiveChildRoute'
 import { useFetchQueue } from '../../../hooks/useFetchQueue'
+import { QueueTag } from '../../../components/QueueTag'
 
 export const Queue: FC<{
   match: Match<{ vhost: string; queueName: string }>
@@ -17,7 +18,7 @@ export const Queue: FC<{
   const history = useHistory()
   const { vhost, queueName } = match.params
   const activeRoute = useActiveChildRoute()
-  useFetchQueue({
+  const { data } = useFetchQueue({
     vhost,
     queueName,
     onNotFound: () => {
@@ -32,6 +33,45 @@ export const Queue: FC<{
         title={decodeURIComponent(queueName)}
         onBack={() => history.push('/queues')}
         style={{ marginRight: '30px' }}
+        tags={[
+          <QueueTag name="Durable" key="d" abbr="D" value={data?.durable} />,
+          <QueueTag
+            name="Message TTL"
+            key="ttl"
+            abbr="TTL"
+            value={data?.arguments['x-message-ttl']}
+          />,
+          <QueueTag
+            name="Dead letter exchange"
+            key="dlx"
+            abbr="DLX"
+            value={data?.arguments['x-dead-letter-exchange']}
+          />,
+          <QueueTag
+            name="Dead letter rounting key"
+            key="dlk"
+            abbr="DLK"
+            value={data?.arguments['x-dead-letter-routing-key']}
+          />,
+          <QueueTag
+            name="Auto Delete"
+            key="ad"
+            abbr="AD"
+            value={data?.auto_delete}
+          />,
+          <QueueTag
+            name="Exclusive"
+            key="e"
+            abbr="E"
+            value={data?.exclusive}
+          />,
+          <QueueTag
+            name="Single active consumer"
+            key="sac"
+            abbr="SAC"
+            value={data?.arguments['x-single-active-consumer']}
+          />,
+        ]}
         extra={[
           <MoveQueuesButton
             vhost={decodeURIComponent(vhost)}

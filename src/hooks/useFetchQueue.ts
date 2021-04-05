@@ -7,7 +7,7 @@ export const useFetchQueue = ({
   vhost,
   queueName,
   range = 0,
-  resolution = 30,
+  resolution = 60,
   messageSamples = false,
   rateSamples = false,
   live = false,
@@ -22,7 +22,7 @@ export const useFetchQueue = ({
   live?: boolean
   onNotFound?: () => void
 }) => {
-  const interval = Math.round(range / resolution)
+  const interval = Math.max(5, Math.round(range / resolution))
 
   const params = qs.stringify({
     lengths_age: messageSamples ? range : undefined,
