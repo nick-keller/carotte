@@ -3,3 +3,21 @@
 td.ant-table-column-sort {
   background: #fff;
 }
+
+.switch-group .ant-form-item-control .ant-row.ant-form-item {
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.switch-group .ant-form-item-control .ant-row.ant-form-item {
+  margin-bottom: 0;
+}
+
+.switch-group .ant-form-item-control .ant-col.ant-form-item-control {
+  flex-grow: 0;
+}
+
+.switch-group .ant-form-item-control .ant-col.ant-form-item-label {
+  flex-grow: 1;
+  padding: 0 0 0 10px;
+}

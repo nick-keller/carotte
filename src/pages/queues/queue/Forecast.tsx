@@ -64,29 +64,37 @@ export const Forecast: FC<{
           </Space>
         </Col>
 
-        <Col span={12}>
-          <Space direction="vertical">
-            <Statistic
-              title="Delta"
-              value={delta}
-              prefix={delta > 0 ? '+' : null}
-            />
-            <Statistic
-              title="Average rate"
-              value={rate < 0.1 && rate > -0.1 ? rate * 60 : rate}
-              precision={2}
-              prefix={rate > 0 ? '+' : null}
-              suffix={rate < 0.1 && rate > -0.1 ? '/min' : '/s'}
-            />
-            {eta && <Statistic.Countdown title="Time to zero" value={eta} />}
-            {!eta && <Statistic title="Time to zero" value="∞" />}
-            <Statistic
-              title="ETA to zero"
-              value={eta ? formatDate(eta) : '∞'}
-            />
-          </Space>
+        <Col span={10}>
+          <Row>
+            <Col span={12}>
+              <Space direction="vertical">
+                <Statistic
+                  title="Delta"
+                  value={delta}
+                  prefix={delta > 0 ? '+' : null}
+                />
+                <Statistic
+                  title="Average rate"
+                  value={rate < 0.1 && rate > -0.1 ? rate * 60 : rate}
+                  precision={2}
+                  prefix={rate > 0 ? '+' : null}
+                  suffix={rate < 0.1 && rate > -0.1 ? '/min' : '/s'}
+                />
+              </Space>
+            </Col>
+            <Col span={12}>
+              <Space direction="vertical">
+                {eta && <Statistic.Countdown title="Time to zero" value={eta} />}
+                {!eta && <Statistic title="Time to zero" value="∞" />}
+                <Statistic
+                  title="ETA to zero"
+                  value={eta ? formatDate(eta) : '∞'}
+                />
+              </Space>
+            </Col>
+          </Row>
         </Col>
-        <Col span={12}>
+        <Col span={14}>
           <ForecastGraph
             samples={data?.messages_details.samples ?? []}
             rate={rate}

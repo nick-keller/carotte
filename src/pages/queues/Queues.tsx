@@ -1,26 +1,14 @@
 import React, { FC, useEffect, useState } from 'react'
-import {
-  Button,
-  Input,
-  PageHeader,
-  Space,
-  Switch,
-  Table,
-  Typography,
-} from 'antd'
+import { Input, PageHeader, Space, Switch, Table, Typography, } from 'antd'
 import { Link, match as Match } from 'react-router-dom'
-import {
-  PlusOutlined,
-  SearchOutlined,
-  StarOutlined,
-  StarTwoTone,
-} from '@ant-design/icons'
+import { SearchOutlined, StarOutlined, StarTwoTone, } from '@ant-design/icons'
 import { formatNumber } from '../../utils/format'
 import { MoveQueuesButton } from '../../actions/moveQueues/MoveQueuesButton'
 import useLocalStorage from 'use-local-storage'
 import { PurgeQueuesButton } from '../../actions/purgeQueues/PurgeQueuesButton'
 import { DeleteQueuesButton } from '../../actions/deleteQueues/DeleteQueuesButton'
 import { useFetchQueues } from '../../hooks/useFetchQueues'
+import { NewQueueButton } from '../../actions/newQueue/NewQueueButton'
 
 export const Queues: FC<{ match: Match }> = ({ match }) => {
   const { data, loading } = useFetchQueues({ live: true })
@@ -110,11 +98,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
               style={{ width: '300px' }}
             />
           ),
-          !selected.length && (
-            <Button type="primary" icon={<PlusOutlined />} disabled key="new">
-              New
-            </Button>
-          ),
+          !selected.length && <NewQueueButton vhost={'/'} key="new" />,
         ]}
       />
       <Table

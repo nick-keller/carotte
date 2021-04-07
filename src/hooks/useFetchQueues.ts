@@ -17,7 +17,7 @@ export const useFetchQueues = ({ live }: { live: boolean }) => {
 
   useEffect(() => {
     if (!loading && live) {
-      const timeout = setTimeout(get, 2000)
+      const timeout = setTimeout(get, 5000)
 
       return () => clearTimeout(timeout)
     }

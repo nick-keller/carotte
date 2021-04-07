@@ -38,8 +38,9 @@ export type RabbitQueueArguments = {
   'x-max-length'?: number
   'x-max-length-bytes'?: number
   'x-max-priority'?: number
+  'x-expires'?: number
   'x-overflow'?: 'drop-head' | 'reject-publish' | 'reject-publish-dlx'
-  'x-queue-mode'?: 'lazy'
+  'x-queue-mode'?: 'lazy' | 'default'
   'x-queue-type'?: 'classic' | 'quorum'
 }
 

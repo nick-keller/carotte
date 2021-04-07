@@ -38,12 +38,12 @@ const secondsFormatter = new Intl.DateTimeFormat('en-US', {
   hour12: false,
 })
 
-export const formatNumber = (number: number) => numberFormatter.format(number)
+export const formatNumber = (number: number) => isNaN(number) ? '' : numberFormatter.format(number)
 
-export const formatPercentage = (number: number) =>
+export const formatPercentage = (number: number) =>isNaN(number) ? '' :
   percentageFormatter.format(number)
 
-export const formatRate = (number: number) => rateFormatter.format(number)
+export const formatRate = (number: number) => isNaN(number) ? '' : rateFormatter.format(number)
 
 export const formatDate = (value: number | Date | string) =>
   dateFormatter.format(new Date(value))

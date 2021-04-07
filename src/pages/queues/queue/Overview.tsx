@@ -81,7 +81,6 @@ export const Overview: FC<{
     queueName,
     live: liveQueue,
     range: graphRange,
-    resolution: 30,
     messageSamples: true,
     rateSamples: true,
   })

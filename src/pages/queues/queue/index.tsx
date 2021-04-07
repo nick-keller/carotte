@@ -11,6 +11,7 @@ import { Forecast } from './Forecast'
 import { useActiveChildRoute } from '../../../hooks/useActiveChildRoute'
 import { useFetchQueue } from '../../../hooks/useFetchQueue'
 import { QueueTag } from '../../../components/QueueTag'
+import { DashboardOutlined, StockOutlined, ToTopOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons'
 
 export const Queue: FC<{
   match: Match<{ vhost: string; queueName: string }>
@@ -36,24 +37,6 @@ export const Queue: FC<{
         tags={[
           <QueueTag name="Durable" key="d" abbr="D" value={data?.durable} />,
           <QueueTag
-            name="Message TTL"
-            key="ttl"
-            abbr="TTL"
-            value={data?.arguments['x-message-ttl']}
-          />,
-          <QueueTag
-            name="Dead letter exchange"
-            key="dlx"
-            abbr="DLX"
-            value={data?.arguments['x-dead-letter-exchange']}
-          />,
-          <QueueTag
-            name="Dead letter rounting key"
-            key="dlk"
-            abbr="DLK"
-            value={data?.arguments['x-dead-letter-routing-key']}
-          />,
-          <QueueTag
             name="Auto Delete"
             key="ad"
             abbr="AD"
@@ -70,6 +53,12 @@ export const Queue: FC<{
             key="sac"
             abbr="SAC"
             value={data?.arguments['x-single-active-consumer']}
+          />,
+          <QueueTag
+            name="Lazy"
+            key="lazy"
+            abbr="L"
+            value={data?.arguments['x-queue-mode'] === 'lazy'}
           />,
         ]}
         extra={[
@@ -99,10 +88,10 @@ export const Queue: FC<{
         }
         selectedKeys={[activeRoute]}
       >
-        <Menu.Item key="/">Overview</Menu.Item>
-        <Menu.Item key="/forecast">Forecast</Menu.Item>
-        <Menu.Item key="/publish">Publish</Menu.Item>
-        <Menu.Item key="/get">Consume</Menu.Item>
+        <Menu.Item key="/" icon={<DashboardOutlined />}>Overview</Menu.Item>
+        <Menu.Item key="/forecast" icon={<StockOutlined />}>Forecast</Menu.Item>
+        <Menu.Item key="/publish" icon={<ToTopOutlined />}>Publish</Menu.Item>
+        <Menu.Item key="/get" icon={<VerticalAlignBottomOutlined />}>Consume</Menu.Item>
       </Menu>
       <Switch>
         <Route path={match.path + '/forecast'} component={Forecast} />
