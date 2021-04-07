@@ -62,13 +62,13 @@ export const CheckConnection: FC = ({ children }) => {
         <Space
           direction="vertical"
           align="center"
-          style={{ margin: 'auto', display: 'flex' }}
+          style={{ margin: 'auto', display: 'flex', alignItems: 'stretch', maxWidth: '400px' }}
           size="large"
         >
           <List
             dataSource={connections}
             size="large"
-            style={{ width: '400px' }}
+            style={{ width: '100%' }}
             renderItem={(connection) => (
               <List.Item
                 actions={[

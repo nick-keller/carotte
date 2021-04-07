@@ -112,7 +112,7 @@ export const Overview: FC<{
 
         <Col span={12}>
           <Graph
-            data={messages.map(({ key, name, color }) => ({
+            data={[...messages].reverse().map(({ key, name, color }) => ({
               samples:
                 data?.[(key + '_details') as 'messages_details']?.samples ?? [],
               name,
@@ -136,7 +136,7 @@ export const Overview: FC<{
             derivative
             format={(value) => formatRate(value) + '/s'}
             type="step"
-            data={[...messagesPublish, ...messagesGet]
+            data={[...messagesPublish, ...messagesGet].reverse()
               .map(({ key, name, color }) => ({
                 samples:
                   data?.message_stats?.[(key + '_details') as 'ack_details']
