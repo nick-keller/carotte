@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Input, PageHeader, Space, Switch, Table, Typography, } from 'antd'
+import { Input, PageHeader, Space, Switch, Table, Typography } from 'antd'
 import { Link, match as Match } from 'react-router-dom'
-import { SearchOutlined, StarOutlined, StarTwoTone, } from '@ant-design/icons'
+import { SearchOutlined, StarOutlined, StarTwoTone } from '@ant-design/icons'
 import { formatNumber } from '../../utils/format'
 import { MoveQueuesButton } from '../../actions/moveQueues/MoveQueuesButton'
 import useLocalStorage from 'use-local-storage'
@@ -98,7 +98,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
               style={{ width: '300px' }}
             />
           ),
-          !selected.length && <NewQueueButton vhost={'/'} key="new" />,
+          !selected.length && <NewQueueButton key="new" />,
         ]}
       />
       <Table

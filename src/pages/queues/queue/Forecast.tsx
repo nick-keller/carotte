@@ -84,7 +84,9 @@ export const Forecast: FC<{
             </Col>
             <Col span={12}>
               <Space direction="vertical">
-                {eta && <Statistic.Countdown title="Time to zero" value={eta} />}
+                {eta && (
+                  <Statistic.Countdown title="Time to zero" value={eta} />
+                )}
                 {!eta && <Statistic title="Time to zero" value="∞" />}
                 <Statistic
                   title="ETA to zero"

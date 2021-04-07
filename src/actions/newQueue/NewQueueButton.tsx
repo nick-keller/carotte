@@ -1,24 +1,38 @@
 import React, { FC, useState } from 'react'
 import {
-  Button, Divider,
+  Button,
+  Divider,
   Form,
   Input,
   InputNumber,
   message,
   Modal,
   Radio,
+  Select,
   Switch,
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { NewQueueParams, useNewQueue } from './useNewQueue'
 import { InputMs } from '../../components/InputMs'
 import { InputBytes } from '../../components/InputBytes'
+import { useHistory } from 'react-router-dom'
+import { CachePolicies, useFetch } from 'use-http'
 
-export const NewQueueButton: FC<{ vhost: string }> = ({ vhost }) => {
+export const NewQueueButton: FC = () => {
   const [form] = Form.useForm<NewQueueParams>()
   const [visible, setVisible] = useState(false)
   const [values, setValues] = useState<NewQueueParams | undefined>()
-  const { create, creating } = useNewQueue({ vhost })
+  const { create, creating } = useNewQueue()
+  const history = useHistory()
+  const { data } = useFetch<{ name: string }[]>(
+    '/vhosts',
+    {
+      cachePolicy: CachePolicies.NO_CACHE,
+      persist: false,
+      data: [],
+    },
+    []
+  )
 
   const close = () => {
     form.resetFields()
@@ -41,8 +55,16 @@ export const NewQueueButton: FC<{ vhost: string }> = ({ vhost }) => {
         confirmLoading={creating}
         onOk={() => {
           form.validateFields().then(async (values) => {
+            values.vhost = values.vhost || data?.[0]?.name || ''
+
             try {
               await create(values)
+              message.success(`Queue ${values.name} created!`)
+              history.push(
+                `/queues/${encodeURIComponent(
+                  values.vhost
+                )}/${encodeURIComponent(values.name)}`
+              )
               close()
             } catch (error) {
               message.error(error.message)
@@ -56,6 +78,7 @@ export const NewQueueButton: FC<{ vhost: string }> = ({ vhost }) => {
           layout="vertical"
           initialValues={
             {
+              vhost: data?.[0]?.name ?? '',
               name: '',
               autoDelete: false,
               durable: true,
@@ -66,7 +89,7 @@ export const NewQueueButton: FC<{ vhost: string }> = ({ vhost }) => {
               type: 'classic',
               maxLength: null,
               maxLengthBytes: null,
-              overflow: 'drop-head'
+              overflow: 'drop-head',
             } as NewQueueParams
           }
           onValuesChange={(_, v) => {
@@ -93,6 +116,11 @@ export const NewQueueButton: FC<{ vhost: string }> = ({ vhost }) => {
               <Radio.Button value="quorum">Quorum</Radio.Button>
             </Radio.Group>
           </Form.Item>
+          {(data?.length ?? 0) > 1 && <Form.Item name="vhost" label="V-Host" required>
+            <Select
+              options={data?.map(({ name }) => ({ label: name, value: name }))}
+            />
+          </Form.Item>}
           <Form.Item
             name="name"
             label="Name"
@@ -208,13 +236,11 @@ export const NewQueueButton: FC<{ vhost: string }> = ({ vhost }) => {
             tooltip={
               <>
                 Maximum number of messages in the queue.{' '}
-                <a href="https://www.rabbitmq.com/maxlength.html">
-                  More info
-                </a>
+                <a href="https://www.rabbitmq.com/maxlength.html">More info</a>
               </>
             }
           >
-            <InputNumber min={0} precision={0} style={{ width: '150px' }}/>
+            <InputNumber min={0} precision={0} style={{ width: '150px' }} />
           </Form.Item>
           <Form.Item
             name="maxLengthBytes"
@@ -222,9 +248,7 @@ export const NewQueueButton: FC<{ vhost: string }> = ({ vhost }) => {
             tooltip={
               <>
                 Maximum size of the queue.{' '}
-                <a href="https://www.rabbitmq.com/maxlength.html">
-                  More info
-                </a>
+                <a href="https://www.rabbitmq.com/maxlength.html">More info</a>
               </>
             }
           >
@@ -244,10 +268,19 @@ export const NewQueueButton: FC<{ vhost: string }> = ({ vhost }) => {
               </>
             }
           >
-            <Radio.Group buttonStyle="solid" disabled={(values?.maxLength === null && values?.maxLengthBytes === null) || values?.type === 'quorum'}>
+            <Radio.Group
+              buttonStyle="solid"
+              disabled={
+                (values?.maxLength === null &&
+                  values?.maxLengthBytes === null) ||
+                values?.type === 'quorum'
+              }
+            >
               <Radio.Button value="drop-head">Drop head</Radio.Button>
               <Radio.Button value="reject-publish">Reject publish</Radio.Button>
-              <Radio.Button value="reject-publish-dlx">Reject publish DLX</Radio.Button>
+              <Radio.Button value="reject-publish-dlx">
+                Reject publish DLX
+              </Radio.Button>
             </Radio.Group>
           </Form.Item>
         </Form>

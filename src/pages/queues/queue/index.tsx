@@ -11,7 +11,12 @@ import { Forecast } from './Forecast'
 import { useActiveChildRoute } from '../../../hooks/useActiveChildRoute'
 import { useFetchQueue } from '../../../hooks/useFetchQueue'
 import { QueueTag } from '../../../components/QueueTag'
-import { DashboardOutlined, StockOutlined, ToTopOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons'
+import {
+  DashboardOutlined,
+  StockOutlined,
+  ToTopOutlined,
+  VerticalAlignBottomOutlined,
+} from '@ant-design/icons'
 
 export const Queue: FC<{
   match: Match<{ vhost: string; queueName: string }>
@@ -88,10 +93,18 @@ export const Queue: FC<{
         }
         selectedKeys={[activeRoute]}
       >
-        <Menu.Item key="/" icon={<DashboardOutlined />}>Overview</Menu.Item>
-        <Menu.Item key="/forecast" icon={<StockOutlined />}>Forecast</Menu.Item>
-        <Menu.Item key="/publish" icon={<ToTopOutlined />}>Publish</Menu.Item>
-        <Menu.Item key="/get" icon={<VerticalAlignBottomOutlined />}>Consume</Menu.Item>
+        <Menu.Item key="/" icon={<DashboardOutlined />}>
+          Overview
+        </Menu.Item>
+        <Menu.Item key="/forecast" icon={<StockOutlined />}>
+          Forecast
+        </Menu.Item>
+        <Menu.Item key="/publish" icon={<ToTopOutlined />}>
+          Publish
+        </Menu.Item>
+        <Menu.Item key="/get" icon={<VerticalAlignBottomOutlined />}>
+          Consume
+        </Menu.Item>
       </Menu>
       <Switch>
         <Route path={match.path + '/forecast'} component={Forecast} />

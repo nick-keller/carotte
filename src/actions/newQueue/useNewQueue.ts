@@ -4,6 +4,7 @@ import { RabbitQueueArguments } from '../../types'
 const boolToStr = (value: boolean) => (value ? 'true' : 'false')
 
 export type NewQueueParams = {
+  vhost: string
   name: string
   autoDelete: boolean
   durable: boolean
@@ -17,7 +18,7 @@ export type NewQueueParams = {
   overflow: 'drop-head' | 'reject-publish' | 'reject-publish-dlx'
 }
 
-export const useNewQueue = ({ vhost }: { vhost: string }) => {
+export const useNewQueue = () => {
   const { loading, put, response } = useFetch({
     cachePolicy: CachePolicies.NO_CACHE,
     persist: false,
@@ -26,6 +27,7 @@ export const useNewQueue = ({ vhost }: { vhost: string }) => {
   return {
     creating: loading,
     create: async ({
+      vhost,
       name,
       autoDelete,
       durable,
@@ -34,22 +36,27 @@ export const useNewQueue = ({ vhost }: { vhost: string }) => {
       lazy,
       singleActiveConsumer,
       type,
-       maxLength,
-       maxLengthBytes,
+      maxLength,
+      maxLengthBytes,
       overflow,
     }: NewQueueParams) => {
       const data = await put(
         `/queues/${encodeURIComponent(vhost)}/${encodeURIComponent(name)}`,
         {
           arguments: {
-            'x-message-ttl': type === 'quorum' ? undefined : messagesTtl ?? undefined,
+            'x-message-ttl':
+              type === 'quorum' ? undefined : messagesTtl ?? undefined,
             'x-expires': type === 'quorum' ? undefined : ttl ?? undefined,
             'x-single-active-consumer': singleActiveConsumer,
             'x-queue-mode': lazy && type !== 'quorum' ? 'lazy' : undefined,
             'x-queue-type': type,
             'x-max-length': maxLength ?? undefined,
             'x-max-length-bytes': maxLengthBytes ?? undefined,
-            'x-overflow': (maxLength !== null || maxLengthBytes !== null) && type !== 'quorum' ? overflow : undefined,
+            'x-overflow':
+              (maxLength !== null || maxLengthBytes !== null) &&
+              type !== 'quorum'
+                ? overflow
+                : undefined,
           } as RabbitQueueArguments,
           auto_delete: boolToStr(autoDelete && type !== 'quorum'),
           durable: boolToStr(durable || type === 'quorum'),

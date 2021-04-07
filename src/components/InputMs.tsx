@@ -8,10 +8,16 @@ export const InputMs: FC<{
   onChange?: (value: number | null) => void
   disabled?: boolean
 }> = (props) => {
-  return <InputUnit defaultScale={1000} units={[
-    { value: 1, label: 'milliseconds' },
-    { value: 1000, label: 'seconds' },
-    { value: 60000, label: 'minutes' },
-    { value: 3600000, label: 'hours' },
-  ]} {...props} />
+  return (
+    <InputUnit
+      defaultScale={1000}
+      units={[
+        { value: 1, label: 'milliseconds' },
+        { value: 1000, label: 'seconds' },
+        { value: 60000, label: 'minutes' },
+        { value: 3600000, label: 'hours' },
+      ]}
+      {...props}
+    />
+  )
 }
