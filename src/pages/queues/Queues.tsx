@@ -9,6 +9,7 @@ import { PurgeQueuesButton } from '../../actions/purgeQueues/PurgeQueuesButton'
 import { DeleteQueuesButton } from '../../actions/deleteQueues/DeleteQueuesButton'
 import { useFetchQueues } from '../../hooks/useFetchQueues'
 import { NewQueueButton } from '../../actions/newQueue/NewQueueButton'
+import { queueTags } from './queue'
 
 export const Queues: FC<{ match: Match }> = ({ match }) => {
   const { data, loading } = useFetchQueues({ live: true })
@@ -111,7 +112,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
         }}
         dataSource={data.filter(
           ({ name }) =>
-            name.includes(search) &&
+            name.toLowerCase().includes(search.toLowerCase()) &&
             (!starredOnly || starredQueues.includes(name))
         )}
         columns={[
@@ -148,6 +149,10 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
                 </Link>
               </Space>
             ),
+          },
+          {
+            title: 'Options',
+            render: (value) => queueTags(value),
           },
           {
             title: 'Messages',

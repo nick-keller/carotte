@@ -17,6 +17,35 @@ import {
   ToTopOutlined,
   VerticalAlignBottomOutlined,
 } from '@ant-design/icons'
+import { RabbitQueue } from '../../../types'
+
+export const queueTags = (data?: RabbitQueue) => [
+  <QueueTag name="Durable" key="d" abbr="D" value={data?.durable} />,
+  <QueueTag
+    name="Auto Delete"
+    key="ad"
+    abbr="AD"
+    value={data?.auto_delete}
+  />,
+  <QueueTag
+    name="Exclusive"
+    key="e"
+    abbr="E"
+    value={data?.exclusive}
+  />,
+  <QueueTag
+    name="Single active consumer"
+    key="sac"
+    abbr="SAC"
+    value={data?.arguments['x-single-active-consumer']}
+  />,
+  <QueueTag
+    name="Lazy"
+    key="lazy"
+    abbr="L"
+    value={data?.arguments['x-queue-mode'] === 'lazy'}
+  />,
+]
 
 export const Queue: FC<{
   match: Match<{ vhost: string; queueName: string }>
@@ -39,33 +68,7 @@ export const Queue: FC<{
         title={decodeURIComponent(queueName)}
         onBack={() => history.push('/queues')}
         style={{ marginRight: '30px' }}
-        tags={[
-          <QueueTag name="Durable" key="d" abbr="D" value={data?.durable} />,
-          <QueueTag
-            name="Auto Delete"
-            key="ad"
-            abbr="AD"
-            value={data?.auto_delete}
-          />,
-          <QueueTag
-            name="Exclusive"
-            key="e"
-            abbr="E"
-            value={data?.exclusive}
-          />,
-          <QueueTag
-            name="Single active consumer"
-            key="sac"
-            abbr="SAC"
-            value={data?.arguments['x-single-active-consumer']}
-          />,
-          <QueueTag
-            name="Lazy"
-            key="lazy"
-            abbr="L"
-            value={data?.arguments['x-queue-mode'] === 'lazy'}
-          />,
-        ]}
+        tags={queueTags(data)}
         extra={[
           <MoveQueuesButton
             vhost={decodeURIComponent(vhost)}

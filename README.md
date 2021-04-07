@@ -2,13 +2,23 @@
 
 A modern RabbitMQ UI for the management plugin.
 
+## Key features
+
+- Multiple connections support
+- Bulk actions on queues
+- Queue completion ETA based on average rate
+- Full JSON support for publish and get
+- Smooth user experience and documentation integration
+
 ## Using it
 
-### Online
+### Solution 1: Online (best)
 
 Go to [https://carotte.netlify.app](https://carotte.netlify.app)
 
-### Locally
+### Solution 2: Locally (hack)
+
+Clone repository then:
 
 ```
 npm i
