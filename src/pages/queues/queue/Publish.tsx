@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Button, Space, Select, message } from 'antd'
+import React, { FC, useState } from 'react'
+import { Button, Space, Select, message, Divider } from 'antd'
 import { Box } from '@xstyled/styled-components'
 import { match as Match } from 'react-router-dom'
 import AceEditor from 'react-ace'
@@ -9,6 +9,8 @@ import 'ace-builds/src-noconflict/mode-plain_text'
 import 'ace-builds/src-noconflict/theme-monokai'
 import { CachePolicies, useFetch } from 'use-http'
 import { ToTopOutlined } from '@ant-design/icons'
+import { Message } from '../../../components/Message'
+import { RabbitMessage } from '../../../types'
 
 export const Publish: FC<{
   match: Match<{ vhost: string; queueName: string }>
@@ -19,6 +21,7 @@ export const Publish: FC<{
     `publish_${queueName}`,
     ''
   )
+  const [lastPublished, setLastPublished] = useState<string[]>([])
   const [mode, setMode] = useLocalStorage(`publishMode`, 'json')
 
   const { response, post, loading } = useFetch(
@@ -43,6 +46,7 @@ export const Publish: FC<{
     })
 
     if (response.ok) {
+      setLastPublished(a => [publishMessage, ...a])
       message.success('Published message')
     } else {
       message.success('Could not publish message')
@@ -89,6 +93,14 @@ export const Publish: FC<{
         >
           Publish
         </Button>
+      </Space>
+
+      <Divider orientation="left" plain>{lastPublished.length} messages published</Divider>
+
+      <Space direction="vertical" style={{ width: '100%' }}>
+        {lastPublished.map((message) => (
+          <Message message={{ payload: message } as RabbitMessage} />
+        ))}
       </Space>
     </Box>
   )
