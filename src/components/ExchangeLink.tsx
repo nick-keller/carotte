@@ -8,7 +8,7 @@ export const ExchangeLink: FC<Pick<RabbitExchange, 'name' | 'vhost'>> = ({
 }) => {
   return (
     <Link
-      to={`exchanges/${encodeURIComponent(vhost)}/${encodeURIComponent(
+      to={`/exchanges/${encodeURIComponent(vhost)}/${encodeURIComponent(
         name || 'amq.default'
       )}`}
     >

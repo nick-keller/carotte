@@ -1,26 +1,29 @@
 import React, { FC } from 'react'
 import { Button, Space, Table, Tag, Tooltip } from 'antd'
-import { RabbitBinding, RabbitExchange } from '../types'
-import { Link } from 'react-router-dom'
+import { RabbitBinding, RabbitExchange, RabbitQueue } from '../types'
 import { DeleteOutlined } from '@ant-design/icons'
+import { ExchangeLink } from './ExchangeLink'
+import { QueueLink } from './QueueLink'
 
 export const BindingsTable: FC<{
-  bindings?: RabbitBinding[]
+  bindings?: (RabbitBinding & { ae?: boolean; dl?: boolean })[]
   show: 'source' | 'destination'
   alternateExchange?: string
   destinationAlternateExchanges?: RabbitExchange[]
+  destinationDeadLetters?: RabbitQueue[]
   vhost?: string
 }> = ({
-  bindings,
+  bindings = [],
   show,
   alternateExchange,
   vhost,
-  destinationAlternateExchanges,
+  destinationAlternateExchanges = [],
+  destinationDeadLetters = [],
 }) => {
   return (
     <Table
       dataSource={[
-        ...(bindings ?? []),
+        ...bindings,
         ...(alternateExchange
           ? [
               {
@@ -31,10 +34,16 @@ export const BindingsTable: FC<{
               },
             ]
           : []),
-        ...(destinationAlternateExchanges ?? []).map((e) => ({
+        ...destinationAlternateExchanges.map((e) => ({
           source: e.name,
           vhost: e.vhost,
           ae: true,
+        })),
+        ...destinationDeadLetters.map((q) => ({
+          source: q.name,
+          vhost: q.vhost,
+          routing_key: q.arguments['x-dead-letter-routing-key'],
+          dl: true,
         })),
       ]}
       columns={[
@@ -45,25 +54,45 @@ export const BindingsTable: FC<{
             destination_type,
             source,
             vhost,
-          }: RabbitBinding) => {
+            ae,
+            dl,
+          }: RabbitBinding& { ae?: boolean; dl?: boolean }) => {
             const type =
-              show === 'source' || destination_type === 'exchange'
+              (show === 'source' && !dl) || destination_type === 'exchange'
                 ? 'exchange'
                 : 'queue'
             const name = show === 'source' ? source : destination
 
             return (
               <Space>
-                <Link
-                  to={`/${
-                    type === 'exchange' ? 'exchanges' : 'queues'
-                  }/${encodeURIComponent(vhost)}/${encodeURIComponent(name)}`}
-                >
-                  {name}
-                </Link>
+                {type === 'exchange' && <ExchangeLink name={name} vhost={vhost} />}
+                {type === 'queue' && <QueueLink name={name} vhost={vhost} />}
+                <span>
                 <Tag color={type === 'exchange' ? 'orange' : 'blue'}>
                   {type}
                 </Tag>
+                {ae && <Tooltip
+                  title={
+                    <>
+                      When the exchange cannot route a message to any queue, it
+                      publishes the message to this alternate exchange instead.{' '}
+                      <a href="https://www.rabbitmq.com/ae.html">More info</a>
+                    </>
+                  }
+                >
+                  <Tag color="red">Alternate Exchange</Tag>
+                </Tooltip>}
+                {dl && <Tooltip
+                  title={
+                    <>
+                      A message is republished to this exchange when it is negatively acknowledged, it expires, or it is dropped because its queue exceeded a length limit.{' '}
+                      <a href="https://www.rabbitmq.com/dlx.html">More info</a>
+                    </>
+                  }
+                >
+                  <Tag color="red">Dead letter</Tag>
+                </Tooltip>}
+                </span>
               </Space>
             )
           },
@@ -71,27 +100,12 @@ export const BindingsTable: FC<{
         {
           title: 'Routing key',
           dataIndex: 'routing_key',
-          render: (value, binding) =>
-            'ae' in binding ? (
-              <Tooltip
-                title={
-                  <>
-                    When the exchange cannot route a message to any queue, it
-                    publishes the message to this alternate exchange instead.{' '}
-                    <a href="https://www.rabbitmq.com/ae.html">More info</a>
-                  </>
-                }
-              >
-                <Tag color="red">Alternate Exchange</Tag>
-              </Tooltip>
-            ) : (
-              <pre style={{ margin: 0 }}>{value}</pre>
-            ),
+          render: (value) => <pre style={{ margin: 0 }}>{value}</pre>,
         },
         {
           width: 1,
           render: (value) =>
-            !('ae' in value) && (
+            !value.ae && !value.dl && (
               <Button
                 icon={<DeleteOutlined />}
                 shape="circle"

@@ -11,6 +11,7 @@ import { CachePolicies, useFetch } from 'use-http'
 import { ToTopOutlined } from '@ant-design/icons'
 import { Message } from '../../../components/Message'
 import { RabbitMessage } from '../../../types'
+import { ExchangeLink } from '../../../components/ExchangeLink'
 
 export const Publish: FC<{
   match: Match<{ vhost: string; queueName: string }>
@@ -58,7 +59,7 @@ export const Publish: FC<{
       <Space direction="vertical" style={{ width: '100%' }} size="middle">
         <p>
           Message will be published to the{' '}
-          <Link to={`/exchanges/${vhost}/amq.default`}>default exchange</Link>{' '}
+          <ExchangeLink name="amq.default" vhost={decodeURIComponent(vhost)} />{' '}
           with routing key <b>{decodeURIComponent(queueName)}</b>, routing it to
           this queue.
         </p>

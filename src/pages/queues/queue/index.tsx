@@ -14,11 +14,13 @@ import { OptTag } from '../../../components/OptTag'
 import {
   DashboardOutlined,
   StockOutlined,
+  SwapOutlined,
   ToTopOutlined,
   VerticalAlignBottomOutlined,
 } from '@ant-design/icons'
 import { RabbitQueue } from '../../../types'
 import { QueueTypeTag } from '../../../components/QueueTypeTag'
+import { Routing } from './Routing'
 
 export const queueTags = (data?: RabbitQueue) => [
   <OptTag name="Durable" key="d" abbr="D" value={data?.durable} />,
@@ -102,11 +104,15 @@ export const Queue: FC<{
         <Menu.Item key="/get" icon={<VerticalAlignBottomOutlined />}>
           Consume
         </Menu.Item>
+        <Menu.Item key="/routing" icon={<SwapOutlined />}>
+          Routing
+        </Menu.Item>
       </Menu>
       <Switch>
         <Route path={match.path + '/forecast'} component={Forecast} />
         <Route path={match.path + '/publish'} component={Publish} />
         <Route path={match.path + '/get'} component={Get} />
+        <Route path={match.path + '/routing'} component={Routing} />
         <Route path={match.path} exact component={Overview} />
       </Switch>
     </>

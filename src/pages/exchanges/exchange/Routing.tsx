@@ -4,6 +4,8 @@ import { Box } from '@xstyled/styled-components'
 import { match as Match } from 'react-router-dom'
 import { useFetchExchange } from '../../../hooks/useFetchExchange'
 import { BindingsTable } from '../../../components/BindingsTable'
+import { useFetchExchangeSource } from '../../../hooks/useFetchExchangeSource'
+import { useFetchExchangeDestination } from '../../../hooks/useFetchExchangeDestination'
 
 export const Routing: FC<{
   match: Match<{ vhost: string; exchangeName: string }>
@@ -13,6 +15,19 @@ export const Routing: FC<{
   const { data } = useFetchExchange({
     vhost,
     exchangeName,
+    live: true,
+  })
+
+  const { source } = useFetchExchangeSource({
+    vhost,
+    exchangeName,
+    live: true,
+  })
+
+  const { destination, destinationAlternateExchanges, destinationDeadLetters } = useFetchExchangeDestination({
+    vhost,
+    exchangeName,
+    live: true,
   })
 
   return (
@@ -20,15 +35,16 @@ export const Routing: FC<{
       <Row gutter={[20, 20]}>
         <Col span={12}>
           <BindingsTable
-            bindings={data?.destination}
+            bindings={destination}
             show="source"
-            destinationAlternateExchanges={data?.destinationAlternateExchanges}
+            destinationAlternateExchanges={destinationAlternateExchanges}
+            destinationDeadLetters={destinationDeadLetters}
           />
         </Col>
 
         <Col span={12}>
           <BindingsTable
-            bindings={data?.source}
+            bindings={source}
             show="destination"
             alternateExchange={data?.arguments['alternate-exchange']}
             vhost={data?.vhost}

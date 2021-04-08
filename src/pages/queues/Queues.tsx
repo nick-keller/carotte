@@ -11,6 +11,7 @@ import { useFetchQueues } from '../../hooks/useFetchQueues'
 import { NewQueueButton } from '../../actions/newQueue/NewQueueButton'
 import { queueTags } from './queue'
 import { QueueTypeTag } from '../../components/QueueTypeTag'
+import { QueueLink } from '../../components/QueueLink'
 
 export const Queues: FC<{ match: Match }> = ({ match }) => {
   const { data, loading } = useFetchQueues({ live: true })
@@ -140,14 +141,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
                   </Typography.Text>
                 )}
 
-                <Link
-                  to={
-                    match.url +
-                    `/${encodeURIComponent(vhost)}/${encodeURIComponent(name)}`
-                  }
-                >
-                  {name}
-                </Link>
+                <QueueLink name={name} vhost={vhost} />
               </Space>
             ),
           },

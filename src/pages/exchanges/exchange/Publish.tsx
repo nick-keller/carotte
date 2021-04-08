@@ -1,13 +1,5 @@
 import React, { FC, useState } from 'react'
-import {
-  AutoComplete,
-  Button,
-  Divider,
-  Form,
-  message,
-  Select,
-  Space,
-} from 'antd'
+import { AutoComplete, Button, Divider, Form, message, Select, Space, } from 'antd'
 import { Box } from '@xstyled/styled-components'
 import { match as Match } from 'react-router-dom'
 import AceEditor from 'react-ace'
@@ -19,13 +11,13 @@ import { CachePolicies, useFetch } from 'use-http'
 import { ToTopOutlined } from '@ant-design/icons'
 import { Message } from '../../../components/Message'
 import { RabbitMessage } from '../../../types'
-import { useFetchExchange } from '../../../hooks/useFetchExchange'
+import { useFetchExchangeSource } from '../../../hooks/useFetchExchangeSource'
 
 export const Publish: FC<{
   match: Match<{ vhost: string; exchangeName: string }>
 }> = ({ match }) => {
   const { vhost, exchangeName } = match.params
-  const { data } = useFetchExchange({ vhost, exchangeName })
+  const { source } = useFetchExchangeSource({ vhost, exchangeName })
 
   const [publishMessage, setPublishMessage] = useLocalStorage(
     `publish_${exchangeName}`,
@@ -75,7 +67,7 @@ export const Publish: FC<{
             value={routingKey}
             onChange={setRoutingKey}
             style={{ width: '400px' }}
-            options={data?.source
+            options={source
               ?.map(({ routing_key }) => ({ value: routing_key }))
               .filter(
                 ({ value }) =>

@@ -1,28 +1,21 @@
 import { CachePolicies, useFetch } from 'use-http'
-import { RabbitExchange } from '../types'
+import { RabbitBinding } from '../types'
 import { useEffect } from 'react'
 
-export const useFetchExchange = ({
+export const useFetchExchangeSource = ({
   vhost,
   exchangeName,
   live = false,
-  onNotFound = () => null,
 }: {
   vhost: string
   exchangeName: string
   live?: boolean
-  onNotFound?: () => void
 }) => {
-  const { data, loading, get, response } = useFetch<RabbitExchange>(
-    `exchanges/${vhost}/${exchangeName}`,
+  const { data, loading, get, response } = useFetch<RabbitBinding[]>(
+    `exchanges/${vhost}/${exchangeName}/bindings/source`,
     {
       cachePolicy: CachePolicies.NETWORK_ONLY,
       persist: false,
-      onError: ({ error }) => {
-        if (error.name === '404') {
-          onNotFound()
-        }
-      },
     },
     [live, vhost, exchangeName]
   )
@@ -33,18 +26,10 @@ export const useFetchExchange = ({
 
       return () => clearTimeout(timeout)
     }
-  }, [
-    get,
-    live,
-    loading,
-  ])
+  }, [get, live, loading])
 
   return {
-    data:
-      response.ok === false ||
-      !data
-        ? undefined
-        : data,
+    source: response.ok ? data ?? [] : [],
     loading,
   }
 }
