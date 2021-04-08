@@ -30,7 +30,8 @@ function App() {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Layout.Sider>
+      <Layout.Sider breakpoint="lg"
+                    collapsedWidth="0">
         <Menu theme="dark" selectedKeys={[activeRoute]}>
           <Menu.Item icon={<AppstoreOutlined />} key="/" disabled>
             <Link to="/">Overview</Link>

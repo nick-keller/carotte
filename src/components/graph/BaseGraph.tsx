@@ -46,7 +46,7 @@ export const BaseGraph: FC<Props> = ({
 
   return (
     <div>
-      <ResponsiveContainer aspect={4} minHeight={100}>
+      <ResponsiveContainer height={200}>
         <LineChart data={data} margin={{ top: 5, right: 5 }}>
           <ChartTooltip
             labelFormatter={(x) => formatDate(x)}

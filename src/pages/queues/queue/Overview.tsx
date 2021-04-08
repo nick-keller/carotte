@@ -110,7 +110,7 @@ export const Overview: FC<{
           </Space>
         </Col>
 
-        <Col span={12}>
+        <Col span={24} md={12}>
           <Graph
             data={[...messages].reverse().map(({ key, name, color }) => ({
               samples:
@@ -131,7 +131,7 @@ export const Overview: FC<{
             </Space>
           </Box>
         </Col>
-        <Col span={12}>
+        <Col span={24} md={12}>
           <Graph
             derivative
             format={(value) => formatRate(value) + '/s'}

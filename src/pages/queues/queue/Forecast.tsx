@@ -64,7 +64,7 @@ export const Forecast: FC<{
           </Space>
         </Col>
 
-        <Col span={10}>
+        <Col span={24} md={10}>
           <Row>
             <Col span={12}>
               <Space direction="vertical">
@@ -96,7 +96,7 @@ export const Forecast: FC<{
             </Col>
           </Row>
         </Col>
-        <Col span={14}>
+        <Col span={24} md={14}>
           <ForecastGraph
             samples={data?.messages_details.samples ?? []}
             rate={rate}

@@ -24,10 +24,10 @@ export const Routing: FC<{
   return (
     <Box m={20}>
       <Row gutter={[20, 20]}>
-        <Col span={12}>
+        <Col span={24} lg={12}>
           <BindingsTable show="source" vhost={decodeURIComponent(vhost)} bindings={bindings} />
         </Col>
-        <Col span={12}>
+        <Col span={24} lg={12}>
           <BindingsTable show="destination" vhost={decodeURIComponent(vhost)} bindings={data?.arguments['x-dead-letter-exchange'] ? [{
             destination: data?.arguments['x-dead-letter-exchange'],
             destination_type: 'exchange',

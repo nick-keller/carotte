@@ -71,11 +71,13 @@ export const Exchanges: FC<{ match: Match }> = ({ match }) => {
           {
             title: 'Options',
             render: (value) => exchangeTags(value),
+            responsive: ['md']
           },
           {
             title: 'Type',
             dataIndex: 'type',
             render: (value) => <ExchangeTypeTag type={value} />,
+            responsive: ['sm']
           },
         ]}
         pagination={{
