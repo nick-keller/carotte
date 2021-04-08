@@ -1,7 +1,6 @@
 import { CachePolicies, useFetch } from 'use-http'
 import { RabbitBinding, RabbitExchange } from '../types'
 import { useEffect } from 'react'
-import { useFetchQueues } from './useFetchQueues'
 import { useFetchExchanges } from './useFetchExchanges'
 
 export const useFetchExchange = ({
@@ -31,7 +30,12 @@ export const useFetchExchange = ({
     [live, vhost, exchangeName]
   )
 
-  const source = useFetch<RabbitBinding[]>(
+  const {
+    data: sourceData,
+    loading: sourceLoading,
+    get: sourceGet,
+    response: sourceResponse,
+  } = useFetch<RabbitBinding[]>(
     `exchanges/${vhost}/${exchangeName}/bindings/source`,
     {
       cachePolicy: CachePolicies.NETWORK_ONLY,
@@ -40,7 +44,12 @@ export const useFetchExchange = ({
     [live, vhost, exchangeName]
   )
 
-  const destination = useFetch<RabbitBinding[]>(
+  const {
+    data: destinationData,
+    loading: destinationLoading,
+    get: destinationGet,
+    response: destinationResponse,
+  } = useFetch<RabbitBinding[]>(
     `exchanges/${vhost}/${exchangeName}/bindings/destination`,
     {
       cachePolicy: CachePolicies.NETWORK_ONLY,
@@ -50,11 +59,11 @@ export const useFetchExchange = ({
   )
 
   useEffect(() => {
-    if (!loading && !source.loading && !destination.loading && live) {
+    if (!loading && !sourceLoading && !destinationLoading && live) {
       const timeout = setTimeout(() => {
         get()
-        source.get()
-        destination.get()
+        sourceGet()
+        destinationGet()
       }, 5000)
 
       return () => clearTimeout(timeout)
@@ -63,24 +72,24 @@ export const useFetchExchange = ({
     get,
     live,
     loading,
-    source.loading,
-    destination.loading,
-    source.get,
-    destination.get,
+    sourceLoading,
+    destinationLoading,
+    sourceGet,
+    destinationGet,
   ])
 
   return {
     data:
       response.ok === false ||
-      source.response.ok === false ||
-      destination.response.ok === false ||
+      sourceResponse.ok === false ||
+      destinationResponse.ok === false ||
       !data ||
       !allExchanges.data
         ? undefined
         : {
             ...data,
-            source: source.data,
-            destination: destination.data,
+            source: sourceData,
+            destination: destinationData,
             destinationAlternateExchanges: allExchanges.data.filter(
               (e) => e.arguments['alternate-exchange'] === exchangeName
             ),
