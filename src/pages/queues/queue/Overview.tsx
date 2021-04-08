@@ -136,7 +136,8 @@ export const Overview: FC<{
             derivative
             format={(value) => formatRate(value) + '/s'}
             type="step"
-            data={[...messagesPublish, ...messagesGet].reverse()
+            data={[...messagesPublish, ...messagesGet]
+              .reverse()
               .map(({ key, name, color }) => ({
                 samples:
                   data?.message_stats?.[(key + '_details') as 'ack_details']

@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react'
-import { Button, Space, Select, message, Divider } from 'antd'
+import { Button, Space, Select, message, Divider, Alert } from 'antd'
 import { Box } from '@xstyled/styled-components'
-import { match as Match } from 'react-router-dom'
+import { match as Match, Link } from 'react-router-dom'
 import AceEditor from 'react-ace'
 import useLocalStorage from 'use-local-storage'
 import 'ace-builds/src-noconflict/mode-json'
@@ -46,7 +46,7 @@ export const Publish: FC<{
     })
 
     if (response.ok) {
-      setLastPublished(a => [publishMessage, ...a])
+      setLastPublished((a) => [publishMessage, ...a])
       message.success('Published message')
     } else {
       message.success('Could not publish message')
@@ -56,6 +56,12 @@ export const Publish: FC<{
   return (
     <Box m={20}>
       <Space direction="vertical" style={{ width: '100%' }} size="middle">
+        <p>
+          Message will be published to the{' '}
+          <Link to={`/exchanges/${vhost}/amq.default`}>default exchange</Link>{' '}
+          with routing key <b>{decodeURIComponent(queueName)}</b>, routing it to
+          this queue.
+        </p>
         <Select
           value={mode}
           onChange={setMode}
@@ -95,7 +101,9 @@ export const Publish: FC<{
         </Button>
       </Space>
 
-      <Divider orientation="left" plain>{lastPublished.length} messages published</Divider>
+      <Divider orientation="left" plain>
+        {lastPublished.length} messages published
+      </Divider>
 
       <Space direction="vertical" style={{ width: '100%' }}>
         {lastPublished.map((message) => (

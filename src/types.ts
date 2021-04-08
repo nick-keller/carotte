@@ -30,6 +30,14 @@ export type RabbitConsumer = {
   queue: { name: string; vhost: string }
 }
 
+export type RabbitExchangeArguments = {
+  'alternate-exchange'?: string
+}
+
+export type RabbitBindingArguments = {
+  'alternate-exchange'?: string
+}
+
 export type RabbitQueueArguments = {
   'x-dead-letter-exchange'?: string
   'x-single-active-consumer'?: boolean
@@ -42,6 +50,29 @@ export type RabbitQueueArguments = {
   'x-overflow'?: 'drop-head' | 'reject-publish' | 'reject-publish-dlx'
   'x-queue-mode'?: 'lazy' | 'default'
   'x-queue-type'?: 'classic' | 'quorum'
+}
+
+export type RabbitBinding = {
+  arguments: RabbitBindingArguments
+  destination: string
+  destination_type: 'exchange' | 'queue'
+  properties_key: string
+  routing_key: string
+  source: string
+  vhost: string
+}
+
+export type RabbitExchange = {
+  arguments: RabbitExchangeArguments
+  auto_delete: boolean
+  durable: boolean
+  incoming: []
+  internal: boolean
+  name: string
+  outgoing: []
+  type: 'fanout' | 'direct' | 'topic' | 'headers'
+  user_who_performed_action: string
+  vhost: string
 }
 
 export type RabbitQueue<Stat = RabbitMessageStat> = {
@@ -95,7 +126,7 @@ export type RabbitQueue<Stat = RabbitMessageStat> = {
   reductions: number
   reductions_details: Stat
   state: 'running' | string
-  type: 'classic' | string
+  type: 'classic' | 'quorum'
   vhost: string
 }
 

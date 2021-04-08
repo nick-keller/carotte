@@ -22,6 +22,7 @@ import { QueuesIndex } from './pages/queues'
 import { CheckConnection } from './pages/auth/CheckConnection'
 import { useActiveChildRoute } from './hooks/useActiveChildRoute'
 import GithubCorner from 'react-github-corner'
+import { ExchangesIndex } from './pages/exchanges'
 
 function App() {
   const { username, logout } = useContext(CredentialsContext)
@@ -37,6 +38,9 @@ function App() {
           <Menu.Item icon={<BuildOutlined />} key="/queues">
             <Link to="/queues">Queues</Link>
           </Menu.Item>
+          <Menu.Item icon={<BuildOutlined />} key="/exchanges">
+            <Link to="/exchanges">Exchanges</Link>
+          </Menu.Item>
           <Menu.SubMenu icon={<UserOutlined />} key="user" title={username}>
             <Menu.Item icon={<LogoutOutlined />} key="logout" onClick={logout}>
               Logout
@@ -47,6 +51,7 @@ function App() {
       <Layout.Content style={{ background: 'white' }}>
         <Switch>
           <Route path="/queues" component={QueuesIndex} />
+          <Route path="/exchanges" component={ExchangesIndex} />
           <Redirect to="/queues" />
         </Switch>
       </Layout.Content>

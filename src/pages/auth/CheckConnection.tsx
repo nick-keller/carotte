@@ -62,7 +62,12 @@ export const CheckConnection: FC = ({ children }) => {
         <Space
           direction="vertical"
           align="center"
-          style={{ margin: 'auto', display: 'flex', alignItems: 'stretch', maxWidth: '400px' }}
+          style={{
+            margin: 'auto',
+            display: 'flex',
+            alignItems: 'stretch',
+            maxWidth: '400px',
+          }}
           size="large"
         >
           <List

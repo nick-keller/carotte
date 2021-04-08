@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Tag, Tooltip } from 'antd'
 
-export const QueueTag: FC<{
+export const OptTag: FC<{
   name: string
   abbr: string
   value?: boolean | string | number

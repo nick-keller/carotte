@@ -27,7 +27,11 @@ export const NewConnectionButton: FC = () => {
 
   return (
     <>
-      <Button type="primary" onClick={() => setVisible(true)} style={{ display: 'block', margin: 'auto' }}>
+      <Button
+        type="primary"
+        onClick={() => setVisible(true)}
+        style={{ display: 'block', margin: 'auto' }}
+      >
         New connection
       </Button>
       <Modal

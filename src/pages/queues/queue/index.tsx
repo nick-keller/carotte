@@ -10,7 +10,7 @@ import { DeleteQueuesButton } from '../../../actions/deleteQueues/DeleteQueuesBu
 import { Forecast } from './Forecast'
 import { useActiveChildRoute } from '../../../hooks/useActiveChildRoute'
 import { useFetchQueue } from '../../../hooks/useFetchQueue'
-import { QueueTag } from '../../../components/QueueTag'
+import { OptTag } from '../../../components/OptTag'
 import {
   DashboardOutlined,
   StockOutlined,
@@ -18,28 +18,19 @@ import {
   VerticalAlignBottomOutlined,
 } from '@ant-design/icons'
 import { RabbitQueue } from '../../../types'
+import { QueueTypeTag } from '../../../components/QueueTypeTag'
 
 export const queueTags = (data?: RabbitQueue) => [
-  <QueueTag name="Durable" key="d" abbr="D" value={data?.durable} />,
-  <QueueTag
-    name="Auto Delete"
-    key="ad"
-    abbr="AD"
-    value={data?.auto_delete}
-  />,
-  <QueueTag
-    name="Exclusive"
-    key="e"
-    abbr="E"
-    value={data?.exclusive}
-  />,
-  <QueueTag
+  <OptTag name="Durable" key="d" abbr="D" value={data?.durable} />,
+  <OptTag name="Auto Delete" key="ad" abbr="AD" value={data?.auto_delete} />,
+  <OptTag name="Exclusive" key="e" abbr="E" value={data?.exclusive} />,
+  <OptTag
     name="Single active consumer"
     key="sac"
     abbr="SAC"
     value={data?.arguments['x-single-active-consumer']}
   />,
-  <QueueTag
+  <OptTag
     name="Lazy"
     key="lazy"
     abbr="L"
@@ -68,7 +59,10 @@ export const Queue: FC<{
         title={decodeURIComponent(queueName)}
         onBack={() => history.push('/queues')}
         style={{ marginRight: '30px' }}
-        tags={queueTags(data)}
+        tags={[
+          <QueueTypeTag type={data?.type} key="type" />,
+          ...queueTags(data),
+        ]}
         extra={[
           <MoveQueuesButton
             vhost={decodeURIComponent(vhost)}

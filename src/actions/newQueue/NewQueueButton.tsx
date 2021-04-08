@@ -116,11 +116,16 @@ export const NewQueueButton: FC = () => {
               <Radio.Button value="quorum">Quorum</Radio.Button>
             </Radio.Group>
           </Form.Item>
-          {(data?.length ?? 0) > 1 && <Form.Item name="vhost" label="V-Host" required>
-            <Select
-              options={data?.map(({ name }) => ({ label: name, value: name }))}
-            />
-          </Form.Item>}
+          {(data?.length ?? 0) > 1 && (
+            <Form.Item name="vhost" label="V-Host" required>
+              <Select
+                options={data?.map(({ name }) => ({
+                  label: name,
+                  value: name,
+                }))}
+              />
+            </Form.Item>
+          )}
           <Form.Item
             name="name"
             label="Name"

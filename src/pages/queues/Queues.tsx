@@ -10,6 +10,7 @@ import { DeleteQueuesButton } from '../../actions/deleteQueues/DeleteQueuesButto
 import { useFetchQueues } from '../../hooks/useFetchQueues'
 import { NewQueueButton } from '../../actions/newQueue/NewQueueButton'
 import { queueTags } from './queue'
+import { QueueTypeTag } from '../../components/QueueTypeTag'
 
 export const Queues: FC<{ match: Match }> = ({ match }) => {
   const { data, loading } = useFetchQueues({ live: true })
@@ -153,6 +154,10 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
           {
             title: 'Options',
             render: (value) => queueTags(value),
+          },
+          {
+            title: 'Type',
+            render: (value) => <QueueTypeTag type={value.type} />,
           },
           {
             title: 'Messages',
