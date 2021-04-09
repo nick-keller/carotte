@@ -24,7 +24,11 @@ export const Routing: FC<{
     live: true,
   })
 
-  const { destination, destinationAlternateExchanges, destinationDeadLetters } = useFetchExchangeDestination({
+  const {
+    destination,
+    destinationAlternateExchanges,
+    destinationDeadLetters,
+  } = useFetchExchangeDestination({
     vhost,
     exchangeName,
     live: true,

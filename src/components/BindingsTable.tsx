@@ -56,7 +56,7 @@ export const BindingsTable: FC<{
             vhost,
             ae,
             dl,
-          }: RabbitBinding& { ae?: boolean; dl?: boolean }) => {
+          }: RabbitBinding & { ae?: boolean; dl?: boolean }) => {
             const type =
               (show === 'source' && !dl) || destination_type === 'exchange'
                 ? 'exchange'
@@ -65,33 +65,46 @@ export const BindingsTable: FC<{
 
             return (
               <Space>
-                {type === 'exchange' && <ExchangeLink name={name} vhost={vhost} />}
+                {type === 'exchange' && (
+                  <ExchangeLink name={name} vhost={vhost} />
+                )}
                 {type === 'queue' && <QueueLink name={name} vhost={vhost} />}
                 <span>
-                <Tag color={type === 'exchange' ? 'orange' : 'blue'}>
-                  {type}
-                </Tag>
-                {ae && <Tooltip
-                  title={
-                    <>
-                      When the exchange cannot route a message to any queue, it
-                      publishes the message to this alternate exchange instead.{' '}
-                      <a href="https://www.rabbitmq.com/ae.html">More info</a>
-                    </>
-                  }
-                >
-                  <Tag color="red">Alternate Exchange</Tag>
-                </Tooltip>}
-                {dl && <Tooltip
-                  title={
-                    <>
-                      A message is republished to this exchange when it is negatively acknowledged, it expires, or it is dropped because its queue exceeded a length limit.{' '}
-                      <a href="https://www.rabbitmq.com/dlx.html">More info</a>
-                    </>
-                  }
-                >
-                  <Tag color="red">Dead letter</Tag>
-                </Tooltip>}
+                  <Tag color={type === 'exchange' ? 'orange' : 'blue'}>
+                    {type}
+                  </Tag>
+                  {ae && (
+                    <Tooltip
+                      title={
+                        <>
+                          When the exchange cannot route a message to any queue,
+                          it publishes the message to this alternate exchange
+                          instead.{' '}
+                          <a href="https://www.rabbitmq.com/ae.html">
+                            More info
+                          </a>
+                        </>
+                      }
+                    >
+                      <Tag color="red">Alternate Exchange</Tag>
+                    </Tooltip>
+                  )}
+                  {dl && (
+                    <Tooltip
+                      title={
+                        <>
+                          A message is republished to this exchange when it is
+                          negatively acknowledged, it expires, or it is dropped
+                          because its queue exceeded a length limit.{' '}
+                          <a href="https://www.rabbitmq.com/dlx.html">
+                            More info
+                          </a>
+                        </>
+                      }
+                    >
+                      <Tag color="red">Dead letter</Tag>
+                    </Tooltip>
+                  )}
                 </span>
               </Space>
             )
@@ -105,7 +118,8 @@ export const BindingsTable: FC<{
         {
           width: 1,
           render: (value) =>
-            !value.ae && !value.dl && (
+            !value.ae &&
+            !value.dl && (
               <Button
                 icon={<DeleteOutlined />}
                 shape="circle"

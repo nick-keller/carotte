@@ -28,5 +28,5 @@ export const useFetchQueueBindings = ({
     }
   }, [get, live, loading])
 
-  return { bindings: response.ok  ? data ?? [] : [], loading }
+  return { bindings: response.ok ? data ?? [] : [], loading }
 }

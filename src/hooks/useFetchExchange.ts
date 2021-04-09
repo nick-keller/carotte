@@ -33,18 +33,10 @@ export const useFetchExchange = ({
 
       return () => clearTimeout(timeout)
     }
-  }, [
-    get,
-    live,
-    loading,
-  ])
+  }, [get, live, loading])
 
   return {
-    data:
-      response.ok === false ||
-      !data
-        ? undefined
-        : data,
+    data: response.ok === false || !data ? undefined : data,
     loading,
   }
 }

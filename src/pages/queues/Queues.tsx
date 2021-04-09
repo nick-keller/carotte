@@ -148,12 +148,12 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
           {
             title: 'Options',
             render: (value) => queueTags(value),
-            responsive: ['xl']
+            responsive: ['xl'],
           },
           {
             title: 'Type',
             render: (value) => <QueueTypeTag type={value.type} />,
-            responsive: ['lg']
+            responsive: ['lg'],
           },
           {
             title: 'Messages',
@@ -166,7 +166,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
                 {formatNumber(value)}
               </Typography.Text>
             ),
-            responsive: ['sm']
+            responsive: ['sm'],
           },
           {
             title: 'Consumers',
@@ -179,7 +179,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
                 {formatNumber(value)}
               </Typography.Text>
             ),
-            responsive: ['sm']
+            responsive: ['sm'],
           },
         ]}
         pagination={{

@@ -5,6 +5,7 @@ import {
   BuildOutlined,
   LogoutOutlined,
   UserOutlined,
+  PartitionOutlined,
 } from '@ant-design/icons'
 import {
   BrowserRouter as Router,
@@ -30,8 +31,7 @@ function App() {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Layout.Sider breakpoint="lg"
-                    collapsedWidth="0">
+      <Layout.Sider breakpoint="lg" collapsedWidth="0">
         <Menu theme="dark" selectedKeys={[activeRoute]}>
           <Menu.Item icon={<AppstoreOutlined />} key="/" disabled>
             <Link to="/">Overview</Link>
@@ -39,7 +39,7 @@ function App() {
           <Menu.Item icon={<BuildOutlined />} key="/queues">
             <Link to="/queues">Queues</Link>
           </Menu.Item>
-          <Menu.Item icon={<BuildOutlined />} key="/exchanges">
+          <Menu.Item icon={<PartitionOutlined />} key="/exchanges">
             <Link to="/exchanges">Exchanges</Link>
           </Menu.Item>
           <Menu.SubMenu icon={<UserOutlined />} key="user" title={username}>

@@ -16,12 +16,7 @@ export const useFetchExchangeDestination = ({
   const allExchanges = useFetchExchanges({ live })
   const allQueues = useFetchQueues({ live })
 
-  const {
-    data,
-    loading,
-    get,
-    response,
-  } = useFetch<RabbitBinding[]>(
+  const { data, loading, get, response } = useFetch<RabbitBinding[]>(
     `exchanges/${vhost}/${exchangeName}/bindings/destination`,
     {
       cachePolicy: CachePolicies.NETWORK_ONLY,
@@ -36,11 +31,7 @@ export const useFetchExchangeDestination = ({
 
       return () => clearTimeout(timeout)
     }
-  }, [
-    get,
-    live,
-    loading,
-  ])
+  }, [get, live, loading])
 
   return {
     destination: response.ok ? data ?? [] : [],

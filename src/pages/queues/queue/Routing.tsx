@@ -25,16 +25,30 @@ export const Routing: FC<{
     <Box m={20}>
       <Row gutter={[20, 20]}>
         <Col span={24} lg={12}>
-          <BindingsTable show="source" vhost={decodeURIComponent(vhost)} bindings={bindings} />
+          <BindingsTable
+            show="source"
+            vhost={decodeURIComponent(vhost)}
+            bindings={bindings}
+          />
         </Col>
         <Col span={24} lg={12}>
-          <BindingsTable show="destination" vhost={decodeURIComponent(vhost)} bindings={data?.arguments['x-dead-letter-exchange'] ? [{
-            destination: data?.arguments['x-dead-letter-exchange'],
-            destination_type: 'exchange',
-            vhost: decodeURIComponent(vhost),
-            routing_key: data?.arguments['x-dead-letter-routing-key'],
-            dl: true
-          } as RabbitBinding & { dl: boolean }] : []} />
+          <BindingsTable
+            show="destination"
+            vhost={decodeURIComponent(vhost)}
+            bindings={
+              data?.arguments['x-dead-letter-exchange']
+                ? [
+                    {
+                      destination: data?.arguments['x-dead-letter-exchange'],
+                      destination_type: 'exchange',
+                      vhost: decodeURIComponent(vhost),
+                      routing_key: data?.arguments['x-dead-letter-routing-key'],
+                      dl: true,
+                    } as RabbitBinding & { dl: boolean },
+                  ]
+                : []
+            }
+          />
         </Col>
       </Row>
     </Box>
