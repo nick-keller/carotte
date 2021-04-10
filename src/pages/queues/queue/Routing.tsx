@@ -42,7 +42,8 @@ export const Routing: FC<{
                       destination: queue?.arguments['x-dead-letter-exchange'],
                       destination_type: 'exchange',
                       vhost: decodeURIComponent(vhost),
-                      routing_key: queue?.arguments['x-dead-letter-routing-key'],
+                      routing_key:
+                        queue?.arguments['x-dead-letter-routing-key'],
                       dl: true,
                     } as RabbitBinding & { dl: boolean },
                   ]

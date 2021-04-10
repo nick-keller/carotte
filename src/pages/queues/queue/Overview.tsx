@@ -114,7 +114,8 @@ export const Overview: FC<{
           <Graph
             data={[...messages].reverse().map(({ key, name, color }) => ({
               samples:
-                queue?.[(key + '_details') as 'messages_details']?.samples ?? [],
+                queue?.[(key + '_details') as 'messages_details']?.samples ??
+                [],
               name,
               stroke: color,
             }))}

@@ -3,6 +3,11 @@ export type RabbitSample = {
   timestamp: number
 }
 
+export enum DeliveryMode {
+  Persistent = 2,
+  Transient = 1,
+}
+
 export type RabbitMessageStat = {
   avg: number
   avg_rate: number
@@ -130,13 +135,30 @@ export type RabbitQueue<Stat = RabbitMessageStat> = {
   vhost: string
 }
 
+export type DeathReason = 'rejected' | 'expired'
+
 export type RabbitMessage = {
   exchange: string
-  message_count: number
+  message_count?: number
   payload: string
-  payload_bytes: number
+  payload_bytes?: number
   payload_encoding: string
-  properties: Record<string, any>
+  properties: {
+    delivery_mode: DeliveryMode
+    headers: {
+      'x-death'?: {
+        count: number
+        exchange: string
+        queue: string
+        reason: DeathReason
+        'routing-keys': string[]
+        time: number
+      }[]
+      'x-first-death-exchange'?: string
+      'x-first-death-queue'?: string
+      'x-first-death-reason'?: DeathReason
+    }
+  }
   redelivered: boolean
   routing_key: string
 }

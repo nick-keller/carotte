@@ -22,7 +22,7 @@ export const Publish: FC<{
     `publish_${queueName}`,
     ''
   )
-  const [lastPublished, setLastPublished] = useState<string[]>([])
+  const [lastPublished, setLastPublished] = useState<RabbitMessage[]>([])
   const [mode, setMode] = useLocalStorage(`publishMode`, 'json')
 
   const { response, post, loading } = useFetch(
@@ -47,7 +47,17 @@ export const Publish: FC<{
     })
 
     if (response.ok) {
-      setLastPublished((a) => [publishMessage, ...a])
+      setLastPublished((a) => [{
+        routing_key: decodeURIComponent(queueName),
+        exchange: '',
+        payload_encoding: 'string',
+        redelivered: false,
+        payload: publishMessage,
+        properties: {
+          headers: {},
+          delivery_mode: 1,
+        }
+      }, ...a])
       message.success('Published message')
     } else {
       message.success('Could not publish message')
@@ -108,7 +118,7 @@ export const Publish: FC<{
 
       <Space direction="vertical" style={{ width: '100%' }}>
         {lastPublished.map((message) => (
-          <Message message={{ payload: message } as RabbitMessage} />
+          <Message message={message} />
         ))}
       </Space>
     </Box>

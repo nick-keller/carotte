@@ -17,6 +17,15 @@ const percentageFormatter = Intl.NumberFormat('en-US', {
   maximumFractionDigits: 6,
 })
 
+const dateTimeFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+  hour12: false,
+})
+
 const dateFormatter = new Intl.DateTimeFormat('en-US', {
   month: 'long',
   day: 'numeric',
@@ -46,6 +55,9 @@ export const formatPercentage = (number: number) =>
 
 export const formatRate = (number: number) =>
   isNaN(number) ? '' : rateFormatter.format(number)
+
+export const formatDateTime = (value: number | Date | string) =>
+  dateTimeFormatter.format(new Date(value))
 
 export const formatDate = (value: number | Date | string) =>
   dateFormatter.format(new Date(value))

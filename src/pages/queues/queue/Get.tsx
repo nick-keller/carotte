@@ -45,7 +45,19 @@ export const Get: FC<{
             <Radio.Button value={false}>Reject</Radio.Button>
           </Radio.Group>
         </Form.Item>
-        <Form.Item label="Requeue" name="requeue" valuePropName="checked">
+        <Form.Item
+          label="Requeue"
+          name="requeue"
+          valuePropName="checked"
+          tooltip={
+            <>
+              If requeue is set the message will be put back into the queue in
+              place, but <code>redelivered</code> will be set on the message.
+              <br />
+              If requeue is not set messages will be removed from the queue.
+            </>
+          }
+        >
           <Switch checkedChildren="Yes" unCheckedChildren="No" />
         </Form.Item>
         <Form.Item label="Messages" name="count">

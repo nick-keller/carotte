@@ -12,7 +12,12 @@ import { Publish } from './Publish'
 
 export const exchangeTags = (exchange?: RabbitExchange) => [
   <OptTag name="Durable" key="d" abbr="D" value={exchange?.durable} />,
-  <OptTag name="Auto Delete" key="ad" abbr="AD" value={exchange?.auto_delete} />,
+  <OptTag
+    name="Auto Delete"
+    key="ad"
+    abbr="AD"
+    value={exchange?.auto_delete}
+  />,
   <OptTag name="Internal" key="i" abbr="I" value={exchange?.internal} />,
 ]
 
