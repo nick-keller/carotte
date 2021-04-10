@@ -76,7 +76,7 @@ export const Overview: FC<{
   const [liveQueue, setLiveQueue] = useLocalStorage('liveQueue', true)
   const [graphRange, setGraphRange] = useLocalStorage('graphRange', MINUTE)
 
-  const { data } = useFetchQueue({
+  const { queue } = useFetchQueue({
     vhost,
     queueName,
     live: liveQueue,
@@ -114,7 +114,7 @@ export const Overview: FC<{
           <Graph
             data={[...messages].reverse().map(({ key, name, color }) => ({
               samples:
-                data?.[(key + '_details') as 'messages_details']?.samples ?? [],
+                queue?.[(key + '_details') as 'messages_details']?.samples ?? [],
               name,
               stroke: color,
             }))}
@@ -124,7 +124,7 @@ export const Overview: FC<{
               {messages.map(({ key, name, color }) => (
                 <Statistic
                   title={<Badge color={color} text={name} />}
-                  value={data?.[key as 'messages']}
+                  value={queue?.[key as 'messages']}
                   key={key}
                 />
               ))}
@@ -140,7 +140,7 @@ export const Overview: FC<{
               .reverse()
               .map(({ key, name, color }) => ({
                 samples:
-                  data?.message_stats?.[(key + '_details') as 'ack_details']
+                  queue?.message_stats?.[(key + '_details') as 'ack_details']
                     ?.samples ?? [],
                 name,
                 stroke: color,
@@ -156,7 +156,7 @@ export const Overview: FC<{
                     <Statistic
                       title={<Badge color={color} text={name} />}
                       value={
-                        data?.message_stats?.[
+                        queue?.message_stats?.[
                           (key + '_details') as 'ack_details'
                         ]?.rate
                       }
@@ -173,7 +173,7 @@ export const Overview: FC<{
                     <Statistic
                       title={<Badge color={color} text={name} />}
                       value={
-                        data?.message_stats?.[
+                        queue?.message_stats?.[
                           (key + '_details') as 'ack_details'
                         ]?.rate
                       }

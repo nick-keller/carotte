@@ -22,21 +22,21 @@ import { RabbitQueue } from '../../../types'
 import { QueueTypeTag } from '../../../components/QueueTypeTag'
 import { Routing } from './Routing'
 
-export const queueTags = (data?: RabbitQueue) => [
-  <OptTag name="Durable" key="d" abbr="D" value={data?.durable} />,
-  <OptTag name="Auto Delete" key="ad" abbr="AD" value={data?.auto_delete} />,
-  <OptTag name="Exclusive" key="e" abbr="E" value={data?.exclusive} />,
+export const queueTags = (queue?: RabbitQueue) => [
+  <OptTag name="Durable" key="d" abbr="D" value={queue?.durable} />,
+  <OptTag name="Auto Delete" key="ad" abbr="AD" value={queue?.auto_delete} />,
+  <OptTag name="Exclusive" key="e" abbr="E" value={queue?.exclusive} />,
   <OptTag
     name="Single active consumer"
     key="sac"
     abbr="SAC"
-    value={data?.arguments['x-single-active-consumer']}
+    value={queue?.arguments['x-single-active-consumer']}
   />,
   <OptTag
     name="Lazy"
     key="lazy"
     abbr="L"
-    value={data?.arguments['x-queue-mode'] === 'lazy'}
+    value={queue?.arguments['x-queue-mode'] === 'lazy'}
   />,
 ]
 
@@ -46,7 +46,7 @@ export const Queue: FC<{
   const history = useHistory()
   const { vhost, queueName } = match.params
   const activeRoute = useActiveChildRoute()
-  const { data } = useFetchQueue({
+  const { queue } = useFetchQueue({
     vhost,
     queueName,
     onNotFound: () => {
@@ -62,8 +62,8 @@ export const Queue: FC<{
         onBack={() => history.push('/queues')}
         style={{ marginRight: '30px' }}
         tags={[
-          <QueueTypeTag type={data?.type} key="type" />,
-          ...queueTags(data),
+          <QueueTypeTag type={queue?.type} key="type" />,
+          ...queueTags(queue),
         ]}
         extra={[
           <MoveQueuesButton

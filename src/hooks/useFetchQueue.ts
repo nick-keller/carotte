@@ -53,5 +53,5 @@ export const useFetchQueue = ({
     }
   }, [get, live, loading])
 
-  return { data: response.ok === false ? undefined : data, loading }
+  return { queue: response.ok === false ? undefined : data, loading }
 }

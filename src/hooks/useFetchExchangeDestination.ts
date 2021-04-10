@@ -13,8 +13,8 @@ export const useFetchExchangeDestination = ({
   exchangeName: string
   live?: boolean
 }) => {
-  const allExchanges = useFetchExchanges({ live })
-  const allQueues = useFetchQueues({ live })
+  const { exchanges } = useFetchExchanges({ live })
+  const { queues } = useFetchQueues({ live })
 
   const { data, loading, get, response } = useFetch<RabbitBinding[]>(
     `exchanges/${vhost}/${exchangeName}/bindings/destination`,
@@ -35,10 +35,10 @@ export const useFetchExchangeDestination = ({
 
   return {
     destination: response.ok ? data ?? [] : [],
-    destinationAlternateExchanges: allExchanges.data.filter(
+    destinationAlternateExchanges: exchanges.filter(
       (e) => e.arguments['alternate-exchange'] === exchangeName
     ),
-    destinationDeadLetters: allQueues.data.filter(
+    destinationDeadLetters: queues.filter(
       (q) => q.arguments['x-dead-letter-exchange'] === exchangeName
     ),
     loading,

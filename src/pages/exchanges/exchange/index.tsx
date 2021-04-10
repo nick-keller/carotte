@@ -10,10 +10,10 @@ import { Routing } from './Routing'
 import { ExchangeTypeTag } from '../../../components/ExchangeTypeTag'
 import { Publish } from './Publish'
 
-export const exchangeTags = (data?: RabbitExchange) => [
-  <OptTag name="Durable" key="d" abbr="D" value={data?.durable} />,
-  <OptTag name="Auto Delete" key="ad" abbr="AD" value={data?.auto_delete} />,
-  <OptTag name="Internal" key="i" abbr="I" value={data?.internal} />,
+export const exchangeTags = (exchange?: RabbitExchange) => [
+  <OptTag name="Durable" key="d" abbr="D" value={exchange?.durable} />,
+  <OptTag name="Auto Delete" key="ad" abbr="AD" value={exchange?.auto_delete} />,
+  <OptTag name="Internal" key="i" abbr="I" value={exchange?.internal} />,
 ]
 
 export const Exchange: FC<{
@@ -22,7 +22,7 @@ export const Exchange: FC<{
   const history = useHistory()
   const { vhost, exchangeName } = match.params
   const activeRoute = useActiveChildRoute()
-  const { data } = useFetchExchange({
+  const { exchange } = useFetchExchange({
     vhost,
     exchangeName,
     live: true,
@@ -41,8 +41,8 @@ export const Exchange: FC<{
         onBack={() => history.push('/exchanges')}
         style={{ marginRight: '30px' }}
         tags={[
-          <ExchangeTypeTag type={data?.type} key="type" />,
-          ...exchangeTags(data),
+          <ExchangeTypeTag type={exchange?.type} key="type" />,
+          ...exchangeTags(exchange),
         ]}
       />
 

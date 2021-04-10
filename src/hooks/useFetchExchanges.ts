@@ -3,7 +3,7 @@ import { RabbitExchange } from '../types'
 import { useEffect } from 'react'
 import { message } from 'antd'
 
-export const useFetchExchanges = ({ live }: { live: boolean }) => {
+export const useFetchExchanges = ({ live = false }: { live?: boolean }) => {
   const { data, loading, get, response } = useFetch<RabbitExchange[]>(
     '/exchanges',
     {
@@ -23,5 +23,8 @@ export const useFetchExchanges = ({ live }: { live: boolean }) => {
     }
   }, [get, loading, live])
 
-  return { data: (response.ok ? data ?? [] : []) as RabbitExchange[], loading }
+  return {
+    exchanges: (response.ok ? data ?? [] : []) as RabbitExchange[],
+    loading,
+  }
 }

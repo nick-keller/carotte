@@ -9,11 +9,11 @@ import { ExchangeTypeTag } from '../../components/ExchangeTypeTag'
 import { ExchangeLink } from '../../components/ExchangeLink'
 
 export const Exchanges: FC<{ match: Match }> = ({ match }) => {
-  const { data, loading } = useFetchExchanges({ live: true })
+  const { exchanges, loading } = useFetchExchanges({ live: true })
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<any[]>([])
 
-  if (!data) {
+  if (!exchanges) {
     return null
   }
 
@@ -29,7 +29,7 @@ export const Exchanges: FC<{ match: Match }> = ({ match }) => {
             </>
           ) : (
             <>
-              <b>{formatNumber(data.length)}</b> exchanges
+              <b>{formatNumber(exchanges.length)}</b> exchanges
             </>
           )
         }
@@ -49,13 +49,13 @@ export const Exchanges: FC<{ match: Match }> = ({ match }) => {
       />
       <Table
         size="small"
-        loading={loading && !data.length}
+        loading={loading && !exchanges.length}
         rowKey="name"
         rowSelection={{
           selectedRowKeys: selected,
           onChange: setSelected,
         }}
-        dataSource={data.filter(({ name }) =>
+        dataSource={exchanges.filter(({ name }) =>
           name.toLowerCase().includes(search.toLowerCase())
         )}
         columns={[

@@ -12,7 +12,7 @@ export const Routing: FC<{
 }> = ({ match }) => {
   const { vhost, exchangeName } = match.params
 
-  const { data } = useFetchExchange({
+  const { exchange } = useFetchExchange({
     vhost,
     exchangeName,
     live: true,
@@ -50,8 +50,8 @@ export const Routing: FC<{
           <BindingsTable
             bindings={source}
             show="destination"
-            alternateExchange={data?.arguments['alternate-exchange']}
-            vhost={data?.vhost}
+            alternateExchange={exchange?.arguments['alternate-exchange']}
+            vhost={exchange?.vhost}
           />
         </Col>
       </Row>

@@ -19,7 +19,7 @@ export const Routing: FC<{
     queueName,
     live: true,
   })
-  const { data } = useFetchQueue({ vhost, queueName, live: true })
+  const { queue } = useFetchQueue({ vhost, queueName, live: true })
 
   return (
     <Box m={20}>
@@ -36,13 +36,13 @@ export const Routing: FC<{
             show="destination"
             vhost={decodeURIComponent(vhost)}
             bindings={
-              data?.arguments['x-dead-letter-exchange']
+              queue?.arguments['x-dead-letter-exchange']
                 ? [
                     {
-                      destination: data?.arguments['x-dead-letter-exchange'],
+                      destination: queue?.arguments['x-dead-letter-exchange'],
                       destination_type: 'exchange',
                       vhost: decodeURIComponent(vhost),
-                      routing_key: data?.arguments['x-dead-letter-routing-key'],
+                      routing_key: queue?.arguments['x-dead-letter-routing-key'],
                       dl: true,
                     } as RabbitBinding & { dl: boolean },
                   ]

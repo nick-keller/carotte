@@ -14,7 +14,7 @@ import { QueueTypeTag } from '../../components/QueueTypeTag'
 import { QueueLink } from '../../components/QueueLink'
 
 export const Queues: FC<{ match: Match }> = ({ match }) => {
-  const { data, loading } = useFetchQueues({ live: true })
+  const { queues, loading } = useFetchQueues({ live: true })
 
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<any[]>([])
@@ -28,7 +28,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
     if (
       !loading &&
       starredOnly &&
-      data?.every(({ name }) => !starredQueues.includes(name))
+      queues?.every(({ name }) => !starredQueues.includes(name))
     ) {
       setStarredQueues([])
       setStarredOnly(false)
@@ -36,15 +36,11 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
   }, [
     loading,
     starredOnly,
-    data,
+    queues,
     starredQueues,
     setStarredOnly,
     setStarredQueues,
   ])
-
-  if (!data) {
-    return null
-  }
 
   return (
     <>
@@ -58,28 +54,28 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
             </>
           ) : (
             <>
-              <b>{formatNumber(data.length)}</b> queues
+              <b>{formatNumber(queues.length)}</b> queues
             </>
           )
         }
         extra={[
           !!selected.length && (
             <MoveQueuesButton
-              vhost={data[0]?.vhost}
+              vhost={queues[0]?.vhost}
               queues={selected}
               key="move"
             />
           ),
           !!selected.length && (
             <PurgeQueuesButton
-              vhost={data[0]?.vhost}
+              vhost={queues[0]?.vhost}
               queues={selected}
               key="purge"
             />
           ),
           !!selected.length && (
             <DeleteQueuesButton
-              vhost={data[0]?.vhost}
+              vhost={queues[0]?.vhost}
               queues={selected}
               key="delete"
             />
@@ -106,13 +102,13 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
       />
       <Table
         size="small"
-        loading={loading && !data.length}
+        loading={loading && !queues.length}
         rowKey="name"
         rowSelection={{
           selectedRowKeys: selected,
           onChange: setSelected,
         }}
-        dataSource={data.filter(
+        dataSource={queues.filter(
           ({ name }) =>
             name.toLowerCase().includes(search.toLowerCase()) &&
             (!starredOnly || starredQueues.includes(name))

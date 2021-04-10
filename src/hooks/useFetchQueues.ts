@@ -3,7 +3,7 @@ import { RabbitQueue } from '../types'
 import { useEffect } from 'react'
 import { message } from 'antd'
 
-export const useFetchQueues = ({ live }: { live: boolean }) => {
+export const useFetchQueues = ({ live = false }: { live?: boolean }) => {
   const { data, loading, get, response } = useFetch<RabbitQueue[]>(
     '/queues',
     {
@@ -23,5 +23,5 @@ export const useFetchQueues = ({ live }: { live: boolean }) => {
     }
   }, [get, loading, live])
 
-  return { data: (response.ok ? data ?? [] : []) as RabbitQueue[], loading }
+  return { queues: (response.ok ? data ?? [] : []) as RabbitQueue[], loading }
 }

@@ -36,7 +36,7 @@ export const useFetchExchange = ({
   }, [get, live, loading])
 
   return {
-    data: response.ok === false || !data ? undefined : data,
+    exchange: response.ok === false || !data ? undefined : data,
     loading,
   }
 }

@@ -31,12 +31,17 @@ export const Graph: FC<Props> = ({
       return data.reduce(
         (acc, cur) => {
           if (derivative) {
-            acc[cur.name] =
-              ((cur.samples[i - 1].sample - cur.samples[i].sample) /
-                (cur.samples[i - 1].timestamp - cur.samples[i].timestamp)) *
-              1000
+            if (!cur.samples[i]) {
+              acc[cur.name] = 0
+            } else {
+              acc[cur.name] =
+                ((cur.samples[i - 1].sample - cur.samples[i].sample) /
+                  (cur.samples[i - 1].timestamp - cur.samples[i].timestamp)) *
+                1000
+            }
           } else {
-            acc[cur.name] = cur.samples[i].sample
+            acc[cur.name] =
+              cur.samples[i]?.sample ?? cur.samples[i - 1]?.sample ?? null
           }
 
           return acc

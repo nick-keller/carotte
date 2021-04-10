@@ -68,7 +68,7 @@ export const BindingsTable: FC<{
                 {type === 'exchange' && (
                   <ExchangeLink name={name} vhost={vhost} />
                 )}
-                {type === 'queue' && <QueueLink name={name} vhost={vhost} />}
+                {type === 'queue' && <QueueLink name={name} vhost={vhost} tab="/routing" />}
                 <span>
                   <Tag color={type === 'exchange' ? 'orange' : 'blue'}>
                     {type}

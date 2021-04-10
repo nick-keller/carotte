@@ -17,7 +17,7 @@ export const Forecast: FC<{
   const [liveQueue, setLiveQueue] = useLocalStorage('liveQueue', true)
   const [forecastRange, setForecastRange] = useLocalStorage('forecastRange', 30)
 
-  const { data } = useFetchQueue({
+  const { queue } = useFetchQueue({
     vhost,
     queueName,
     live: liveQueue,
@@ -26,13 +26,13 @@ export const Forecast: FC<{
     messageSamples: true,
   })
 
-  const samples = data?.messages_details.samples ?? []
+  const samples = queue?.messages_details.samples ?? []
   const firstSample = samples[0] ?? { sample: 0, timestamp: 0 }
   const lastSample = samples[samples.length - 1] ?? { sample: 0, timestamp: 0 }
   const delta = firstSample.sample - lastSample.sample
   const range = firstSample.timestamp - lastSample.timestamp
   const rate = range ? (delta / range) * 1000 : 0
-  const currentMessages = data?.messages ?? 0
+  const currentMessages = queue?.messages ?? 0
   const timeToZero =
     currentMessages === 0 ? 0 : rate >= 0 ? null : currentMessages / -rate
   const eta = timeToZero !== null ? Date.now() + timeToZero * 1000 : null
@@ -98,7 +98,7 @@ export const Forecast: FC<{
         </Col>
         <Col span={24} md={14}>
           <ForecastGraph
-            samples={data?.messages_details.samples ?? []}
+            samples={queue?.messages_details.samples ?? []}
             rate={rate}
           />
         </Col>
