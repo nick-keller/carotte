@@ -12,7 +12,7 @@ export const ReasonTag: FC<{reason?: DeathReason}> = ({
   return (
     <Tag
       color={
-        { rejected: 'red', expired: 'purple' }[reason] ?? 'gray'
+        { rejected: 'red', expired: 'purple', maxlen: 'orange' }[reason] ?? 'gray'
       }
     >
       {reason}

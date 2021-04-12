@@ -135,7 +135,7 @@ export type RabbitQueue<Stat = RabbitMessageStat> = {
   vhost: string
 }
 
-export type DeathReason = 'rejected' | 'expired'
+export type DeathReason = 'rejected' | 'expired' | 'maxlen'
 
 export type RabbitMessage = {
   exchange: string

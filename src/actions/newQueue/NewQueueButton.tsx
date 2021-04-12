@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react'
 import {
+  AutoComplete,
   Button,
   Divider,
   Form,
@@ -17,6 +18,8 @@ import { InputMs } from '../../components/InputMs'
 import { InputBytes } from '../../components/InputBytes'
 import { useHistory } from 'react-router-dom'
 import { CachePolicies, useFetch } from 'use-http'
+import { useFetchExchanges } from '../../hooks/useFetchExchanges'
+import { useFetchExchangeSource } from '../../hooks/useFetchExchangeSource'
 
 export const NewQueueButton: FC = () => {
   const [form] = Form.useForm<NewQueueParams>()
@@ -33,6 +36,12 @@ export const NewQueueButton: FC = () => {
     },
     []
   )
+  const { exchanges } = useFetchExchanges({ live: true })
+  const { source } = useFetchExchangeSource({
+    live: true,
+    exchangeName: encodeURIComponent(values?.deadLetterExchange ?? ''),
+    vhost: encodeURIComponent(exchanges.find(({ name }) => name === values?.deadLetterExchange || (name === '' && values?.deadLetterExchange === 'amq.default'))?.vhost ?? ''),
+  })
 
   const close = () => {
     form.resetFields()
@@ -82,6 +91,8 @@ export const NewQueueButton: FC = () => {
               name: '',
               autoDelete: false,
               durable: true,
+              deadLetterExchange: null,
+              deadLetterRoutingKey: '',
               ttl: null,
               messagesTtl: null,
               singleActiveConsumer: false,
@@ -203,6 +214,31 @@ export const NewQueueButton: FC = () => {
               <Switch disabled={values?.type === 'quorum'} />
             </Form.Item>
           </Form.Item>
+          <Divider>Dead letter</Divider>
+          <Form.Item
+            name="deadLetterExchange"
+            label="Exchange"
+            tooltip={
+              <>
+                Messages from a queue can be "dead-lettered"; that is, republished to an exchange when any of the following events occur: message is rejected, expires, or is dropped due to length limit.{' '}
+                <a href="https://www.rabbitmq.com/dlx.html#overview">More info</a>
+              </>
+            }
+          >
+            <Select options={exchanges.map(({ name }) => ({ label: name || '(AMQP default)', value: name || 'amq.default' }))} showSearch allowClear />
+          </Form.Item>
+          <Form.Item
+            name="deadLetterRoutingKey"
+            label="Routing key"
+            tooltip={
+              <>
+                Dead-lettered messages are routed to their dead letter exchange with this routing key, or with the same routing keys they were originally published with if none is specified.{' '}
+                <a href="https://www.rabbitmq.com/dlx.html#routing">More info</a>
+              </>
+            }
+          >
+            <AutoComplete options={source.map(({ routing_key }) => ({ label: routing_key, value: routing_key })).filter(({ label }) => label && label.toLowerCase().includes(values?.deadLetterRoutingKey ?? ''))} allowClear />
+          </Form.Item>
           <Divider>Time-to-live</Divider>
           <Form.Item
             name="ttl"
@@ -265,28 +301,23 @@ export const NewQueueButton: FC = () => {
             required
             tooltip={
               <>
-                Quorum queues are durable, replicated FIFO queues where data
-                safety is a top priority.{' '}
+                Behaviour for RabbitMQ when a maximum queue length or size is set and the maximum is reached.{' '}
                 <a href="https://www.rabbitmq.com/maxlength.html#default-behaviour">
                   More info
                 </a>
               </>
             }
           >
-            <Radio.Group
-              buttonStyle="solid"
-              disabled={
-                (values?.maxLength === null &&
-                  values?.maxLengthBytes === null) ||
-                values?.type === 'quorum'
-              }
-            >
-              <Radio.Button value="drop-head">Drop head</Radio.Button>
-              <Radio.Button value="reject-publish">Reject publish</Radio.Button>
-              <Radio.Button value="reject-publish-dlx">
-                Reject publish DLX
-              </Radio.Button>
-            </Radio.Group>
+            <Select options={[
+              { value: 'drop-head', label: 'Drop head', },
+              { value: 'reject-publish', label: 'Reject publish', },
+              { value: 'reject-publish-dlx', label: 'Reject publish DLX', },
+            ]}
+                    disabled={
+                      (values?.maxLength === null &&
+                        values?.maxLengthBytes === null) ||
+                      values?.type === 'quorum'
+                    }/>
           </Form.Item>
         </Form>
       </Modal>

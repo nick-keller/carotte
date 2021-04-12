@@ -1,9 +1,9 @@
 import React, { FC } from 'react'
-import { Button, Space, Table, Tag, Tooltip } from 'antd'
+import { Space, Table, Tag, Tooltip } from 'antd'
 import { RabbitBinding, RabbitExchange, RabbitQueue } from '../types'
-import { DeleteOutlined } from '@ant-design/icons'
 import { ExchangeLink } from './ExchangeLink'
 import { QueueLink } from './QueueLink'
+import { UnBindButton } from '../actions/unBind/UnBindButton'
 
 export const BindingsTable: FC<{
   bindings?: (RabbitBinding & { ae?: boolean; dl?: boolean })[]
@@ -120,15 +120,9 @@ export const BindingsTable: FC<{
         {
           width: 1,
           render: (value) =>
-            !value.ae &&
+            !value.ae && value.source !== '' &&
             !value.dl && (
-              <Button
-                icon={<DeleteOutlined />}
-                shape="circle"
-                danger
-                size="small"
-                disabled
-              />
+              <UnBindButton binding={value} />
             ),
         },
       ]}

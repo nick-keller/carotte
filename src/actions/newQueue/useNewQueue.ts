@@ -10,6 +10,8 @@ export type NewQueueParams = {
   durable: boolean
   singleActiveConsumer: boolean
   lazy: boolean
+  deadLetterExchange: string | null
+  deadLetterRoutingKey: string
   ttl: null | number
   messagesTtl: null | number
   type: 'classic' | 'quorum'
@@ -31,6 +33,8 @@ export const useNewQueue = () => {
       name,
       autoDelete,
       durable,
+      deadLetterExchange,
+      deadLetterRoutingKey,
       ttl,
       messagesTtl,
       lazy,
@@ -52,6 +56,8 @@ export const useNewQueue = () => {
             'x-queue-type': type,
             'x-max-length': maxLength ?? undefined,
             'x-max-length-bytes': maxLengthBytes ?? undefined,
+            'x-dead-letter-exchange': deadLetterExchange || undefined,
+            'x-dead-letter-routing-key': deadLetterExchange && deadLetterRoutingKey ? deadLetterRoutingKey : undefined,
             'x-overflow':
               (maxLength !== null || maxLengthBytes !== null) &&
               type !== 'quorum'

@@ -77,6 +77,7 @@ export const Queues: FC<{ match: Match }> = ({ match }) => {
             <DeleteQueuesButton
               vhost={queues[0]?.vhost}
               queues={selected}
+              onDone={() => setSelected([])}
               key="delete"
             />
           ),
