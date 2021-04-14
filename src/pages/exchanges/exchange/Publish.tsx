@@ -60,17 +60,20 @@ export const Publish: FC<{
     })
 
     if (response.ok) {
-      setLastPublished((a) => [{
-        payload: publishMessage,
-        properties: {
-          delivery_mode: 2,
-          headers: {},
+      setLastPublished((a) => [
+        {
+          payload: publishMessage,
+          properties: {
+            delivery_mode: 2,
+            headers: {},
+          },
+          redelivered: false,
+          payload_encoding: 'string',
+          exchange: decodeURIComponent(exchangeName),
+          routing_key: routingKey,
         },
-        redelivered: false,
-        payload_encoding: 'string',
-        exchange: decodeURIComponent(exchangeName),
-        routing_key: routingKey,
-      }, ...a])
+        ...a,
+      ])
       message.success('Published message')
     } else {
       message.success('Could not publish message')

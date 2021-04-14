@@ -57,7 +57,10 @@ export const useNewQueue = () => {
             'x-max-length': maxLength ?? undefined,
             'x-max-length-bytes': maxLengthBytes ?? undefined,
             'x-dead-letter-exchange': deadLetterExchange || undefined,
-            'x-dead-letter-routing-key': deadLetterExchange && deadLetterRoutingKey ? deadLetterRoutingKey : undefined,
+            'x-dead-letter-routing-key':
+              deadLetterExchange && deadLetterRoutingKey
+                ? deadLetterRoutingKey
+                : undefined,
             'x-overflow':
               (maxLength !== null || maxLengthBytes !== null) &&
               type !== 'quorum'

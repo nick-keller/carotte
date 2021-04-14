@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
-import { Button, message, Popconfirm, } from 'antd'
+import { Button, message, Popconfirm } from 'antd'
 import { DeleteOutlined } from '@ant-design/icons'
 import { useUnBind } from './useUnBind'
 import { RabbitBinding } from '../../types'
 
 export const UnBindButton: FC<{ binding: RabbitBinding }> = ({ binding }) => {
-  const {unBind, unBinding } = useUnBind()
+  const { unBind, unBinding } = useUnBind()
 
   return (
     <Popconfirm

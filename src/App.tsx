@@ -6,6 +6,7 @@ import {
   LogoutOutlined,
   UserOutlined,
   PartitionOutlined,
+  SwapOutlined,
 } from '@ant-design/icons'
 import {
   BrowserRouter as Router,
@@ -24,6 +25,7 @@ import { CheckConnection } from './pages/auth/CheckConnection'
 import { useActiveChildRoute } from './hooks/useActiveChildRoute'
 import GithubCorner from 'react-github-corner'
 import { ExchangesIndex } from './pages/exchanges'
+import { RoutingIndex } from './pages/routing'
 
 function App() {
   const { username, logout } = useContext(CredentialsContext)
@@ -42,6 +44,9 @@ function App() {
           <Menu.Item icon={<PartitionOutlined />} key="/exchanges">
             <Link to="/exchanges">Exchanges</Link>
           </Menu.Item>
+          <Menu.Item icon={<SwapOutlined />} key="/routing">
+            <Link to="/routing">Routing</Link>
+          </Menu.Item>
           <Menu.SubMenu icon={<UserOutlined />} key="user" title={username}>
             <Menu.Item icon={<LogoutOutlined />} key="logout" onClick={logout}>
               Logout
@@ -53,6 +58,7 @@ function App() {
         <Switch>
           <Route path="/queues" component={QueuesIndex} />
           <Route path="/exchanges" component={ExchangesIndex} />
+          <Route path="/routing" component={RoutingIndex} />
           <Redirect to="/queues" />
         </Switch>
       </Layout.Content>

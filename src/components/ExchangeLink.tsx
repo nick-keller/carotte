@@ -5,7 +5,6 @@ export const ExchangeLink: FC<{ name: string; vhost?: string }> = ({
   name,
   vhost,
 }) => {
-
   if (!vhost) {
     return <>{name || '(AMQP default)'}</>
   }

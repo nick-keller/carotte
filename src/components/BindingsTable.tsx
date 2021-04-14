@@ -120,10 +120,9 @@ export const BindingsTable: FC<{
         {
           width: 1,
           render: (value) =>
-            !value.ae && value.source !== '' &&
-            !value.dl && (
-              <UnBindButton binding={value} />
-            ),
+            !value.ae &&
+            value.source !== '' &&
+            !value.dl && <UnBindButton binding={value} />,
         },
       ]}
       pagination={{

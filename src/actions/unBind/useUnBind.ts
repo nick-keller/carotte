@@ -10,10 +10,18 @@ export const useUnBind = () => {
   return {
     unBinding: loading,
     unBind: async ({
-      source,vhost,destination,destination_type,properties_key
+      source,
+      vhost,
+      destination,
+      destination_type,
+      properties_key,
     }: Omit<RabbitBinding, 'routing_key' | 'arguments'>) => {
       const data = await del(
-        `/bindings/${encodeURIComponent(vhost)}/e/${encodeURIComponent(source)}/${destination_type[0]}/${encodeURIComponent(destination)}/${encodeURIComponent(properties_key)}`,
+        `/bindings/${encodeURIComponent(vhost)}/e/${encodeURIComponent(
+          source
+        )}/${destination_type[0]}/${encodeURIComponent(
+          destination
+        )}/${encodeURIComponent(properties_key)}`,
         {
           destination,
           destination_type: destination_type[0],

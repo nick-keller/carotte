@@ -40,7 +40,13 @@ export const NewQueueButton: FC = () => {
   const { source } = useFetchExchangeSource({
     live: true,
     exchangeName: encodeURIComponent(values?.deadLetterExchange ?? ''),
-    vhost: encodeURIComponent(exchanges.find(({ name }) => name === values?.deadLetterExchange || (name === '' && values?.deadLetterExchange === 'amq.default'))?.vhost ?? ''),
+    vhost: encodeURIComponent(
+      exchanges.find(
+        ({ name }) =>
+          name === values?.deadLetterExchange ||
+          (name === '' && values?.deadLetterExchange === 'amq.default')
+      )?.vhost ?? ''
+    ),
   })
 
   const close = () => {
@@ -220,24 +226,54 @@ export const NewQueueButton: FC = () => {
             label="Exchange"
             tooltip={
               <>
-                Messages from a queue can be "dead-lettered"; that is, republished to an exchange when any of the following events occur: message is rejected, expires, or is dropped due to length limit.{' '}
-                <a href="https://www.rabbitmq.com/dlx.html#overview">More info</a>
+                Messages from a queue can be "dead-lettered"; that is,
+                republished to an exchange when any of the following events
+                occur: message is rejected, expires, or is dropped due to length
+                limit.{' '}
+                <a href="https://www.rabbitmq.com/dlx.html#overview">
+                  More info
+                </a>
               </>
             }
           >
-            <Select options={exchanges.map(({ name }) => ({ label: name || '(AMQP default)', value: name || 'amq.default' }))} showSearch allowClear />
+            <Select
+              options={exchanges.map(({ name }) => ({
+                label: name || '(AMQP default)',
+                value: name || 'amq.default',
+              }))}
+              showSearch
+              allowClear
+            />
           </Form.Item>
           <Form.Item
             name="deadLetterRoutingKey"
             label="Routing key"
             tooltip={
               <>
-                Dead-lettered messages are routed to their dead letter exchange with this routing key, or with the same routing keys they were originally published with if none is specified.{' '}
-                <a href="https://www.rabbitmq.com/dlx.html#routing">More info</a>
+                Dead-lettered messages are routed to their dead letter exchange
+                with this routing key, or with the same routing keys they were
+                originally published with if none is specified.{' '}
+                <a href="https://www.rabbitmq.com/dlx.html#routing">
+                  More info
+                </a>
               </>
             }
           >
-            <AutoComplete options={source.map(({ routing_key }) => ({ label: routing_key, value: routing_key })).filter(({ label }) => label && label.toLowerCase().includes(values?.deadLetterRoutingKey ?? ''))} allowClear />
+            <AutoComplete
+              options={source
+                .map(({ routing_key }) => ({
+                  label: routing_key,
+                  value: routing_key,
+                }))
+                .filter(
+                  ({ label }) =>
+                    label &&
+                    label
+                      .toLowerCase()
+                      .includes(values?.deadLetterRoutingKey ?? '')
+                )}
+              allowClear
+            />
           </Form.Item>
           <Divider>Time-to-live</Divider>
           <Form.Item
@@ -301,23 +337,26 @@ export const NewQueueButton: FC = () => {
             required
             tooltip={
               <>
-                Behaviour for RabbitMQ when a maximum queue length or size is set and the maximum is reached.{' '}
+                Behaviour for RabbitMQ when a maximum queue length or size is
+                set and the maximum is reached.{' '}
                 <a href="https://www.rabbitmq.com/maxlength.html#default-behaviour">
                   More info
                 </a>
               </>
             }
           >
-            <Select options={[
-              { value: 'drop-head', label: 'Drop head', },
-              { value: 'reject-publish', label: 'Reject publish', },
-              { value: 'reject-publish-dlx', label: 'Reject publish DLX', },
-            ]}
-                    disabled={
-                      (values?.maxLength === null &&
-                        values?.maxLengthBytes === null) ||
-                      values?.type === 'quorum'
-                    }/>
+            <Select
+              options={[
+                { value: 'drop-head', label: 'Drop head' },
+                { value: 'reject-publish', label: 'Reject publish' },
+                { value: 'reject-publish-dlx', label: 'Reject publish DLX' },
+              ]}
+              disabled={
+                (values?.maxLength === null &&
+                  values?.maxLengthBytes === null) ||
+                values?.type === 'quorum'
+              }
+            />
           </Form.Item>
         </Form>
       </Modal>
