@@ -7,7 +7,7 @@ export const HttpProvider: FC = ({ children }) => {
 
   return (
     <Provider
-      url={baseUrl + '/api'}
+      url={'https://carotte-proxy.vercel.app/api?url=' + baseUrl + '/api'}
       options={{
         cachePolicy: CachePolicies.CACHE_AND_NETWORK,
         cacheLife: 3600000,

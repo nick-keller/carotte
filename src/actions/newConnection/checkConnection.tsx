@@ -26,12 +26,12 @@ export const checkConnection = async ({
 
   try {
     const [auth, whoami] = await Promise.all([
-      fetch(`${baseUrl}/api/auth`, {
+      fetch(`https://carotte-proxy.vercel.app/api?url=${baseUrl}/api/auth`, {
         headers: {
           Authorization: `Basic ${btoa(`${username}:${password}`)}`,
         },
       }),
-      fetch(`${baseUrl}/api/whoami`, {
+      fetch(`https://carotte-proxy.vercel.app/api?url=${baseUrl}/api/whoami`, {
         headers: {
           Authorization: `Basic ${btoa(`${username}:${password}`)}`,
         },
