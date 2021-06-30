@@ -7,10 +7,11 @@ import { useFetchExchanges } from '../../hooks/useFetchExchanges'
 import { exchangeTags } from './exchange'
 import { ExchangeTypeTag } from '../../components/ExchangeTypeTag'
 import { ExchangeLink } from '../../components/ExchangeLink'
+import useLocalStorage from 'use-local-storage'
 
 export const Exchanges: FC<{ match: Match }> = ({ match }) => {
   const { exchanges, loading } = useFetchExchanges({ live: true })
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useLocalStorage('exchangesSearch', '')
   const [selected, setSelected] = useState<any[]>([])
 
   if (!exchanges) {

@@ -16,7 +16,7 @@ import { QueueLink } from '../../components/QueueLink'
 export const Queues: FC<{ match: Match }> = ({ match }) => {
   const { queues, loading } = useFetchQueues({ live: true })
 
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useLocalStorage('queuesSearch', '')
   const [selected, setSelected] = useState<any[]>([])
   const [starredOnly, setStarredOnly] = useLocalStorage('starredOnly', false)
   const [starredQueues, setStarredQueues] = useLocalStorage<string[]>(

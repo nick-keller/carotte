@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Menu, message, PageHeader } from 'antd'
+import { Menu, message, PageHeader, Typography } from 'antd'
 import { match as Match, Route, Switch, useHistory } from 'react-router-dom'
 import { Get } from './Get'
 import { MoveQueuesButton } from '../../../actions/moveQueues/MoveQueuesButton'
@@ -58,7 +58,7 @@ export const Queue: FC<{
   return (
     <>
       <PageHeader
-        title={decodeURIComponent(queueName)}
+        title={<Typography.Text copyable>{decodeURIComponent(queueName)}</Typography.Text>}
         onBack={() => history.push('/queues')}
         style={{ marginRight: '30px' }}
         tags={[

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Menu, message, PageHeader } from 'antd'
+import { Menu, message, PageHeader, Typography } from 'antd'
 import { match as Match, Route, Switch, useHistory } from 'react-router-dom'
 import { OptTag } from '../../../components/OptTag'
 import { RabbitExchange } from '../../../types'
@@ -42,7 +42,7 @@ export const Exchange: FC<{
   return (
     <>
       <PageHeader
-        title={decodeURIComponent(exchangeName)}
+        title={<Typography.Text copyable>{decodeURIComponent(exchangeName)}</Typography.Text>}
         onBack={() => history.push('/exchanges')}
         style={{ marginRight: '30px' }}
         tags={[
