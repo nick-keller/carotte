@@ -33,7 +33,8 @@ export const RoutingIndex = ({ match }: { match: Match }) => {
           queues={queues}
           bindings={bindings}
           exchanges={exchanges.filter(
-            (exchange) => !exchange.name.startsWith('amq.') && exchange.name !== ''
+            (exchange) =>
+              !exchange.name.startsWith('amq.') && exchange.name !== ''
           )}
         />
       )}

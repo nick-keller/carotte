@@ -45,7 +45,7 @@ class Circle implements Box {
   public w: number
   public h: number
 
-  constructor(private r: number,private color: string) {
+  constructor(private r: number, private color: string) {
     this.w = r * 2
     this.h = r * 2
   }
@@ -106,24 +106,24 @@ class Text implements Box {
   render() {
     return (
       <>
-      <text
-        x={this.x}
-        y={this.y}
-        textAnchor={this.textAnchor}
-        dominantBaseline={this.dominantBaseline}
-        strokeWidth={8}
-        stroke="white"
-      >
-        {this.opts.text}
-      </text>
-      <text
-        x={this.x}
-        y={this.y}
-        textAnchor={this.textAnchor}
-        dominantBaseline={this.dominantBaseline}
-      >
-        {this.opts.text}
-      </text>
+        <text
+          x={this.x}
+          y={this.y}
+          textAnchor={this.textAnchor}
+          dominantBaseline={this.dominantBaseline}
+          strokeWidth={8}
+          stroke="white"
+        >
+          {this.opts.text}
+        </text>
+        <text
+          x={this.x}
+          y={this.y}
+          textAnchor={this.textAnchor}
+          dominantBaseline={this.dominantBaseline}
+        >
+          {this.opts.text}
+        </text>
       </>
     )
   }
@@ -326,11 +326,15 @@ const arrowLabel = (from?: Joinable, to?: Joinable, label?: string) => {
   start.x += 4
   end.x -= 4
 
-  const text = new Text({
-    text: label || '',
-    alignY: 'bottom',
-    alignX: 'middle',
-  }, 0, 0)
+  const text = new Text(
+    {
+      text: label || '',
+      alignY: 'bottom',
+      alignX: 'middle',
+    },
+    0,
+    0
+  )
 
   text.x = (start.x + end.x) / 2
   text.y = (start.y + end.y) / 2 - 5
@@ -507,7 +511,7 @@ export const RoutingMap: FC<{
         if (queue.arguments['x-dead-letter-exchange']) {
           return arrow(
             queuesMap.get(queue.name),
-            exchangesMap.get(queue.arguments['x-dead-letter-exchange']),
+            exchangesMap.get(queue.arguments['x-dead-letter-exchange'])
           )
         }
 
@@ -518,8 +522,8 @@ export const RoutingMap: FC<{
         arrowLabel(
           exchangesMap.get(binding.source),
           (binding.destination_type === 'exchange'
-              ? exchangesMap
-              : queuesMap
+            ? exchangesMap
+            : queuesMap
           ).get(binding.destination),
           binding.routing_key
         )

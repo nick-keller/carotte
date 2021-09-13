@@ -58,7 +58,11 @@ export const Queue: FC<{
   return (
     <>
       <PageHeader
-        title={<Typography.Text copyable>{decodeURIComponent(queueName)}</Typography.Text>}
+        title={
+          <Typography.Text copyable>
+            {decodeURIComponent(queueName)}
+          </Typography.Text>
+        }
         onBack={() => history.push('/queues')}
         style={{ marginRight: '30px' }}
         tags={[

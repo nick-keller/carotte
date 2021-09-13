@@ -20,7 +20,21 @@ export const PurgeQueuesButton: FC<{ vhost: string; queues: string[] }> = ({
         confirm({
           title: `Purge queues?`,
           icon: <ExclamationCircleOutlined />,
-          content: queues.length === 1 ? <>You are about tu purge queue <b>{queues[0]}</b>.</> : <>You are about tu purge {queues.length} queues:<ul>{queues.map((queue, i) => <li key={i}>{queue}</li>)}</ul></>,
+          content:
+            queues.length === 1 ? (
+              <>
+                You are about tu purge queue <b>{queues[0]}</b>.
+              </>
+            ) : (
+              <>
+                You are about tu purge {queues.length} queues:
+                <ul>
+                  {queues.map((queue, i) => (
+                    <li key={i}>{queue}</li>
+                  ))}
+                </ul>
+              </>
+            ),
           onOk: async () => {
             try {
               await purge()

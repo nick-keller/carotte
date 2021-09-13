@@ -21,7 +21,21 @@ export const DeleteQueuesButton: FC<{
         confirm({
           title: `Delete queues?`,
           icon: <ExclamationCircleOutlined />,
-          content: queues.length === 1 ? <>You are about tu delete queue <b>{queues[0]}</b>.</> : <>You are about tu delete {queues.length} queues:<ul>{queues.map((queue, i) => <li key={i}>{queue}</li>)}</ul></>,
+          content:
+            queues.length === 1 ? (
+              <>
+                You are about tu delete queue <b>{queues[0]}</b>.
+              </>
+            ) : (
+              <>
+                You are about tu delete {queues.length} queues:
+                <ul>
+                  {queues.map((queue, i) => (
+                    <li key={i}>{queue}</li>
+                  ))}
+                </ul>
+              </>
+            ),
           onOk: async () => {
             try {
               await del()

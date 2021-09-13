@@ -42,7 +42,11 @@ export const Exchange: FC<{
   return (
     <>
       <PageHeader
-        title={<Typography.Text copyable>{decodeURIComponent(exchangeName)}</Typography.Text>}
+        title={
+          <Typography.Text copyable>
+            {decodeURIComponent(exchangeName)}
+          </Typography.Text>
+        }
         onBack={() => history.push('/exchanges')}
         style={{ marginRight: '30px' }}
         tags={[
