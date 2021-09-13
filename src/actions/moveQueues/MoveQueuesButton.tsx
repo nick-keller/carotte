@@ -31,7 +31,7 @@ export const MoveQueuesButton: FC<{ vhost: string; queues: string[] }> = ({
             queues[0].startsWith(name.substr(0, name.length * 0.75)))
       ) ?? []
     )
-  }, [data])
+  }, [data, queues])
 
   return (
     <>
